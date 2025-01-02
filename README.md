@@ -391,7 +391,7 @@ Showing ImGui demo with ImPlot demo.
 
 ---
 
-[![Sample movie,Youtube](https://github.com/dinau/imguin/raw/main/src/img/fontx2v-1.0-alpha-2023-04-small.png)](https://youtu.be/Ea0t7b9Kmq4)
+[![Sample movie,Youtube](https://github.com/dinau/imguin/raw/main/src/img/fontx2v_demo.png)](https://youtu.be/Ea0t7b9Kmq4)
 
 ### Cross compilation: Generating Windows application binary(\*.exe) on Linux OS
 

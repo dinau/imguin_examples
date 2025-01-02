@@ -1,4 +1,4 @@
-import std/[os, strutils, parsecfg, parseutils]
+import std/[os, strutils, parsecfg, parseutils, strformat]
 import sdl2_nim/sdl
 export sdl
 
@@ -101,7 +101,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   # Initialy main window is hidden.  See: showWindowDelay
   var flags:cuint = WINDOW_HIDDEN or WINDOW_OPENGL or WINDOW_RESIZABLE or WINDOW_ALLOW_HIGHDPI
-  var window = sdl.createWindow( "SDL2 demo"
+  var window = sdl.createWindow( title
                                , result.ini.startupPosX, result.ini.startupPosY
                                , result.ini.viewportWidth, result.ini.viewportHeight, flags)
   if isNil window:
@@ -205,7 +205,7 @@ proc getFrontendVersionString*(): string =
   sdl.getVersion(ver.addr)
   "SDL2 v$#.$#.$#" % [$ver.major.int,$ver.minor.int,$ver.patch.int]
 
-proc getBackendVersionString*(): string = "OpenGL v" & ($cast[cstring](glGetString(GL_VERSION))).split[0]
+proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"
 
 #----------
 # setTheme

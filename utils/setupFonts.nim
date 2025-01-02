@@ -1,6 +1,6 @@
 import std/[os]
 import imguin/cimgui
-import imguin/lang/imgui_ja_gryph_ranges
+#import imguin/lang/imgui_ja_gryph_ranges
 import ../utils/fonticon/IconsFontAwesome6
 export IconsFontAwesome6
 
@@ -28,7 +28,7 @@ when defined(windows):
        osRootDir: os.getEnv("windir") # get OS root
        ,fontDir: "fonts"
        ,fontTable: @[ #
-         ("meiryo.ttc","メイリオ",14.5)
+        ("meiryo.ttc","メイリオ",14.5)
         ,("segoeui.ttf","Seoge UI",14.4) # English region standard font
         ,("YuGothM.ttc","遊ゴシック M",11.0)
         ,("meiryob.ttc","メイリオ B",14.0)
@@ -81,7 +81,7 @@ proc setupFonts*(): (bool,string,string) =
     let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
     if os.fileExists(fontFullPath):
       seqFontNames.add (fontName,fontTitle)
-      pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, addr config, cast[ptr ImWchar](addr glyphRangesJapanese));
+      pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, addr config,  pio.Fonts.ImFontAtlas_GetGlyphRangesJapanese());
       echo "Added: ",fontFullPath
       break
   if seqFontNames.len > 0:

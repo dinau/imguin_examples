@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.91.6.7"
+version       = "1.91.6.9"
 author        = "dinau"
 description   = "The examples for ImGuin that wrapper for ImGui libraries with Nim language."
 license       = "MIT"
@@ -18,6 +18,7 @@ requires "tinydialogs == 1.1.0"
 task all,"Build all examples":
   #let cmd = "nim c -d:strip -o:$# $# $#.nim" % [TARGET.toEXE,Opts,"src/" & TARGET]
   #echo cmd
+  exec("nimble install")
   exec("nim make.nims")
 
 task dep,"Install dependecies":

@@ -32,7 +32,7 @@ proc saveImage*(fname:string, xs, ys, width, height:int, comp:int = RGB,quality:
                 texBuffer[0].addr
                 )
 
-  # 上下反転を補正する
+  # Set upside-down
   let widthStep = 3 * imageWidth
   var n = 0
   for y in 0..<imageHeight:

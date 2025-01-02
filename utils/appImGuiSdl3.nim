@@ -1,4 +1,4 @@
-import std/[os, strutils, parsecfg, parseutils]
+import std/[os, strutils, parsecfg, parseutils, strformat]
 import sdl3_nim
 export sdl3_nim
 
@@ -78,7 +78,7 @@ proc setTheme*(themeName: Theme)
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window"): WindowSdl =
+proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window SDL3"): WindowSdl =
   if not SDL_Init(SDL_INIT_VIDEO or SDL_INIT_GAMEPAD):
     echo "\nError!: SDL_Init()"
 
@@ -99,7 +99,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   const SDL_WINDOW_OPENGL    = 0x0000000000000002'u64
   const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
   var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_OPENGL or SDL_WINDOW_HIDDEN
-  var window = SDL_CreateWindow("[ SDL3 ] ImGui Window"
+  var window = SDL_CreateWindow(title
                                , result.ini.viewportWidth , result.ini.viewportHeight
                                , flags.SDL_WindowFlags)
   if isNil window:
@@ -228,7 +228,7 @@ proc getFrontendVersionString*(): string =
   let ver =  SDL_getVersion() # == cint
   return "SDL3 v$#.$#" % [$ver, $SDL_GetRevision()]
 
-proc getBackendVersionString*(): string = "OpenGL v" & ($cast[cstring](glGetString(GL_VERSION))).split[0]
+proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"
 
 #----------
 # setTheme

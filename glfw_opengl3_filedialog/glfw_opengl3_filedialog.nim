@@ -113,9 +113,9 @@ proc main() =
       # end DisplayDialog
 
       igText("Selected file = %s", sFilePathName.cstring)
-      igText("Dir = %s", sFileDirPath.cstring)
-      igText("Filter = %s", sFilter.cstring)
-      igText("Datas = %s", sDatas.cstring)
+      igText("Dir           = %s", sFileDirPath.cstring)
+      igText("Filter        = %s", sFilter.cstring)
+      igText("Datas         = %s", sDatas.cstring)
 
     block:
       igBegin("Nim: Dear ImGui test with Futhark", nil, 0)

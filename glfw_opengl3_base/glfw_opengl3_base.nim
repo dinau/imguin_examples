@@ -95,7 +95,9 @@ proc main() =
         showAnotherWindow = false
       igEnd()
 
-    #
+    #--------
+    # render
+    #--------
     render(win)
     if not showFirstWindow and not showDemoWindow and not showAnotherWindow:
       win.handle.setWindowShouldClose(true) # Exit program

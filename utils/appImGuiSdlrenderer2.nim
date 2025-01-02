@@ -1,10 +1,15 @@
-import std/[os, strutils, parsecfg, parseutils, strformat]
-import nimgl/[opengl, glfw]
+import std/[os, strutils, parsecfg, parseutils]
+import sdl2_nim/sdl
+export sdl
+
+import imguin/glad/gl
+export gl
 
 import imguin/cimgui
 export cimgui
-import imguin/[glfw_opengl]
-export opengl, glfw, glfw_opengl
+
+import imguin/sdl2_renderer
+export sdl2_renderer
 
 import ../utils/loadImage
 export loadImage
@@ -24,11 +29,11 @@ type IniData = object
   clearColor*: ccolor
   startupPosX*, startupPosY*:cint
   viewportWidth*, viewportHeight*:cint
-  imageSaveFormatIndex*:int
 
-type Window* = object
-  handle*: glfw.GLFWwindow
+type WindowSdl* = object
+  handle*: sdl.Window
   context*: ptr ImGuiContext
+  renderer*: sdl.Renderer
   imnodes*:bool
   implot*:bool
   implotContext: ptr ImPlotContext
@@ -36,8 +41,8 @@ type Window* = object
   ini*:IniData
 
 #--- Forward definitions
-proc loadIni*(this: var Window)
-proc saveIni*(this: var Window)
+proc loadIni*(this: var WindowSdl)
+proc saveIni*(this: var WindowSdl)
 
 #--------------
 # Configration
@@ -53,6 +58,16 @@ proc saveIni*(this: var Window)
 #  |  true     | -        |     false           ||    v    |     -       |   v     | Docking and outside of viewport
 #  |    -      | -        |     true            ||    v    |     v       |   -     | Transparent Viewport and docking
 #  `-----------'----------'---------------------'`---------'-------------'---------'-------------
+var
+ fDocking = true
+ fViewport = false
+ TransparentViewport = false
+ #
+block:
+  if TransparentViewport:
+    fViewport = true
+  if fViewport:
+    fDocking = true
 
 type
   Theme* = enum
@@ -64,47 +79,30 @@ proc setTheme*(themeName: Theme)
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window", docking:bool=false): Window =
-  doAssert glfwInit()
+proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window"): WindowSdl =
+  if sdl.init(sdl.InitVideo or sdl.InitTimer or sdl.InitGameController) != 0:
+    echo "ERROR: Can't initialize SDL: ", sdl.getError()
+    quit -1
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
   result.loadIni()
 
-  var
-    fDocking = docking
-    fViewport = false
-    TransparentViewport = false
-  block:
-    if TransparentViewport:
-      fViewport = true
-    if fViewport:
-      fDocking = true
+  # Basic IME support. App needs to call 'SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");'
+  # before SDL_CreateWindow()!.
+  discard sdl.setHint("SDL_HINT_IME_SHOW_UI", "1") # SDL2: must be v2.0.18 or later
 
-  if TransparentViewport:
-    glfwWindowHint(GLFWVisible, GLFW_FALSE)
-
-  glfwWindowHint(GLFWContextVersionMajor, 3)
-  glfwWindowHint(GLFWContextVersionMinor, 3)
-  glfwWindowHint(GLFWOpenglForwardCompat, GLFW_TRUE)
-  glfwWindowHint(GLFWOpenglProfile, GLFW_OPENGL_CORE_PROFILE)
-  glfwWindowHint(GLFWResizable, GLFW_TRUE)
-  #
-  glfwWindowHint(GLFWVisible, GLFW_FALSE)
-  var glfwWin = glfwCreateWindow(result.ini.viewportWidth, result.ini.viewportHeight, title=title)
-  if glfwWin.isNil:
-    quit(-1)
-  glfwWin.makeContextCurrent()
-
-  setWindowPos(glfwWin, result.ini.startupPosX, result.ini.startupPosY)
-  glfwSwapInterval(1) # Enable vsync
-
-  #---------------------
-  # Load title bar icon
-  #---------------------
-  var IconName = os.joinPath(os.getAppDir(),"res/img/n.png")
-  LoadTileBarIcon(glfwWin, IconName)
-
-  doAssert glInit() # OpenGL init
+  # Initialy main window is hidden.  See: showWindowDelay
+  var flags:cuint = WINDOW_HIDDEN or WINDOW_OPENGL or WINDOW_RESIZABLE or WINDOW_ALLOW_HIGHDPI
+  var window = sdl.createWindow( title
+                               , result.ini.startupPosX, result.ini.startupPosY
+                               , result.ini.viewportWidth, result.ini.viewportHeight, flags)
+  if isNil window:
+    echo "Fail to create window: ", sdl.getError()
+    quit -1
+  result.renderer = sdl.createRenderer(window, -1, sdl.RENDERER_PRESENTVSYNC or  sdl.RENDERER_ACCELERATED)
+  if isNil result.renderer:
+    echo "Error creating SDL_Renderer!"
+    quit -1;
 
   # Setup ImGui
   result.context = igCreateContext(nil)
@@ -124,14 +122,13 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
       pio.ConfigFlags = pio.ConfigFlags or ImGui_ConfigFlags_ViewportsEnable.cint
       pio.ConfigViewports_NoAutomerge = true
 
-  # GLFW + OpenGL
-  const glsl_version = "#version 330"  # OpenGL 3.3
-  doAssert ImGui_ImplGlfw_InitForOpenGL(cast[ptr GLFWwindow](glfwwin), true)
-  doAssert ImGui_ImplOpenGL3_Init(glsl_version)
+  # Setup Platform/Renderer backends
+  ImGui_ImplSDL2_InitForSDLRenderer(cast[ptr SDL_Window](window), cast[ptr SDL_renderer](result.renderer))
+  ImGui_ImplSDLRenderer2_Init(cast[ptr SDL_Renderer](result.renderer))
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
-  result.handle = glfwWin
+  result.handle = window
 
   setTheme(classic)
 
@@ -142,54 +139,67 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 #--------
 # render
 #--------
-proc render*(window: var Window) =
-  igRender()
-  glClearColor(window.ini.clearColor.elm.x, window.ini.clearColor.elm.y, window.ini.clearColor.elm.z, window.ini.clearColor.elm.w)
-  glClear(GL_COLOR_BUFFER_BIT)
-  ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData())
+proc render*(win: var WindowSdl) =
+    var pio = igGetIO()
+    igRender()
 
-  var pio = igGetIO()
-  if 0 != (pio.ConfigFlags and ImGui_ConfigFlags_ViewportsEnable.cint):
-    var backup_current_window = glfwGetCurrentContext()
-    igUpdatePlatformWindows()
-    igRenderPlatformWindowsDefault(nil, nil)
-    backup_current_window.makeContextCurrent()
+    discard sdl.renderSetScale(win.renderer, pio.DisplayFramebufferScale.x, pio.DisplayFramebufferScale.y)
+    discard sdl.setRenderDrawColor(win.renderer
+                                , (win.ini.clearColor.elm.x * 255).uint8
+                                , (win.ini.clearColor.elm.y * 255).uint8
+                                , (win.ini.clearColor.elm.z * 255).uint8
+                                , (win.ini.clearColor.elm.w * 255).uint8)
+    discard sdl.renderClear(win.renderer)
+    ImGui_ImplSDLRenderer2_RenderDrawData(cast[ptr impl_sdlrenderer2.ImDrawData](igGetDrawData()), cast[ptr SDL_Renderer](win.renderer))
+    sdl.renderPresent(win.renderer);
 
-  window.handle.swapBuffers()
+    #if 0 != (pio.ConfigFlags and ImGui_ConfigFlags_ViewportsEnable.cint):
+    ##  var backup_current_window = sdl.glGetCurrentWindow()
+    #  var backup_current_context = sdl.glGetCurrentContext()
+    #  igUpdatePlatformWindows()
+    #  igRenderPlatformWindowsDefault(nil, nil)
+    #  discard sdl.glmakeCurrent(backup_current_window,backup_current_context)
 
-  if window.showWindowDelay > 0:
-    dec window.showWindowDelay
-  else:
-    once: # Avoid flickering screen at startup.
-      window.handle.showWindow()
+    sdl.glSwapWindow(win.handle)
+
+    if win.showWindowDelay > 0:
+      dec win.showWindowDelay
+    else:
+      once: # Avoid flickering screen at startup.
+        win.handle.showWindow()
 
 #--------------
 # destroyImGui
 #--------------
-proc destroyImGui*(window: var Window) =
-  window.saveIni()
-  ImGui_ImplOpenGL3_Shutdown()
-  ImGui_ImplGlfw_Shutdown()
+proc destroyImGui*(win: var WindowSdl) =
+  win.saveIni()
+  ImGui_ImplSDLRenderer2_Shutdown()
+  ImGui_ImplSdl2_Shutdown()
   when defined(ImPlotEnable):
-    if window.implot:
-      window.imPlotContext.ImPlotDestroyContext()
+    if win.implot:
+      win.imPlotContext.ImPlotDestroyContext()
   when defined(ImNodesEnable):
-    if window.imnodes:
+    if win.imnodes:
       imnodes_DestroyContext(nil)
-  window.context.igDestroyContext()
-  window.handle.destroyWindow()
-  glfwTerminate()
+  igDestroyContext(nil)
+  sdl.destroyRenderer(win.renderer)
+  sdl.destroyWindow(win.handle)
+  sdl.quit()
 
 #----------
 # newFrame
 #----------
 proc newFrame*() =
-  ImGui_ImplOpenGL3_NewFrame()
-  ImGui_ImplGlfw_NewFrame()
+  ImGui_ImplSDLRenderer2_NewFrame()
+  ImGui_ImplSdl2_NewFrame()
   igNewFrame()
 
-proc getFrontendVersionString*(): string = fmt"GLFW v{$glfwGetVersionString()}"
-proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"
+proc getFrontendVersionString*(): string =
+  var ver:sdl.Version
+  sdl.getVersion(ver.addr)
+  "SDL2 v$#.$#.$#" % [$ver.major.int,$ver.minor.int,$ver.patch.int]
+
+proc getBackendVersionString*(): string = getFrontendVersionString() & " (Backend)"
 
 #----------
 # setTheme
@@ -206,7 +216,7 @@ proc setTheme*(themeName: Theme) =
 #---------------
 # setClearcolor
 #---------------
-proc setClearColor*(win: var Window, col: ccolor) =
+proc setClearColor*(win: var WindowSdl, col: ccolor) =
   win.ini.clearColor = col
 
 #------
@@ -214,7 +224,7 @@ proc setClearColor*(win: var Window, col: ccolor) =
 #------
 proc free*(mem: pointer) {.importc,header:"<stdlib.h>".}
 
-# Sections
+# Sections (Cat.)
 const scWindow           = "Window"
 # [Window]
 const startupPosX      = "startupPosX"
@@ -225,33 +235,26 @@ const colBGx = "colBGx"
 const colBGy = "colBGy"
 const colBGz = "colBGz"
 const colBGw = "colBGw"
-# [Image]
-const scImage           = "Image"
-const imageSaveFormatIndex = "imageSaveFormatIndex"
 
 #---------
 # loadIni    --- Load ini
 #---------
-proc loadIni*(this: var Window) =
+proc loadIni*(this: var WindowSdl) =
   let iniName = getAppFilename().changeFileExt("ini")
   #----------
   # Load ini
   #----------
   if fileExists(iniName):
     let cfg = loadConfig(iniName)
-    # Window pos
-    this.ini.startupPosX = cfg.getSectionValue(scWindow,startupPosX).parseInt.cint
+    # Windows
+    this.ini.startupPosX = cfg.getSectionValue(scWindow,startupPosX).parseInt.int32
     if 10 > this.ini.startupPosX: this.ini.startupPosX = 10
-    this.ini.startupPosY = cfg.getSectionValue(scWindow,startupPosY).parseInt.cint
+    this.ini.startupPosY = cfg.getSectionValue(scWindow,startupPosY).parseInt.int32
     if 10 > this.ini.startupPosY: this.ini.startupPosY = 10
-
-    # Window size
     this.ini.viewportWidth = cfg.getSectionValue(scWindow,viewportWidth).parseInt.cint
     if this.ini.viewportWidth < 100: this.ini.viewportWidth = 900
     this.ini.viewportHeight = cfg.getSectionValue(scWindow,viewportHeight).parseInt.cint
     if this.ini.viewportHeight < 100: this.ini.viewportHeight = 900
-
-    # Background color
     var fval:float
     discard parsefloat(cfg.getSectionValue(scWindow, colBGx, "0.25"), fval)
     this.ini.clearColor.elm.x = fval.cfloat
@@ -261,10 +264,6 @@ proc loadIni*(this: var Window) =
     this.ini.clearColor.elm.z = fval.cfloat
     discard parsefloat(cfg.getSectionValue(scWindow, colBGw, "1.00"), fval)
     this.ini.clearColor.elm.w = fval.cfloat
-
-    # Image format index
-    this.ini.imageSaveFormatIndex = cfg.getSectionValue(scImage,imageSaveFormatIndex).parseInt.cint
-
   #----------------
   # Set first defaults
   #----------------
@@ -272,32 +271,25 @@ proc loadIni*(this: var Window) =
     this.ini.startupPosX = 100
     this.ini.startupPosY = 200
     this.ini.clearColor = ccolor(elm:(x:0.25f, y:0.65f, z:0.85f, w:1.0f))
-    this.ini.imageSaveFormatIndex = 0
 
 #---------
 # saveIni   --- save iniFile
 #---------
-proc saveIni*(this: var Window) =
+proc saveIni*(this: var WindowSdl) =
   let iniName = getAppFilename().changeFileExt("ini")
   var ini = newConfig()
-  # Window pos
-  getWindowPos(this.handle, addr this.ini.startupPosX,addr this.ini.startupPosY)
+  var x,y: cint
+  this.handle.getwindowPosition(addr x, addr y)
+  this.ini.startupPosX = x
+  this.ini.startupPosY = y
   ini.setSectionKey(scWindow,startupPosX,$this.ini.startupPosX)
   ini.setSectionKey(scWindow,startupPosY,$this.ini.startupPosY)
-
-  # Window size
   let ws = igGetMainViewPort().WorkSize
   ini.setSectionKey(scWindow, viewportWidth,$ws.x.cint)
   ini.setSectionKey(scWindow, viewportHeight,$ws.y.cint)
-
-  # Background color
   ini.setSectionKey(scWindow, colBGx, $this.ini.clearColor.elm.x)
   ini.setSectionKey(scWindow, colBGy, $this.ini.clearColor.elm.y)
   ini.setSectionKey(scWindow, colBGz, $this.ini.clearColor.elm.z)
   ini.setSectionKey(scWindow, colBGw, $this.ini.clearColor.elm.w)
-
-  # Image format index
-  ini.setSectionKey(scImage, imageSaveFormatIndex, $this.ini.imageSaveFormatIndex)
-
   # save ini file
   writeFile(iniName,$ini)
