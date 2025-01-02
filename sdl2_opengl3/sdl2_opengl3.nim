@@ -14,7 +14,7 @@ const MainWinHeight = 900
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight)
+  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui: SDL2")
   defer: destroyImGui(win)
 
   var
@@ -69,12 +69,14 @@ proc main() =
 
       igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
       igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
+      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
+      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
       igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Demo window", addr showDemoWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
-      igColorEdit3("Bcakground color", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
+      igColorEdit3("Background color", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
 
       if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
         inc counter
@@ -110,7 +112,7 @@ proc main() =
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
       igImage(cast[ImTextureID](textureId), size, uv0, uv1, tint_col, border_col);
       igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
-      #
+      # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd)
 

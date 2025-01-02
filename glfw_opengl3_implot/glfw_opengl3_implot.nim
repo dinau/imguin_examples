@@ -25,10 +25,12 @@ proc imPlotWindow(fshow:var bool) =
     bar_data= collect(for i in 0..10: rand(100).Ims32)
     x_data  = collect(for i in 0..10: i.Ims32)
     y_data  = collect(for i in 0..10: (i * i).Ims32)
+
   block:
     igBegin("Plot Window", addr fshow, 0)
     defer: igEnd()
-    if ImPlotBeginPlot("My Plot",ImVec2(x:0.0f,y:0.0f),0.ImplotFlags):
+    block:
+      ImPlotBeginPlot("My Plot",ImVec2(x:0.0f,y:0.0f),0.ImplotFlags)
       defer: ImPlotEndPlot()
       # See ./implotFuncs.nim
       ImPlotPlotBars("My Bar Plot",bar_data.ptz ,bar_data.len.cint)
@@ -101,10 +103,10 @@ proc main() =
     # show further samll window
     if showAnotherWindow:
       igBegin("imgui Another Window", addr showAnotherWindow, 0)
+      defer: igEnd()
       igText("Hello from imgui")
       if igButton("Close me", ImVec2(x: 0.0f, y: 0.0f)):
         showAnotherWindow = false
-      igEnd()
 
     # ImPlot test
     if showImPlotWindow:

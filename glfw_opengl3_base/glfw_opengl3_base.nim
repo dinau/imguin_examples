@@ -3,6 +3,7 @@
 
 import std/[paths,math]
 import ../utils/appImGui
+import ../utils/themes/themeMicrosoft
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -18,7 +19,9 @@ const MainWinHeight = 800
 proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui Window base")
   defer: destroyImGui(win)
-  setTheme(classic)  # Select light, dark, classic
+
+  #setTheme(classic)  # Select light, dark, classic
+  themeMicrosoft()
 
   var
     showDemoWindow = true

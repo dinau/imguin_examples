@@ -37,15 +37,15 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGuin verion: : **v1.91.6.8** (2024/12)
+Confirmed ImGui**n** verion: : **v1.91.6.9** (2025/01)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
-Wrapper libraies uused are here [ImGuin](https://github.com/dinau/imguin)
+Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
 
 - Notice  
 It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
-,updated project [nimgl-imgui](https://github.com/dinau/nimgl-imgui) (ImGui v1.89.9)
-,sub project [nim_implot](https://github.com/dinau/nim_implot) and test project [nimgl_test](https://github.com/dinau/nimgl_test).
+,updated project [nimgl-imgui](https://github.com/dinau/nimgl-imgui) (ImGui v1.89.9) ,sub project [nim_implot](https://github.com/dinau/nim_implot) and test project [nimgl_test](https://github.com/dinau/nimgl_test),  
+or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-imgui)(ImGui v1.91.1)
 
 ### Usage: Sample program and run
 
@@ -58,7 +58,7 @@ It may be better to use the **mainstream** project [nimgl/imgui](https://github.
 - [Nim-2.0.14](https://nim-lang.org) or later
 - Windows10 or later  
 [MSys2/MinGW](https://www.msys2.org/) command line tools (Unix tools), make, cp, rm, git, ...etc
-- Debian / Ubuntu families 
+- Linux: Debian / Ubuntu families 
 
   ```sh
   $ sudo apt install gcc g++ make git 
@@ -260,7 +260,7 @@ Image load and magnifying glass
    ```
 
 - Build sdl3 version  
-Only windows OS at this moment and WIP.
+Only windows OS at this moment.
 
    ```sh
    pwd
@@ -274,7 +274,7 @@ Only windows OS at this moment and WIP.
    nim c -d:SDL sdl3_opengl3.nim  
    ```
 
-###### [sdl2_rederer](sdl2_rederer)  / [sdl3_renderer](sdl3_renderer) 
+###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer) 
 
 ---
 

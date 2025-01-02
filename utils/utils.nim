@@ -1,5 +1,5 @@
 import imguin/[cimgui]
-import ./loadImage
+import loadImage
 
 #---------------
 #--- setTooltip

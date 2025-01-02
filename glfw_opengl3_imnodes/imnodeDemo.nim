@@ -2,7 +2,6 @@
 # imnodes/example/save_load.cpp
 # by audin 2023/10
 
-
 import std/streams
 import imguin/[glfw_opengl]
 
@@ -107,21 +106,21 @@ proc show*(this: var SaveLoadEditor) =
 # save
 #------
 proc save*(this: var SaveLoadEditor) =
-  #// Save the internal imnodes state
+  # Save the internal imnodes state
   imnodes_SaveCurrentEditorStateToIniFile("save_load.ini");
-  #// Dump our editor state as bytes into a file
+  # Dump our editor state as bytes into a file
   var f = open("save_load.bytes", fmWrite)
   var fout = newFileStream(f)
   defer: fout.close()
-  #// copy the node vector to file
+  # copy the node vector to file
   fout.write(this.nodes.len)
   for nd in this.nodes:
     fout.write(nd)
-  #// copy the link vector to file
+  # copy the link vector to file
   fout.write(this.links.len)
   for lk in this.links:
     fout.write(lk)
-  #// copy the current_id to file
+  # copy the current_id to file
   fout.write(this.current_id)
 
 #------

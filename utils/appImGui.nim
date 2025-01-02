@@ -6,7 +6,7 @@ export cimgui
 import imguin/[glfw_opengl]
 export opengl, glfw, glfw_opengl
 
-import ../utils/loadImage
+import ../utils/opengl/loadImage
 export loadImage
 import ../utils/saveImage
 export saveImage

@@ -32,7 +32,7 @@ win:
 
 clean:
 	@-rm -fr .nimcache
-	@-rm -f $(TARGET_EXE)
+	-rm -f $(TARGET_EXE)
 	@# Visual studio artifacts
 	@-rm -f $(TARGET).exp
 	@-rm -f $(TARGET).lib

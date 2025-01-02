@@ -23,7 +23,7 @@ var
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight)
+  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui image save demo")
   defer: destroyImGui(win)
 
   var
@@ -138,8 +138,8 @@ proc main() =
       # Load image
       let
         size = ImVec2(x: textureWidth.cfloat, y: textureHeight.cfloat)
-        uv0 = Imvec2(x: 0, y: 0)
-        uv1 = Imvec2(x: 1, y: 1)
+        uv0 = ImVec2(x: 0, y: 0)
+        uv1 = ImVec2(x: 1, y: 1)
         tint_col = ImVec4(x: 1, y: 1, z: 1, w: 1)
         border_col = ImVec4(x: 0, y: 0, z: 0, w: 0)
       var

@@ -18,7 +18,7 @@ const MainWinHeight = 800
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight)
+  var win = createImGui(MainWinWidth, MainWinHeight, title="Icon font viewer demo")
   defer: destroyImGui(win)
 
   var
@@ -52,7 +52,6 @@ proc main() =
       igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
       igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
       igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
-      igNewline()
 
     if showIconFontViewWindow:
       igBegin("Icon Font Viewer", addr showIconFontViewWindow, 0)

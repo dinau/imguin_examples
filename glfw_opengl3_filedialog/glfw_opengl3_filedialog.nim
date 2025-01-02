@@ -1,7 +1,6 @@
 # Compiling:
 # nim c -d:ImGuiFileDialogEnable glfw_opengl3_filedialog
 
-import std/[strutils]
 import ../utils/appImGui
 import ../utils/themes/themeGold
 
@@ -40,6 +39,7 @@ proc main() =
     sFileDirPath:string
     sFilter:string
     sDatas:string
+
   #------------------------------
   # Create FileDialog object
   #------------------------------
@@ -104,11 +104,12 @@ proc main() =
             cstr = cast[cstring](pDatas)
             copyToString(sDatas, cstr)
           # TODO
-          #let csel = IGFD_GetSelection(cfd, IGFD_ResultMode_KeepInputFile.IGFD_ResultMode) # multi selection
-          #defer: IGFD_Selection_DestroyContent(&csel)
-          # echo "Selection :\n"
-          # for i in 0..<csel.count:
-          #   echo "($#) FileName $# => path $#\n" % [$i, $csel.table[i].fileName, $csel.table[i].filePathName]
+          #var csel = IGFD_GetSelection(cfd, IGFD_ResultMode_KeepInputFile.IGFD_ResultMode) # multi selection
+          #defer: IGFD_Selection_DestroyContent(addr csel)
+          #echo "Selection :\n"
+          #for i in 0..<csel.count:
+            #let table = cast[UncheckedArray[IGFD_Selection_Pair]](csel.table)
+          #  # echo "($#) FileName $# => path $#\n" % [$i, $csel.table[i].fileName, $csel.table[i].filePathName]
         setTheme(theme)
       # end DisplayDialog
 

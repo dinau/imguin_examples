@@ -68,6 +68,8 @@ proc main() =
 
       igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
       igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
+      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
+      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
       igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
       igText(("Input result:" & sBuf).cstring)

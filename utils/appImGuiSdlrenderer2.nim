@@ -11,7 +11,7 @@ export cimgui
 import imguin/sdl2_renderer
 export sdl2_renderer
 
-import ../utils/loadImage
+import ../utils/sdlrenderer/sdl2/loadImage
 export loadImage
 import ../utils/saveImage
 export saveImage

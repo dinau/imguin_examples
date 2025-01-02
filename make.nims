@@ -14,23 +14,24 @@ var projDirs = @[
 "glfw_opengl3_jp",
 "sdl2_opengl3",
 "sdl2_renderer",
-"sdl3_renderer",
 "fontx2v",
 ]
 
 when defined(windows):
   projDirs.add "sdl3_opengl3"
+  projDirs.add "sdl3_renderer"
 
 #-------------
 # compileProj
 #-------------
 proc compileProj(cmd:string) =
   var options = ""
-  #options =  join([options,"--no-print-directory"]," ")
 
   for dir in projDirs:
     if dir.dirExists:
       withDir(dir):
+        if cmd == "clean":
+          options = join([options,"--no-print-directory"]," ")
         exec("make $# $#" % [options,cmd])
 
 #------

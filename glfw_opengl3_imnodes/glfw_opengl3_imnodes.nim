@@ -12,7 +12,7 @@ const MainWinHeight = 800
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, imnodes = true)
+  var win = createImGui(MainWinWidth, MainWinHeight, imnodes = true, title="ImNodes demo")
   defer: destroyImGui(win)
 
   # ImNode demo init

@@ -28,13 +28,12 @@ proc main() =
   #-------------
   # Load image
   #-------------
-  #var
-  #  textureId: GLuint
-  #  textureWidth = 0
-  #  textureHeight = 0
-  #var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
-  ##loadTextureFromFile(ImageName, textureId, textureWidth,textureHeight)
-  #defer: glDeleteTextures(1, addr textureID)
+  var
+    textureId: sdl.Renderer
+    textureWidth = 0
+    textureHeight = 0
+  var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
+  loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth,textureHeight)
 
   #var zoomTextureID: GLuint # Must be == 0 at first
   #defer: glDeleteTextures(1, addr zoomTextureID)
@@ -76,7 +75,7 @@ proc main() =
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Demo window", addr showDemoWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
-      igColorEdit3("Bcakground color", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
+      igColorEdit3("Background color", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
 
       if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
         inc counter
@@ -96,7 +95,7 @@ proc main() =
         " " & ICON_FA_BLOG)
 
     # Show image load window
-    when false:
+    block:
       igBegin("Image load test", nil, 0)
       defer: igEnd()
       # Load image
@@ -112,9 +111,9 @@ proc main() =
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
       igImage(cast[ImTextureID](textureId), size, uv0, uv1, tint_col, border_col);
       igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
-      #
-      if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
-        zoomGlass(zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd)
+      # Magnifiying glass
+      #if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
+      #  zoomGlass(zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd)
 
     #--------
     # render

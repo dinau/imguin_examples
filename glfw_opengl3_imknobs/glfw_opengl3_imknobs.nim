@@ -14,7 +14,7 @@ const MainWinHeight = 800
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight)
+  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui-knobs demo")
   defer: destroyImGui(win)
 
   var

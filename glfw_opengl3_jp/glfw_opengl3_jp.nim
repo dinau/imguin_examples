@@ -4,7 +4,7 @@
 # Modified: 2023/10
 # Written by audin 2023/02
 
-import std/[paths,math,strutils]
+import std/[math]
 import ../utils/appImGui
 
 when defined(windows):
@@ -66,6 +66,8 @@ proc firstWindow(win:Window) =
 
     igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
     igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
+    igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
+    igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
     igText("これは日本語表示テスト")
     igInputTextWithHint("テキスト入力", "ここに日本語を入力", sBuf)
