@@ -13,6 +13,8 @@ var projDirs = @[
 "glfw_opengl3_imnodes",
 "glfw_opengl3_jp",
 "sdl2_opengl3",
+"sdl2_renderer",
+"sdl3_renderer",
 "fontx2v",
 ]
 
