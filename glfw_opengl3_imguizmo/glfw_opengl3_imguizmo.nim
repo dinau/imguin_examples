@@ -65,8 +65,8 @@ proc main() =
                          ,nil)
       ImGuizmo_ViewManipulate_Float(addr MVmo[0]  # view
                            ,7                     # length
-                           ,ImVec2(x: 0,y: 0)     # position
-                           ,ImVec2(x: 128,y: 128) # size
+                           ,vec2(0,   0)     # position
+                           ,vec2(128, 128) # size
                            ,0x11_01_01_01)        # background color
     #
     render(win)

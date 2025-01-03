@@ -63,7 +63,7 @@ proc main() =
       block:
         igText("No.[%4d]", item_current);     igSameLine(0,-1.0)
         sBuf = $iconFontsTbl[item_current]
-        if igButton(ICON_FA_COPY & " Copy to", ImVec2(x: 0, y: 0)):
+        if igButton(ICON_FA_COPY & " Copy to", vec2(0, 0)):
           if sBuf =~ peg"@' '{'ICON'.+}":
             igSetClipboardText(matches[0].cstring)
         setTooltip("Clipboard") # Show tooltip help

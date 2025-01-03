@@ -1,28 +1,14 @@
 import std/[os, strutils, parsecfg, parseutils, strformat]
+
 import sdl3_nim
 export sdl3_nim
 
-import imguin/glad/gl
-export gl
+import imguin/[glad/gl, cimgui, sdl3_opengl, simple]
+export              gl, cimgui, sdl3_opengl, simple
 
-import imguin/cimgui
-export cimgui
-import imguin/sdl3_opengl
-export sdl3_opengl
+import ../utils/[loadImage, saveImage, setupFonts, utils, vecs]
+export           loadImage, saveImage, setupFonts, utils, vecs
 
-import ../utils/loadImage
-export loadImage
-import ../utils/saveImage
-export saveImage
-
-import ../utils/setupFonts
-export setupFonts
-
-import imguin/simple
-export simple
-
-import ../utils/utils
-export  utils
 
 type IniData = object
   clearColor*: ccolor

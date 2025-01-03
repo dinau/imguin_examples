@@ -61,7 +61,7 @@ proc main() =
 
       # Show file open dialog
       when defined(windows):
-        if igButton("Open file", ImVec2(x: 0, y: 0)):
+        if igButton("Open file", vec2(0, 0)):
            sFnameSelected = openFileDialog("File open dialog", (getCurrentDir() / "\0".Path).string, ["*.nim", "*.nims"], "Text file").Path
         igSameLine(0.0f, -1.0f)
         # Show hint
@@ -74,7 +74,7 @@ proc main() =
         let (_,fname,ext) = sFnameSelected.splitFile()
         igText("Selected file = %s", (fname.string & ext).cstring)
       # Counter up
-      if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Button", vec2(0.0f, 0.0f)):
         inc counter
       igSameLine(0.0f, -1.0f)
       igText("counter = %d", counter)
@@ -94,7 +94,7 @@ proc main() =
     if showAnotherWindow:
       igBegin("imgui Another Window", addr showAnotherWindow, 0)
       igText("Hello from imgui")
-      if igButton("Close me", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Close me", vec2(0.0f, 0.0f)):
         showAnotherWindow = false
       igEnd()
 

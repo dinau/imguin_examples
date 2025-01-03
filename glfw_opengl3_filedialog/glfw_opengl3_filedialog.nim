@@ -62,7 +62,7 @@ proc main() =
       defer: igEnd()
 
       # Show file open dialog
-      if igButton("Open file", ImVec2(x: 100, y: 50)):
+      if igButton("Open file", vec2(100, 50)):
         #---------------------------
         # Triggered FileOpenDialog
         #---------------------------
@@ -85,8 +85,8 @@ proc main() =
       # Start display FileDialog
       #------------------------------
       let ioptr = igGetIO()
-      let maxSize = ImVec2(x: ioptr.DisplaySize.x * 0.8, y: ioptr.DisplaySize.y * 0.8)
-      let minSize = ImVec2(x:  maxSize.x * 0.25, y : maxSize.y * 0.25)
+      let maxSize = vec2(ioptr.DisplaySize.x * 0.8, ioptr.DisplaySize.y * 0.8)
+      let minSize = vec2(maxSize.x * 0.25,  maxSize.y * 0.25)
 
       if IGFD_DisplayDialog(cfd, "filedlg".cstring, ImGuiWindowFlags_NoCollapse.ImGuiWindowFlags, minSize, maxSize):
         defer: IGFD_CloseDialog(cfd)
@@ -141,14 +141,14 @@ main()
 #--- setFileStyle
 #-----------------
 proc setFileStyle*(cfd: ptr ImGuiFileDialog) =
-  let clGreen  = ImVec4(x: 0,    y: 1,          z: 0,  w: 1)
-  let clYellow = ImVec4(x: 1,    y: 1,                 w: 1)
-  let clOrange = ImVec4(x: 1,    y: 165/255.0,         w: 1)
-  let clWhite2 = ImVec4(x: 0.98, y: 0.98,       z : 1, w: 1)
-  let clWhite  = ImVec4(x: 1,    y: 0,          z : 1, w: 1)
-  let clCyan   = ImVec4(x: 0,    y: 1,          z : 1, w: 1)
-  let clPurple = ImVec4(x: 255,  y: 51/255.0, z: 255, w:1)
-  #let  = ImVec4(x: 102/255.0, y: 0, z: 255, w:1)
+  let clGreen  = vec4(0f,    1f,          0f,   1f)
+  let clYellow = vec4(1f,    1f,          0f,   1f)
+  let clOrange = vec4(1f,    165.0/255.0, 0f,   1f)
+  let clWhite2 = vec4(0.98, 0.98,         1f,   1f)
+  let clWhite  = vec4(1f,    0f,          1f,   1f)
+  let clCyan   = vec4(0f,    1f,          1f,   1f)
+  let clPurple = vec4(255f,  51/255.0,   255f,  1f)
+  #let  = vec4(x: 102/255.0, y: 0, z: 255, w:1)
 
   let pFont = igGetDefaultFont()
   let byExt = IGFD_FileStyleByExtention.IGFD_FileStyleFlags

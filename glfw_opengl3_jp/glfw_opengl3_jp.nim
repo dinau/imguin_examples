@@ -76,7 +76,7 @@ proc firstWindow(win:Window) =
     igSliderFloat("浮動小数", somefloat.addr, 0.0f, 1.0f, "%3f", 0)
     igColorEdit3("背景色変更", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
     when defined(windows):
-      if igButton("ファイルを開く", ImVec2(x: 0, y: 0)):
+      if igButton("ファイルを開く", vec2(0, 0)):
         sFnameSelected = openFileDialog("Fileを開く", (getCurrentDir() / "\0".Path).string, ["*.nim", "*.nims"], "Text file")
       igSameLine(0.0f, -1.0f)
       # ヒント表示

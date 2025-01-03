@@ -30,7 +30,7 @@ proc imPlotWindow(fshow:var bool) =
     igBegin("Plot Window", addr fshow, 0)
     defer: igEnd()
     block:
-      ImPlotBeginPlot("My Plot",ImVec2(x:0.0f,y:0.0f),0.ImplotFlags)
+      ImPlotBeginPlot("My Plot",vec2(0.0f, 0.0f), 0.ImplotFlags)
       defer: ImPlotEndPlot()
       # See ./implotFuncs.nim
       ImPlotPlotBars("My Bar Plot",bar_data.ptz ,bar_data.len.cint)
@@ -84,7 +84,7 @@ proc main() =
       igSliderFloat("Float", addr fval, 0.0f, 1.0f, "%.3f", 0)
       igColorEdit3("Background color", win.ini.clearColor.array3, 0.ImGuiColorEditFlags)
 
-      if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Button", vec2(0.0f, 0.0f)):
         inc counter
       igSameLine(0.0f, -1.0f)
       igText("counter = %d", counter)
@@ -105,7 +105,7 @@ proc main() =
       igBegin("imgui Another Window", addr showAnotherWindow, 0)
       defer: igEnd()
       igText("Hello from imgui")
-      if igButton("Close me", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Close me", vec2(0.0f, 0.0f)):
         showAnotherWindow = false
 
     # ImPlot test

@@ -76,7 +76,7 @@ proc main() =
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
       igColorEdit3("Background color", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
 
-      if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Button", vec2(0.0f, 0.0f)):
         inc counter
       igSameLine(0.0f, -1.0f)
       igText("counter = %d", counter)
@@ -99,11 +99,11 @@ proc main() =
       defer: igEnd()
       # Load image
       let
-        size = ImVec2(x: textureWidth.cfloat, y: textureHeight.cfloat)
-        uv0 = Imvec2(x: 0, y: 0)
-        uv1 = Imvec2(x: 1, y: 1)
-        tint_col = ImVec4(x: 1, y: 1, z: 1, w: 1)
-        border_col = ImVec4(x: 0, y: 0, z: 0, w: 0)
+        size = vec2(textureWidth, textureHeight)
+        uv0 = vec2(0, 0)
+        uv1 = vec2(1, 1)
+        tint_col =   vec4(1, 1, 1, 1)
+        border_col = vec4(0, 0, 0, 0)
       var
         imageBoxPosTop:ImVec2
         imageBoxPosEnd:ImVec2

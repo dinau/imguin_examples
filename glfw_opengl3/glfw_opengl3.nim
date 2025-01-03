@@ -4,12 +4,8 @@
 import std/[os, strutils, math]
 import nimgl/[opengl,glfw]
 
-import imguin/[glfw_opengl]
-
-import ../utils/loadImage
-
-import ../utils/setupFonts
-import imguin/simple
+import imguin/[glfw_opengl, simple]
+import ../utils/[loadImage, setupFonts, vecs]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -168,7 +164,7 @@ proc winMain(hWin: glfw.GLFWWindow) =
 
       # Show file open dialog
       when defined(windows):
-        if igButton("Open file", ImVec2(x: 0, y: 0)):
+        if igButton("Open file", vec2(0, 0)):
            sFnameSelected = openFileDialog("File open dialog", getCurrentDir() / "\0", ["*.nim", "*.nims"], "Text file")
         igSameLine(0.0f, -1.0f)
         # Show hint
@@ -181,7 +177,7 @@ proc winMain(hWin: glfw.GLFWWindow) =
         let (_,fname,ext) = sFnameSelected.splitFile()
         igText("Selected file = %s", (fname & ext).cstring)
       # Counter up
-      if igButton("Button", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Button", vec2(0.0f, 0.0f)):
         inc counter
       igSameLine(0.0f, -1.0f)
       igText("counter = %d", counter)
@@ -201,7 +197,7 @@ proc winMain(hWin: glfw.GLFWWindow) =
     if showAnotherWindow:
       igBegin("imgui Another Window", addr showAnotherWindow, 0)
       igText("Hello from imgui")
-      if igButton("Close me", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Close me", vec2(0.0f, 0.0f)):
         showAnotherWindow = false
       igEnd()
 

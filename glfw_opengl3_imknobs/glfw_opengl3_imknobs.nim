@@ -83,9 +83,9 @@ proc main() =
       igSameLine(0, -1.0)
 
       # Custom colors
-      igPushStyleColor_Vec4(ImGuiCol_ButtonActive.ImGuiCol,  ImVec4(x: 255, y: 0, z: 0, w:0.7))
-      igPushStyleColor_Vec4(ImGuiCol_ButtonHovered.ImGuiCol, ImVec4(x: 255, y: 0, z: 0, w:1))
-      igPushStyleColor_Vec4(ImGuiCol_Button.ImGuiCol,        ImVec4(x:   0, y: 255, z: 0, w: 1))
+      igPushStyleColor_Vec4(ImGuiCol_ButtonActive.ImGuiCol,  vec4(255, 0,   0, 0.7))
+      igPushStyleColor_Vec4(ImGuiCol_ButtonHovered.ImGuiCol, vec4(255, 0,   0, 1))
+      igPushStyleColor_Vec4(ImGuiCol_Button.ImGuiCol,        vec4(0  , 255, 0,  1))
       #// Push/PopStyleColor() for each colors used (namely ImGuiCol_ButtonActive and ImGuiCol_ButtonHovered for primary and ImGuiCol_Framebg for Track)
       if IgKnobEx("Pitch", addr val3, 0.0, 1.0, 0.01, "%.1f" , IgKnobVariant_WiperOnly.IgKnobVariant
                          ,0 # size

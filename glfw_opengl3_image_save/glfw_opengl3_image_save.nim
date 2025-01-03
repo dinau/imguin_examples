@@ -79,15 +79,15 @@ proc main() =
 
       #-- Save button for capturing window image
       igPushIDInt(0)
-      igPushStyleColorVec4(ImGuiCol_Button.ImGuiCol,        ImVec4(x: 0.7, y: 0.7, z:0.0, w: 1.0))
-      igPushStyleColorVec4(ImGuiCol_ButtonHovered.ImGuiCol, ImVec4(x: 0.8, y: 0.8, z:0.0, w: 1.0))
-      igPushStyleColorVec4(ImGuiCol_ButtonActive.ImGuiCol,  ImVec4(x: 0.9, y: 0.9, z:0.0, w: 1.0))
-      igPushStyleColorVec4(ImGuiCol_Text.ImGuiCol,          ImVec4(x: 0.0, y: 0.0, z:0.0, w: 1.0))
+      igPushStyleColorVec4(ImGuiCol_Button.ImGuiCol,        vec4(0.7, 0.7, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_ButtonHovered.ImGuiCol, vec4(0.8, 0.8, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_ButtonActive.ImGuiCol,  vec4(0.9, 0.9, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_Text.ImGuiCol,          vec4(0.0, 0.0, 0.0, 1.0))
 
       # Image save button
       imageExt = imageFormatTbl[win.ini.imageSaveFormatIndex].ext
       svName = fmt"{SaveImageName}_{counter:05}{imageExt}"
-      if igButton("Save Image", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Save Image", vec2(0.0f, 0.0f)):
         let wkSize = igGetMainViewport().Worksize
         saveImage(svName,0, 0, wkSize.x.int, wkSize.y.int) # --- Save Image !
       igPopStyleColor(4)
@@ -104,7 +104,7 @@ proc main() =
       if igBeginCombo("##".cstring, imageFormatTbl[win.ini.imageSaveFormatIndex].kind.cstring, 0):
         for n,val in imageFormatTbl:
           var is_selected = (win.ini.imageSaveFormatIndex == n)
-          if igSelectableBoolPtr(val.kind.cstring, is_selected.addr, 0, ImVec2(x: 0.0,y: 0.0)):
+          if igSelectableBoolPtr(val.kind.cstring, is_selected.addr, 0, vec2(0.0, 0.0)):
             if is_selected:
               igSetItemDefaultFocus()
             win.ini.imageSaveFormatIndex = n
@@ -127,7 +127,7 @@ proc main() =
     if showAnotherWindow:
       igBegin("imgui Another Window", addr showAnotherWindow, 0)
       igText("Hello from imgui")
-      if igButton("Close me", ImVec2(x: 0.0f, y: 0.0f)):
+      if igButton("Close me", vec2(0.0f, 0.0f)):
         showAnotherWindow = false
       igEnd()
 
@@ -137,11 +137,11 @@ proc main() =
       defer: igEnd()
       # Load image
       let
-        size = ImVec2(x: textureWidth.cfloat, y: textureHeight.cfloat)
-        uv0 = ImVec2(x: 0, y: 0)
-        uv1 = ImVec2(x: 1, y: 1)
-        tint_col = ImVec4(x: 1, y: 1, z: 1, w: 1)
-        border_col = ImVec4(x: 0, y: 0, z: 0, w: 0)
+        size = vec2(textureWidth, textureHeight)
+        uv0 = vec2(0, 0)
+        uv1 = vec2(1, 1)
+        tint_col   = vec4(1, 1, 1, 1)
+        border_col = vec4(0, 0, 0, 0)
       var
         imageBoxPosTop:ImVec2
         imageBoxPosEnd:ImVec2
