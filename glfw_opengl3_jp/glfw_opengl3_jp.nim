@@ -4,7 +4,7 @@
 # Modified: 2023/10
 # Written by audin 2023/02
 
-import std/[math]
+import std/[paths,math]
 import ../utils/appImGui
 
 when defined(windows):
