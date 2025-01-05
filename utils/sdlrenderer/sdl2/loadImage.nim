@@ -5,9 +5,6 @@ import sdl2_nim/sdl
 
 import stb_image/read as stbi
 
-#--- Forawrd definition
-#proc SDL_CreateRGBSurfaceFrom(pixels: pointer , width:int, height:int , depth:int, pitch:int , Rmask: uint32, Gmask:uint32, Bmask:uint32, Amask:uint32): ptr SDL_Surface
-
 #---------------------
 # loadTextureFromFile
 #---------------------
@@ -35,12 +32,3 @@ proc loadTextureFromFile*(filename: string, renderer: sdl.Renderer, outTexture: 
     echo "Error!: SDL_CreateTextureFromSurface() in loadImage.nim"
     return false
   return true
-
-
-#----------------------
-# SDL_CreateRGBSurface      # For Compatibility with SDL2
-#----------------------
-#proc SDL_CreateRGBSurfaceFrom(pixels: pointer , width:int, height:int , depth:int, pitch:int , Rmask: uint32, Gmask:uint32, Bmask:uint32, Amask:uint32): ptr SDL_Surface =
-#  return SDL_CreateSurfaceFrom(width.cint, height.cint,
-#          SDL_GetPixelFormatForMasks(depth.cint, Rmask, Gmask, Bmask, Amask),
-#          pixels, pitch.cint)

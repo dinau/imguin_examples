@@ -5,8 +5,10 @@ export sdl3_nim
 import imguin/[glad/gl, sdl3_renderer, cimgui, simple]
 export              gl, sdl3_renderer, cimgui, simple
 
-import ../utils/[sdlrenderer/sdl3/loadImage, saveImage, setupFonts, utils, vecs]
-export                            loadImage, saveImage, setupFonts, utils, vecs
+import ../utils/sdlrenderer/[zoomglass, sdl3/loadImage]
+export                       zoomglass,      loadImage
+import ../utils/[saveImage, setupFonts, utils, vecs]
+export           saveImage, setupFonts, utils, vecs
 
 type IniData = object
   clearColor*: ccolor

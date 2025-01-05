@@ -43,10 +43,7 @@ proc main() =
     textureHeight = 0
   var ImageName = os.joinPath(os.getAppDir(),"himeji-400.jpg")
   loadTextureFromFile(ImageName, textureId, textureWidth,textureHeight)
-  defer: glDeleteTextures(1, addr textureID)
-
-  var zoomTextureID: GLuint # Must be == 0 at first
-  defer: glDeleteTextures(1, addr zoomTextureID)
+  defer: glDeleteTextures(1, addr textureId)
 
   #-----------
   # main loop
@@ -150,7 +147,7 @@ proc main() =
       igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
       #
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
-        zoomGlass(zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd)
+        zoomGlass(textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd)
 
     render(win)
     if not showFirstWindow and not showDemoWindow and not showAnotherWindow:

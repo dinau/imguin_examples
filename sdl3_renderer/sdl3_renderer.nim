@@ -35,9 +35,6 @@ proc main() =
   var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
   loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth,textureHeight)
 
-  #var zoomTextureID: GLuint # Must be == 0 at first
-  #defer: glDeleteTextures(1, addr zoomTextureID)
-
   let pio = igGetIO()
 
   #-----------
@@ -106,13 +103,11 @@ proc main() =
         border_col = vec4(0, 0, 0, 0)
       var
         imageBoxPosTop:ImVec2
-        imageBoxPosEnd:ImVec2
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
       igImage(cast[ImTextureID](textureId), size, uv0, uv1, tint_col, border_col);
-      igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
       # Magnifiying glass
-      #if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
-      #  zoomGlass(zoomTextureID, textureWidth, imageBoxPosTop, imageBoxPosEnd)
+      if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
+        zoomGlass(cast[ImTextureID](textureId), textureWidth, textureHeight, imageBoxPosTop)
 
     #--------
     # render

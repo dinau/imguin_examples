@@ -88,7 +88,7 @@ proc main() =
       # Show magnifying glass (Zoom in Toolchip)
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         if (pio.MousePos.x - listBoxPosTop.x ) < 50:
-          zoomGlass(listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd )
+          zoomGlass(listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, capture=true )
     #
     render(win)
     if not showFirstWindow and not showDemoWindow and not showIconFontViewWindow:

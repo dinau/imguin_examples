@@ -295,7 +295,7 @@ SDL renderer backend.
    ```
 
 - Build sdl3 version  
-Only windows OS at this moment and WIP.
+Only windows OS at this moment.
 
    ```sh
    pwd

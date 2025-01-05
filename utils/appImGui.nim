@@ -6,8 +6,10 @@ export        opengl, glfw
 import imguin/[cimgui,glfw_opengl, simple]
 export         cimgui,glfw_opengl, simple
 
-import ../utils/[opengl/loadImage, saveImage, setupFonts, utils, vecs]
-export                  loadImage, saveImage, setupFonts, utils, vecs
+import ../utils/opengl/[zoomglass, loadImage]
+export                  zoomglass, loadImage
+import ../utils/[saveImage, setupFonts, utils, vecs]
+export           saveImage, setupFonts, utils, vecs
 
 type IniData = object
   clearColor*: ccolor
