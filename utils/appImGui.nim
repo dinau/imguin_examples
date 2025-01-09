@@ -16,6 +16,7 @@ type IniData = object
   startupPosX*, startupPosY*:cint
   viewportWidth*, viewportHeight*:cint
   imageSaveFormatIndex*:int
+  theme:Theme
 
 type Window* = object
   handle*: glfw.GLFWwindow
@@ -29,6 +30,7 @@ type Window* = object
 #--- Forward definitions
 proc loadIni*(this: var Window)
 proc saveIni*(this: var Window)
+proc setTheme*(this: var Window, theme:Theme)
 
 #--------------
 # Configration
@@ -45,12 +47,6 @@ proc saveIni*(this: var Window)
 #  |    -      | -        |     true            ||    v    |     v       |   -     | Transparent Viewport and docking
 #  `-----------'----------'---------------------'`---------'-------------'---------'-------------
 
-type
-  Theme* = enum
-    light, dark, classic,
-
-# Forward definition
-proc setTheme*(themeName: Theme)
 
 #-------------
 # createImGui
@@ -124,7 +120,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
   result.handle = glfwWin
 
-  setTheme(classic)
+  setTheme(result.ini.theme)
 
   discard setupFonts() # Add multibytes font
 
@@ -182,18 +178,6 @@ proc newFrame*() =
 proc getFrontendVersionString*(): string = fmt"GLFW v{$glfwGetVersionString()}"
 proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"
 
-#----------
-# setTheme
-#----------
-proc setTheme*(themeName: Theme) =
-  case themeName
-  of light:
-    igStyleColorsLight(nil)
-  of dark:
-    igStyleColorsDark(nil)
-  of classic:
-    igStyleColorsClassic(nil)
-
 #---------------
 # setClearcolor
 #---------------
@@ -216,6 +200,7 @@ const colBGx = "colBGx"
 const colBGy = "colBGy"
 const colBGz = "colBGz"
 const colBGw = "colBGw"
+const theme  = "theme"
 # [Image]
 const scImage           = "Image"
 const imageSaveFormatIndex = "imageSaveFormatIndex"
@@ -256,6 +241,9 @@ proc loadIni*(this: var Window) =
     # Image format index
     this.ini.imageSaveFormatIndex = cfg.getSectionValue(scImage,imageSaveFormatIndex).parseInt.cint
 
+    # Theme
+    this.ini.theme = cast[Theme](cfg.getSectionValue(scWindow,theme).parseInt)
+
   #----------------
   # Set first defaults
   #----------------
@@ -264,6 +252,7 @@ proc loadIni*(this: var Window) =
     this.ini.startupPosY = 200
     this.ini.clearColor = ccolor(elm:(x:0.25f, y:0.65f, z:0.85f, w:1.0f))
     this.ini.imageSaveFormatIndex = 0
+    this.ini.theme = classic
 
 #---------
 # saveIni   --- save iniFile
@@ -290,5 +279,27 @@ proc saveIni*(this: var Window) =
   # Image format index
   ini.setSectionKey(scImage, imageSaveFormatIndex, $this.ini.imageSaveFormatIndex)
 
+  # Theme
+  ini.setSectionKey(scWindow, theme, $this.ini.theme.int)
+
   # save ini file
   writeFile(iniName,$ini)
+
+#----------
+# setTheme
+#----------
+proc setTheme*(this: var Window, theme:Theme) =
+  this.ini.theme = theme
+  utils.setTheme(theme)
+
+#----------
+# getTheme
+#----------
+proc getTheme*(this: Window): Theme =
+  return this.ini.theme
+
+#---------------
+# getThemeLabel
+#---------------
+proc getThemeLabel*(this: Window): string =
+  return $this.ini.theme

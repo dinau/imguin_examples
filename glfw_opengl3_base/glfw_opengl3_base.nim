@@ -2,8 +2,7 @@
 # nim c glfw_opengl3_base
 
 import std/[paths,math]
-import ../utils/appImGui
-import ../utils/themes/themeMicrosoft
+import ../utils/[appImGui, togglebutton]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -20,9 +19,6 @@ proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui Window base")
   defer: destroyImGui(win)
 
-  #setTheme(classic)  # Select light, dark, classic
-  themeMicrosoft()
-
   var
     showDemoWindow = true
     showAnotherWindow = false
@@ -31,6 +27,15 @@ proc main() =
     counter = 0
     sBuf = newString(200)
     sFnameSelected{.global.}:Path
+    sw:bool
+    strSw:string
+
+  if win.getTheme() == classic:
+    sw = false
+    strSw = "OFF"
+  else:
+    sw = true
+    strSw = "ON"
 
   #-----------
   # main loop
@@ -46,6 +51,13 @@ proc main() =
     if showFirstWindow:
       igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
       defer: igEnd()
+      if igToggleButton(strSw, sw):
+        if sw:
+          strSw = "ON"
+          win.setTheme(microsoft)
+        else:
+          strSw ="OFF"
+          win.setTheme(classic)
       #
       igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
       igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)

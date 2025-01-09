@@ -148,7 +148,6 @@ proc setFileStyle*(cfd: ptr ImGuiFileDialog) =
   let clWhite  = vec4(1f,    0f,          1f,   1f)
   let clCyan   = vec4(0f,    1f,          1f,   1f)
   let clPurple = vec4(255f,  51/255.0,   255f,  1f)
-  #let  = vec4(x: 102/255.0, y: 0, z: 255, w:1)
 
   let pFont = igGetDefaultFont()
   let byExt = IGFD_FileStyleByExtention.IGFD_FileStyleFlags

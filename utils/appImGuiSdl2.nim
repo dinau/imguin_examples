@@ -56,13 +56,6 @@ block:
   if fViewport:
     fDocking = true
 
-type
-  Theme* = enum
-    light, dark, classic,
-
-# Forward definition
-proc setTheme*(themeName: Theme)
-
 #-------------
 # createImGui
 #-------------
@@ -193,18 +186,6 @@ proc getFrontendVersionString*(): string =
   "SDL2 v$#.$#.$#" % [$ver.major.int,$ver.minor.int,$ver.patch.int]
 
 proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"
-
-#----------
-# setTheme
-#----------
-proc setTheme*(themeName: Theme) =
-  case themeName
-  of light:
-    igStyleColorsLight(nil)
-  of dark:
-    igStyleColorsDark(nil)
-  of classic:
-    igStyleColorsClassic(nil)
 
 #---------------
 # setClearcolor

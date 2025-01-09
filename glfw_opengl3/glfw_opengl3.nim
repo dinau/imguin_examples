@@ -5,7 +5,7 @@ import std/[os, strutils, math]
 import nimgl/[opengl,glfw]
 
 import imguin/[glfw_opengl, simple]
-import ../utils/[loadImage, setupFonts, vecs]
+import ../utils/[utils, loadImage, setupFonts, vecs, togglebutton]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -114,13 +114,15 @@ proc winMain(hWin: glfw.GLFWWindow) =
     sFnameSelected{.global.}:string
     clearColor:ccolor
     showWindowDelay = 1 # TODO
+    sw:bool
+    strSw = "OFF"
 
   if TransparentViewport:
     clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
   else:
     clearColor = ccolor(elm:(x:0.25f, y:0.65f, z:0.85f, w:1.0f))
 
-  igStyleColorsClassic(nil)
+  setTheme(dark)
 
   # Add multibytes font
   discard setupFonts()
@@ -143,6 +145,13 @@ proc winMain(hWin: glfw.GLFWWindow) =
     if showFirstWindow:
       igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
       defer: igEnd()
+      if igToggleButton(strSw, sw):
+        if sw:
+          strSw = "ON"
+          setTheme(light)
+        else:
+          strSw ="OFF"
+          setTheme(dark)
       var s = "GLFW v" & $glfwGetVersionString()
       s = ICON_FA_COMMENT & " " & s
       igText(s.cstring)

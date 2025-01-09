@@ -1,3 +1,4 @@
+setenv.common.bat
 *.org
 *.zip
 ImageSaved_*.*

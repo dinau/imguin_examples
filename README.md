@@ -6,13 +6,14 @@
     - [Prerequisites](#prerequisites)
     - [Build examples](#build-examples)
     - [Available libraries](#available-libraries)
-        - [Frontends and Backends](#frontends-and-backends)
     - [Screen shot (examples)](#screen-shot-examples)
         - [glfw_opengl3](#glfw_opengl3)
         - [glfw_opengl3_imknobs](#glfw_opengl3_imknobs)
         - [glfw_opengl3_filedialog](#glfw_opengl3_filedialog)
+        - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
         - [glfw_opengl3_image_load / sdl2_opengl3  / sdl3_opengl3](#glfw_opengl3_image_load--sdl2_opengl3---sdl3_opengl3)
+        - [sdl2_renderer  / sdl3_renderer](#sdl2_renderer---sdl3_renderer)
         - [glfw_opengl3_image_save](#glfw_opengl3_image_save)
         - [glfw_opengl3_jp](#glfw_opengl3_jp)
         - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -37,7 +38,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.6.10** (2025/01)
+Confirmed ImGui**n** verion: : **v1.91.6.11** (2025/01)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -62,11 +63,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
   ```sh
   $ sudo apt install gcc g++ make git 
-  ```
-
-  ```sh
-  $ sudo apt install xorg-dev libopengl-dev libgl1-mesa-dev
-  $ sudo apt install libglfw3 libglfw3-dev libsdl2-dev
+  $ sudo apt install xorg-dev lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
   ```
 
 #### Build examples
@@ -112,16 +109,18 @@ edit `./linkControl.nim` in respective example folder.
 
 ---
 
-|     | Library name                                                                                                                  |              |
-|-----|-------------------------------------------------------------------------------------------------------------------------------|--------------|
-| v   | [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui)                                        | Base library |
-| v   | [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)                                    |              |
-| v   | [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)                               |              |
-| v   | [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)                    |              |
-| v   | [ImGui-Knobs]([https://github.com/altschuler/imgui-knobs)/ [CImGui-Knobs](src/imguin/private/cimgui-knobs)                    |              |
-| v   | [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog) |              |
-| ... | ...                                                                                                                           | ...          |
-| x   | [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE)           | 2025 ?       |
+| Library name / C lang wrapper                                                                                                                            |              |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui)                                                               | Base library |
+| [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)                                                           |              |
+| [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)                                                      |              |
+| [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)                                           |              |
+| [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) |              |
+| [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)                        |              |
+| [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle)                                     |              |
+| [ ] [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE)                                  |             |
+| [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d)                                                   |             |
+| [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown)                                                                                     |             |
 
 
 #### Screen shot (examples)
@@ -201,6 +200,26 @@ Basic example with icon fonts
    nim c -d:ImGuiFileDialogEnable  glfw_opengl3_filedialog.nim  
    ```
 
+###### [glfw_opengl3_imgui_toggle](glfw_opengl3_imgui_toggle)  
+
+---
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/imgui_toggle_simple.png)  
+
+- Build
+
+   ```sh
+   pwd
+   glfw_opengl3_imgui_toggle
+   make 
+   ```
+
+   or 
+
+   ```sh
+   nim c -d:ImGuiToggle  glfw_opengl3_imgui_toggle.nim  
+   ```
+
 ###### [glfw_opengl3_iconfont_viewer](glfw_opengl3_iconfont_viewer)  
 
 ---
@@ -222,6 +241,7 @@ Icon font viewer and magnifying glass
    ```sh
    nim c iconFontViewer.nim  
    ```
+
 
 ###### [glfw_opengl3_image_load](glfw_opengl3_image_load) / [sdl2_opengl3](sdl2_opengl3)  / [sdl3_opengl3](sdl3_opengl3) 
 
