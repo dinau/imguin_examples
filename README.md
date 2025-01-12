@@ -400,8 +400,8 @@ Showing ImGui demo with ImPlot demo.
 
 Showing ImGui demo with ImPlot3D demo. WIP 
 
-![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/implot3d1.png)
-![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/implot3d2.png)
+![alt](img/implot3d1.png)
+![alt](img/implot3d2.png)
 
 - Build
 
