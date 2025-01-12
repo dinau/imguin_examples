@@ -23,7 +23,9 @@ type Window* = object
   context*: ptr ImGuiContext
   imnodes*:bool
   implot*:bool
+  implot3d*:bool
   implotContext: ptr ImPlotContext
+  implot3dContext: ptr ImPlot3dContext
   showWindowDelay:int
   ini*:IniData
 
@@ -51,11 +53,16 @@ proc setTheme*(this: var Window, theme:Theme)
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window", docking:bool=false): Window =
+proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot3d=false, title:string="ImGui window", docking:bool=false): Window =
   doAssert glfwInit()
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
   result.loadIni()
+  result.implot = implot
+  result.implot3d = implot3d
+  result.imnodes = imnodes
+  if result.implot3d:
+    result.implot = true
 
   var
     fDocking = docking
@@ -95,14 +102,17 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   # Setup ImGui
   result.context = igCreateContext(nil)
-  if imnodes: # setup ImNodes
-    result.imnodes = imnodes
+  if result.imnodes: # setup ImNodes
     when defined(ImNodesEnable):
       imnodes_CreateContext()
-  if implot: # setup ImPlot
-    result.implot = implot
-    when defined(ImPlotEnable):
+
+  if result.implot: # setup ImPlot
+    when defined(ImPlotEnable) or defined(ImPlot) or defined(ImPlot3DEnable) or defined(ImPlot3D) :
       result.imPlotContext = ImPlot_CreateContext()
+
+  if result.implot3d: # setup ImPlot3D
+    when defined(ImPlot3DEnable) or defined(ImPlot3D):
+      result.imPlot3dContext = ImPlot3d_CreateContext()
 
   if fDocking:
     var pio = igGetIO()
@@ -157,9 +167,12 @@ proc destroyImGui*(window: var Window) =
   window.saveIni()
   ImGui_ImplOpenGL3_Shutdown()
   ImGui_ImplGlfw_Shutdown()
-  when defined(ImPlotEnable):
+  when defined(ImPlotEnable) or defined(ImPlot):
     if window.implot:
       window.imPlotContext.ImPlotDestroyContext()
+  when defined(ImPlot3DEnable) or defined(ImPlot3D):
+    if window.implot3d:
+      window.imPlot3dContext.ImPlot3dDestroyContext()
   when defined(ImNodesEnable):
     if window.imnodes:
       imnodes_DestroyContext(nil)

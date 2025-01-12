@@ -8,7 +8,7 @@ switch "hint","XDeclaredButNotUsed:off"
 #switch "passC","-std=c++17"
 
 when defined(windows):
-  switch "define", "release"
+  #switch "define", "release"
   #switch "define", "danger"
   #switch "opt", "size"
   discard

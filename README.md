@@ -17,6 +17,7 @@
         - [glfw_opengl3_image_save](#glfw_opengl3_image_save)
         - [glfw_opengl3_jp](#glfw_opengl3_jp)
         - [glfw_opengl3_implot](#glfw_opengl3_implot)
+        - [glfw_opengl3_implot3d](#glfw_opengl3_implot3d)
         - [glfw_opengl3_imnodes](#glfw_opengl3_imnodes)
         - [glfw_opengl3_imguizmo](#glfw_opengl3_imguizmo)
         - [My test app movie using imguin](#my-test-app-movie-using-imguin)
@@ -38,7 +39,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.6.11** (2025/01)
+Confirmed ImGui**n** verion: : **v1.91.6.12** (2025/01)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -109,19 +110,17 @@ edit `./linkControl.nim` in respective example folder.
 
 ---
 
-| Library name / C lang wrapper                                                                                                                            |              |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui)                                                               | Base library |
-| [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)                                                           |              |
-| [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)                                                      |              |
-| [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)                                           |              |
-| [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs) |              |
-| [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)                        |              |
-| [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle)                                     |              |
-| [ ] [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE)                                  |             |
-| [ ] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d)                                                   |             |
-| [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown)                                                                                     |             |
-
+Library name / C lang wrapper
+- [x] [ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui)
+- [x] [ImPlot](https://github.com/epezent/implot) / [CImPlot](https://github.com/cimgui/cimplot)
+- [x] [ImNodes](https://github.com/Nelarius/imnodes) / [CImNodes](https://github.com/cimgui/cimnodes)
+- [x] [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) / [CImGuizmo](https://github.com/cimgui/cimguizmo)
+- [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs)
+- [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
+- [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle)
+- [ ] [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE)
+- [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) WIP
+- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown)
 
 #### Screen shot (examples)
 
@@ -393,6 +392,29 @@ Showing ImGui demo with ImPlot demo.
 
    ```sh
    nim c -d:ImPlotEnable glfw_opengl3_implot.nim
+   ```
+
+###### [glfw_opengl3_implot3d](glfw_opengl3_implot3d)
+
+---
+
+Showing ImGui demo with ImPlot3D demo. WIP 
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/implot3d1.png)
+![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/implot3d2.png)
+
+- Build
+
+   ```sh
+   pwd
+   glfw_opengl3_implot3d
+   make        # or make run
+   ```
+   
+   or 
+
+   ```sh
+   nim c -d:ImPlotEnable -d:ImPlot3DEnable glfw_opengl3_implot3d.nim
    ```
 
 ###### [glfw_opengl3_imnodes](glfw_opengl3_imnodes)
