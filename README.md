@@ -462,7 +462,7 @@ Showing ImGui demo with ImPlot3D demo. WIP
 
 WIP at this moment.
 
-![alt](https://github.com/dinau/imguin/raw/main/src/img/imgui_markdown.png)  
+![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/imgui_markdown.png)  
 - Build
 
    ```sh
