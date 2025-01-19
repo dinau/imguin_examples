@@ -40,7 +40,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.6.14** (2025/01)
+Confirmed ImGui**n** verion: : **v1.91.6.15** (2025/01)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -94,7 +94,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    ```
 
    After build, run `./glfw_opengl3_base(.exe)`  
-   Compiation options depend on `./config.nims` and `./Makefile`.
+   Compilation options depend on `./config.nims` and `./Makefile`.
 
 
 1. Selecting static link or dynamic link.  
@@ -456,13 +456,15 @@ Showing ImGui demo with ImPlot3D demo. WIP
    nim c -d:ImGuizmoEnable glfw_opengl3_imguizmo.nim
    ```
 
-###### [glfw_opengl3_imguii_markdown](glfw_opengl3_imgui_markdown)
+###### [glfw_opengl3_imgui_markdown](glfw_opengl3_imgui_markdown)
 
 ---
 
 WIP at this moment.
 
-![alt](https://github.com/dinau/imguin_examples/raw/main/src/img/imgui_markdown.png)  
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/imgui_markdown.png)  
+
+
 - Build
 
    ```sh
