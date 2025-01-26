@@ -109,10 +109,16 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot
   if result.implot: # setup ImPlot
     when defined(ImPlotEnable) or defined(ImPlot) or defined(ImPlot3DEnable) or defined(ImPlot3D) :
       result.imPlotContext = ImPlot_CreateContext()
+    else:
+      echo "Fatal Error!: setup ImPlot: Specify option  -d:ImPlot"
+      quit 1
 
   if result.implot3d: # setup ImPlot3D
     when defined(ImPlot3DEnable) or defined(ImPlot3D):
       result.imPlot3dContext = ImPlot3d_CreateContext()
+    else:
+      echo "Fatal Error!: setup ImPlot3D: Specify option  -d:ImPlot3DEnable"
+      quit 1
 
   if fDocking:
     var pio = igGetIO()
@@ -134,7 +140,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot
 
   discard setupFonts() # Add multibytes font
 
-  result.showWindowDelay = 1 # TODO
+  result.showWindowDelay = 2 # TODO
 
 #--------
 # render

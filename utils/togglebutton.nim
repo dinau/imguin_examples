@@ -24,8 +24,8 @@ proc igToggleButton*(str_id:string, v: var bool): bool =
   var pos: ImVec2
   igGetCursorScreenPos(addr pos)
   let draw_list = igGetWindowDrawList()
-  let height = igGetFrameHeight()
-  let width = height * 1.55
+  let height = igGetFrameHeight() * 0.9
+  let width = height * 1.65
   let radius = height * 0.50
 
   var ret = false

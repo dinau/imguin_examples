@@ -3,7 +3,7 @@
 import strutils,pegs
 
 const ImPlotHeader = "C:/00nim-d-imgui/nimgl-data/nim_implot/src/implot.nim"
-const FunNameTbl = [ "Line"
+const FuncNameTbl = [ "Line"
                     ,"Scatter"
                     ,"Stairs"
                     ,"Shaded"
@@ -42,7 +42,7 @@ proc main() =
   var strOut = Headers
 
   for line in readfile(ImPlotHeader).split("\n"):
-    for funcName in FunNameTbl:
+    for funcName in FuncNameTbl:
       if line.contains(funcName & "*("):
         strOut.add line.replace("proc ip","\nproc ImPlot_")
                        .replace("ImPlotBin.Sturges","ImPlotBin_Sturges")
@@ -51,7 +51,7 @@ proc main() =
         break
   strOut.add "\n\n###### Remains compatible proc names with nim_implot project ######\n"
   for line in readfile(ImPlotHeader).split("\n"):
-    for funcName in FunNameTbl:
+    for funcName in FuncNameTbl:
       if line.contains(funcName & "*("):
         strOut.add line.replace(peg"^'proc '","\nproc ")
                        .replace("ImPlotBin.Sturges","ImPlotBin_Sturges")

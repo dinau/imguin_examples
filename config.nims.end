@@ -55,6 +55,6 @@ case TC
 when LTO: # These options let link time slow while reducing code size.
   switch "define", "lto"
 
-echo ""
+#echo ""
 echo "#### [ ", TC, " ] Compiler ####"
-echo ""
+#echo ""

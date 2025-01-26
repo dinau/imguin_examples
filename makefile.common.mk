@@ -1,6 +1,6 @@
 TARGET = $(notdir $(CURDIR))
 
-#MAKEFLAGS += --no-print-directory
+MAKEFLAGS += --no-print-directory
 
 ifeq ($(OS),Windows_NT)
 	EXE = .exe
@@ -14,7 +14,7 @@ TARGET_EXE = $(TARGET)$(EXE)
 OPT += -d:strip
 OPT += -o:$(TARGET_EXE)
 #OPT += --listCmd
-#OPT += --verbosity:2
+#OPT += --verbosity:0
 
 all: build dll
 
@@ -48,7 +48,6 @@ info: dll
 dll:
 	@echo
 ifeq ($(OS),Windows_NT)
-	@#- ../../src/tools/vdd.exe $(TARGET_EXE)
 	@echo [Depending on dlls]
 	@-ldd $(TARGET_EXE)  | grep -ivE "windows/(system|winsxs)" | sort | uniq
 	@#-ldd $(TARGET_EXE) | rg   -ive "windows/(system|winsxs)" | sort | uniq

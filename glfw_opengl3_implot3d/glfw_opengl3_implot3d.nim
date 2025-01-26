@@ -3,7 +3,7 @@
 
 import std/[math, random, sugar, paths]
 import ../utils/appImGui
-import implotFuncs
+import implot3dFuncs
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -66,10 +66,10 @@ proc imPlot3dWindow() =
       # See ./implotFuncs.nim
       let IMPLOT3D_AUTO_COL = vec4(0, 0, 0, -1) # Deduce color automatically
       let IMPLOT3D_AUTO     = -1.0.cfloat       # Deduce variable automatically
-      ImPlot3dSetupAxes("x", "y", "z", 0.cint, 0.cint, 0.cint)
-      ImPlot3dPlotline_FloatPtr("f(x)", addr xs1[0],  addr ys1[0],  addr zs1[0], 1001, 0.cint, 0.cint, sizeof(xs1[0]).cint)
-      ImPlot3dSetNextMarkerStyle(ImPlot3DMarker_Circle.cint, IMPLOT3D_AUTO, IMPLOT3D_AUTO_COL, IMPLOT3D_AUTO, IMPLOT3D_AUTO_COL)
-      ImPlot3dPlotLine_DoublePtr("g(x)",addr xs2[0], addr ys2[0], addr zs2[0], 20, ImPlot3DLineFlags_Segments.cint, 0.cint, sizeof(xs2[0]).cint)
+      imPlot3dSetupAxes("x", "y", "z")
+      imPlot3dPlotline("f(x)", xs1.ptz,  ys1.ptz,  zs1.ptz, 1001)
+      imPlot3dSetNextMarkerStyle(Circle)
+      imPlot3dPlotLine("g(x)", xs2.ptz, ys2.ptz, zs2.ptz, 20, Segments)
 
 #------
 # main

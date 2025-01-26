@@ -40,7 +40,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.6.15** (2025/01)
+Confirmed ImGui**n** verion: : **v1.91.8.0** (2025/02)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -593,14 +593,14 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 ---
 
 Windows11 (main)
-- **Nim Compiler Version 2.2.0**
+- **Nim Compiler Version 2.2.2**
 - **GCC (Rev1, Built by MSYS2 project) 14.2.0**
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-gcc
    ```
 
-- Clang version 19.1.6
+- Clang version 19.1.7
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-clang

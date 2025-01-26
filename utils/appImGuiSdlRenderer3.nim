@@ -126,7 +126,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   discard setupFonts() # Add multibytes font
 
-  result.showWindowDelay = 1 # TODO
+  result.showWindowDelay = 2 # TODO
 
 #--------
 # render
