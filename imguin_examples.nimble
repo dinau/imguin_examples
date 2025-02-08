@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.91.8.0"
+version       = "1.91.8.1"
 author        = "dinau"
 description   = "The examples for ImGuin that wrapper for ImGui libraries with Nim language."
 license       = "MIT"

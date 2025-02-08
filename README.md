@@ -399,7 +399,7 @@ Showing ImGui demo with ImPlot demo.
 
 ---
 
-Showing ImGui demo with ImPlot3D demo. WIP 
+Showing ImPlot3D demo. WIP 
 
 ![alt](img/implot3d1.png)
 ![alt](img/implot3d2.png)
@@ -532,16 +532,17 @@ by changing variable `TC` in [config.nims.common](config.nims.common).
 
 ---
 
-1. ~~Whether can it use `cimgui.dll` ? (Now it can only be static link)~~ Closed. Only be static link.
-1. ~~Easier compilation for SDL2 app~~. (2024/09) Done.
-1. ~~Added: ImNodes/CImNodes~~ (2023/10) Done
-1. ~~Unfortunately ImGui 1.89.7 dosn't work well at this moment.(2023/07)~~ Done. (2023/08)
-1. ~~Whether can it do `nimble install imguin` ?~~ [Done (2023/09) (#Issue 13)](https://github.com/dinau/imguin/issues/13)
-1. ~~Add Font Awesome (Icon Font) demo.~~  Done (2023/04).
-1. ~~Can it compile with MSVC (--cc:vcc) ?~~ Done. Except SDL2 demo. (2023/03), TODO (2024/09)
-1. ~~Can it compile with Clang (--cc:clang) ?~~ Done. (2023/03)
-1. ~~Add SDL2 example.~~ Done. [sdl2_opengl3](sdl2_opengl3) (2023/03)
-- First step is done. (2023/03)
+- [x] Can it compile with `zig cc` ? Done. But Zig lang. is very unstable at this time. 
+- [x] Whether can it use `cimgui.dll` ? (Now it can only be static link) Closed. Only be static link.
+- [x] Easier compilation for SDL2 app. (2024/09) Done.
+- [x] Added: ImNodes/CImNodes (2023/10) Done
+- [x] Unfortunately Dear ImGui - 1.89.7 dosn't work well at this moment.(2023/07) Done. (2023/08)
+- [x] Whether can it do `nimble install imguin` ? [Done (2023/09) (#Issue 13)](https://github.com/dinau/imguin/issues/13)
+- [x] Add Font Awesome (Icon Font) demo.  Done (2023/04).
+- [x] Can it compile with MSVC (--cc:vcc) ? Done. Except SDL2 demo. (2023/03), TODO (2024/09)
+- [x] Can it compile with Clang (--cc:clang) ? Done. (2023/03)
+- [x] Add SDL2 example. Done. [sdl2_opengl3](sdl2_opengl3) (2023/03)
+- [x] First step has been done. (2023/03)
 
 ### Compressing binary file
 
@@ -683,11 +684,3 @@ error: assignment to 'char **' from incompatible pointer type 'const char * cons
 ```nim
 type ConstCstring {.importc: const char *.} = cstring
 ```
-
-
-
-
-
-#### On Windows
-
----
