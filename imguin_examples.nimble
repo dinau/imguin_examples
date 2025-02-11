@@ -11,8 +11,8 @@ skipDirs      = @[""]
 # Dependencies
 
 requires "nim >= 2.0.14"
-requires "https://github.com/dinau/imguin == 1.91.8.0"
-requires "https://github.com/dinau/sdl3_nim == 3.1.10.0"
+requires "https://github.com/dinau/imguin == 1.91.8.1"
+requires "https://github.com/dinau/sdl3_nim == 3.2.4.0"
 requires "nimgl == 1.3.2"
 requires "sdl2_nim == 2.0.14.3"
 requires "stb_image == 2.5"

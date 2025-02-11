@@ -11,6 +11,7 @@
         - [glfw_opengl3_imknobs](#glfw_opengl3_imknobs)
         - [glfw_opengl3_filedialog](#glfw_opengl3_filedialog)
         - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
+        - [glfw_opengl3_imspinner](#glfw_opengl3_imspinner)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
         - [glfw_opengl3_image_load / sdl2_opengl3  / sdl3_opengl3](#glfw_opengl3_image_load--sdl2_opengl3---sdl3_opengl3)
         - [sdl2_renderer  / sdl3_renderer](#sdl2_renderer---sdl3_renderer)
@@ -20,7 +21,7 @@
         - [glfw_opengl3_implot3d](#glfw_opengl3_implot3d)
         - [glfw_opengl3_imnodes](#glfw_opengl3_imnodes)
         - [glfw_opengl3_imguizmo](#glfw_opengl3_imguizmo)
-        - [glfw_opengl3_imguii_markdown](#glfw_opengl3_imguii_markdown)
+        - [glfw_opengl3_imgui_markdown](#glfw_opengl3_imgui_markdown)
         - [My test app movie using imguin](#my-test-app-movie-using-imguin)
   - [Cross compilation: Generating Windows application binary(\*.exe) on Linux OS](#cross-compilation-generating-windows-application-binary%5Cexe-on-linux-os)
   - [Selection backend compiler](#selection-backend-compiler)
@@ -32,7 +33,6 @@
         - [SDL Game tutorial Platfromer](#sdl-game-tutorial-platfromer)
         - [Other link2](#other-link2)
         - [Memo](#memo)
-    - [On Windows](#on-windows)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -40,7 +40,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.8.0** (2025/02)
+Confirmed ImGui**n** verion: : **v1.91.8.1** (2025/02)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -119,9 +119,9 @@ Library name / C lang wrapper
 - [x] [ImGui-Knobs](https://github.com/altschuler/imgui-knobs) / [CImGui-Knobs](https://github.com/dinau/imguin/tree/main/src/imguin/private/cimgui-knobs)
 - [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle)
-- [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) WIP
-- [x] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) WIP
-- [ ] [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE)
+- [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
+- [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/CImSpinner) 
+- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) WIP
 
 #### Screen shot (examples)
 
@@ -218,6 +218,26 @@ Basic example with icon fonts
 
    ```sh
    nim c -d:ImGuiToggle  glfw_opengl3_imgui_toggle.nim  
+   ```
+
+###### [glfw_opengl3_imspinner](glfw_opengl3_imspinner)  
+
+---
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/imspinner.png)  
+
+- Build
+
+   ```sh
+   pwd
+   glfw_opengl3_imspinner
+   make 
+   ```
+
+   or 
+
+   ```sh
+   nim c -d:ImSpinner glfw_opengl3_imspinner.nim  
    ```
 
 ###### [glfw_opengl3_iconfont_viewer](glfw_opengl3_iconfont_viewer)  
@@ -642,14 +662,15 @@ Linux Mint 22
 
 ---
 
-| Language             |          | Project                                                                                                                                         |
+| Language [^order]    |          | Project                                                                                                                                         |
 | -------------------: | :---:    | :----------------------------------------------------------------:                                                                              |
-| **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
 | **Lua**              | Script   | [LuaJITImGui](https://github.com/dinau/luajitImGui)                                                                                             |
+| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui)                                                                                               |
+| **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
+| **Python**           | Script   | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
+| **Ruby**             | Script   | [igRuby_Examples](https://github.com/dinau/igruby_examples)                                                                                     |
 | **Zig**, C lang.     | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
 | **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                                     |
-| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui)                                                                                               |
-| **Python**           | Script   | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 
 ###### SDL Game tutorial Platfromer
 
@@ -657,13 +678,15 @@ Linux Mint 22
 
 ![ald](https://github.com/dinau/nelua-platformer/raw/main/img/platformer-nelua-sdl2.gif)
 
-| Language             |          | Project                                                                                                  |
-| -------------------: | :---:    | :----------------------------------------------------------------:                                       |
-| **Nim**              | Compiler | [Nim-Platformer](https://github.com/dinau/nim-platformer)/ [sdl3_nim](https://github.com/dinau/sdl3_nim) |
-| **LuaJIT**           | Script   | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)                                          |
-| **Nelua**            | Compiler | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)                                            |
-| **Zig**              | Compiler | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                |
+| Language    [^order] |          | SDL         | Project                                                                                                                                               |
+| -------------------: | :---:    | :---:       | :----------------------------------------------------------------:                                                                                    |
+| **LuaJIT**           | Script   | SDL2        | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)
+| **Nelua**            | Compiler | SDL2        | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)
+| **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
+| **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
+| **Zig**              | Compiler | SDL2        | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
 
+[^order]: Alphabectial order
 
 ###### Other link2
 
