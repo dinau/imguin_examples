@@ -36,6 +36,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+
 ## ImGuin examples project
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
@@ -224,6 +225,7 @@ Basic example with icon fonts
 
 ---
 
+![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/imspinner.png)  
 
 - Build
@@ -246,7 +248,7 @@ Basic example with icon fonts
 
 Icon font viewer and magnifying glass
 
-![alt](https://github.com/dinau/imguin/raw/main/src/img/iconFontViewer.png)
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/iconfont_viewer.png)
 
 - Build
 

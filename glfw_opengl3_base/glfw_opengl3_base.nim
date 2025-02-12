@@ -66,7 +66,7 @@ proc main() =
 
       igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
       igText(("Input result:" & sBuf).cstring)
-      igCheckbox("Demo window", addr showDemoWindow)
+      igCheckbox("Demo window", addr showDemoWindow); igSameLine()
       igCheckbox("Another window", addr showAnotherWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.0f, "%.3f", 0)
       igColorEdit3("Background color", win.ini.clearColor.array3, 0.ImGuiColorEditFlags)
@@ -75,7 +75,7 @@ proc main() =
       when defined(windows):
         if igButton("Open file", vec2(0, 0)):
            sFnameSelected = openFileDialog("File open dialog", (getCurrentDir() / "\0".Path).string, ["*.nim", "*.nims"], "Text file").Path
-        igSameLine(0.0f, -1.0f)
+        igSameLine()
         # Show hint
         if igIsItemHovered(Imgui_HoveredFlagsDelayShort.cint) and igBeginTooltip():
           igText("[Open file]")
@@ -88,7 +88,7 @@ proc main() =
       # Counter up
       if igButton("Button", vec2(0.0f, 0.0f)):
         inc counter
-      igSameLine(0.0f, -1.0f)
+      igSameLine()
       igText("counter = %d", counter)
       igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
       igSeparatorText(ICON_FA_WRENCH & " Icon font test ")

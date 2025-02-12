@@ -16,3 +16,15 @@ for line in readfile("../utils/fonticon/IconsFontAwesome6.nim").split('\n'):
 sOut.add "]"
 
 writefile("iconFontsTblDef.nim",sOut)
+
+
+sOut = ""
+sOut.add "\nimport ../utils/fonticon/IconsFontAwesome6\n\n"
+sOut.add "var iconFontsTbl2*{.global.} = ["
+for line in readfile("../utils/fonticon/IconsFontAwesome6.nim").split('\n'):
+  let name = line.strip.split('*')[0]
+  if name =~ peg"'ICON_FA_'":
+    sOut.add fmt"(cstring( {name}) , ""{name}"" )," & "\n"
+
+sOut.add "]"
+writefile("iconFontsTbl2Def.nim",sOut)

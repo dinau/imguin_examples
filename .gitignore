@@ -3,7 +3,8 @@ setenv.common.bat
 *.zip
 ImageSaved_*.*
 utils/sdl3/
-glfw_opengl3_b/
+utils/fonts/
+glfw_opengl3_tables/
 fontx2v/
 glfw_dx11/
 bugtest/

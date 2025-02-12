@@ -4,10 +4,12 @@ import ../utils/themes/[themeMicrosoft]
 #---------------
 #--- setTooltip
 #---------------
-proc setTooltip*(str:string, delay=Imgui_HoveredFlags_DelayNormal.ImguiHoveredFlags) =
+proc setTooltip*(str:string, delay=Imgui_HoveredFlags_DelayNormal.ImguiHoveredFlags, color=ImVec4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)) =
   if igIsItemHovered(delay):
     if igBeginTooltip():
+      igPushStyleColorVec4(ImGuiCol_Text.cint, color)
       igText(str)
+      igPopStyleColor(1)
       igEndTooltip()
 
 type

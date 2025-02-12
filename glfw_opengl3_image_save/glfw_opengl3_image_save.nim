@@ -76,10 +76,10 @@ proc main() =
 
       #-- Save button for capturing window image
       igPushIDInt(0)
-      igPushStyleColorVec4(ImGuiCol_Button.ImGuiCol,        vec4(0.7, 0.7, 0.0, 1.0))
-      igPushStyleColorVec4(ImGuiCol_ButtonHovered.ImGuiCol, vec4(0.8, 0.8, 0.0, 1.0))
-      igPushStyleColorVec4(ImGuiCol_ButtonActive.ImGuiCol,  vec4(0.9, 0.9, 0.0, 1.0))
-      igPushStyleColorVec4(ImGuiCol_Text.ImGuiCol,          vec4(0.0, 0.0, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_Button.cint,        vec4(0.7, 0.7, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_ButtonHovered.cint, vec4(0.8, 0.8, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_ButtonActive.cint,  vec4(0.9, 0.9, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_Text.cint,          vec4(0.0, 0.0, 0.0, 1.0))
 
       # Image save button
       imageExt = imageFormatTbl[win.ini.imageSaveFormatIndex].ext

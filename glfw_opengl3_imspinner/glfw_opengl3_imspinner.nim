@@ -14,8 +14,9 @@ when defined(windows):
 # Enable ImSipnner widgets respectively
 #---------------------------------------
 # See: https://github.com/dinau/imguin/blob/main/src/imguin/private/cimspinner/cimspinner.h
+#      https://github.com/dinau/imguin/blob/main/src/imguin/private/cimspinner/cimspinner.cpp
 {.passC:"-DSPINNER_RAINBOWMIX".}
-{.passC:"-DSPINNER_ROTATINGHEART".}
+{.passC:"-DSPINNER_DNADOTS".}
 {.passC:"-DSPINNER_ANG8".}
 {.passC:"-DSPINNER_CLOCK".}
 {.passC:"-DSPINNER_PULSAR".}
@@ -80,11 +81,11 @@ proc main() =
     # CImSpinner demo
     #----------------
     block:
-      igBegin("Nim: CImSpinner / ImSpinner demo 2025", nil, 0)
+      igBegin("Nim: CImSpinner / ImSpinner demo 2025/02", nil, 0)
       defer: igEnd()
       const red  = ImColor(Value: ImVec4(x: 1.0,   y : 0.0,   z : 0.0, w : 1.0))
       const gold = ImColor(Value: ImVec4(x: 255.0, y : 215.0, z : 0.0, w : 1.0))
-      SpinnerRotatingHeart("RHeart", 16, 2, red, 4)
+      SpinnerDnaDotsEx("DnaDots", 16, 2, red, 1.2, 8, 0.25, true)
       igSameLine()
       SpinnerRainbowMix("Rmix", 16, 2, gold, 4)
       igSameLine()
