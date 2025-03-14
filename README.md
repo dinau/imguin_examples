@@ -21,6 +21,7 @@
         - [glfw_opengl3_implot3d](#glfw_opengl3_implot3d)
         - [glfw_opengl3_imnodes](#glfw_opengl3_imnodes)
         - [glfw_opengl3_imguizmo](#glfw_opengl3_imguizmo)
+        - [glfw_opengl3_imColorTextEdit](#glfw_opengl3_imcolortextedit)
         - [glfw_opengl3_imgui_markdown](#glfw_opengl3_imgui_markdown)
         - [My test app movie using imguin](#my-test-app-movie-using-imguin)
   - [Cross compilation: Generating Windows application binary(\*.exe) on Linux OS](#cross-compilation-generating-windows-application-binary%5Cexe-on-linux-os)
@@ -477,6 +478,26 @@ Showing ImPlot3D demo. WIP
    ```sh
    nim c -d:ImGuizmoEnable glfw_opengl3_imguizmo.nim
    ```
+
+###### [glfw_opengl3_imColorTextEdit](glfw_opengl3_imColorTextEdit)
+
+---
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/imColorTextEdit.png)  
+
+
+- Build
+
+   ```sh
+   pwd
+   glfw_opengl3_imColorTextEdit
+   make        # or make run
+   ```
+   
+   or 
+
+   ```sh
+   nim c -d:ImColorTextEdit glfw_opengl3_imColorTextEdit.nim
 
 ###### [glfw_opengl3_imgui_markdown](glfw_opengl3_imgui_markdown)
 
