@@ -2,7 +2,7 @@
 # nim c -d:ImGuiFileDialogEnable glfw_opengl3_filedialog
 
 import ../utils/appImGui
-import ../utils/themes/themeGold
+import ../utils/[infowindow, themes/themeGold]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -27,11 +27,10 @@ template copyToString(sName:string, pName:cstring) =
 proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="FileDialog demo")
   defer: destroyImGui(win)
-  let theme = Theme.classic
+  let theme = Theme.Classic
   setTheme(theme)
 
   var
-    showDemoWindow = false
     sFnameSelected{.global.}:string
 
   var
@@ -39,6 +38,7 @@ proc main() =
     sFileDirPath:string
     sFilter:string
     sDatas:string
+    themeSave:Theme
 
   #------------------------------
   # Create FileDialog object
@@ -54,8 +54,7 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow:
-      igShowDemoWindow(addr showDemoWindow)
+    infoWindow(win)
 
     block:
       igBegin("FileOpenDialog demo", nil, 0)
@@ -78,6 +77,7 @@ proc main() =
                         "all (*){.*},c files(*.c *.h){.c,.h}".cstring, # dialog filter syntax : simple => .h,.c,.pp, etc and collections : text1{filter0,filter1,filter2}, text2{filter0,filter1,filter2}, etc..
                                                                        # dialog filter syntax : if one wants to select directory then set nil
                         config)                                        # the file dialog config
+        themeSave = getTheme(win)
         themeGold()
       setTooltip("[Open file]") # Show hint
 
@@ -110,7 +110,7 @@ proc main() =
           #for i in 0..<csel.count:
             #let table = cast[UncheckedArray[IGFD_Selection_Pair]](csel.table)
           #  # echo "($#) FileName $# => path $#\n" % [$i, $csel.table[i].fileName, $csel.table[i].filePathName]
-        setTheme(theme)
+        setTheme(themeSave)
       # end DisplayDialog
 
       igText("Selected file = %s", sFilePathName.cstring)
@@ -118,15 +118,6 @@ proc main() =
       igText("Filter        = %s", sFilter.cstring)
       igText("Datas         = %s", sDatas.cstring)
 
-    block:
-      igBegin("Nim: Dear ImGui test with Futhark", nil, 0)
-      defer: igEnd()
-      igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-      igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
-      igCheckbox("Demo window", addr showDemoWindow)
-      igText("Application average %.3f ms/frame (%.1f FPS)", (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
     #
     render(win)
 

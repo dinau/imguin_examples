@@ -223,7 +223,7 @@ proc imgui_toggle_example*() =
   # a toggle that will allow the user to view the demo for simple toggles or a custom toggle
   var show_custom_toggle{.global.} = false
   let sz = vec2(40.0f, 20.0f)
-  Toggle( if show_custom_toggle: "Showing Custom Toggle" else: "Showing Simple Toggles" , addr show_custom_toggle, sz)
+  Toggle( if show_custom_toggle: "Showing Custom Toggle".cstring else: "Showing Simple Toggles".cstring , addr show_custom_toggle, sz)
   igSeparator()
 
   if show_custom_toggle:

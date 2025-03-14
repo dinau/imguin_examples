@@ -31,11 +31,11 @@ template imnNodeTitleBar(body: untyped) =
   body
   imNodes_EndNodeTitleBar()
 template imnInputAttribute(id: typed, pinShape, body: untyped) =
-  imNodes_BeginInputAttribute(id.cint, pinShape.ImNodesPinShape)
+  imNodes_BeginInputAttribute(id.cint, pinShape.cint)
   body
   imNodes_EndInputAttribute()
 template imnOutputAttribute(id: typed, pinShape, body: untyped) =
-  imNodes_BeginOutputAttribute(id.cint, pinShape.ImNodesPinShape)
+  imNodes_BeginOutputAttribute(id.cint, pinShape.cint)
   body
   imNodes_EndOutputAttribute()
 template imnStaticAttribute(id: typed, body: untyped) =
@@ -58,7 +58,7 @@ proc show*(this: var SaveLoadEditor) =
 "Close the executable and rerun it -- your nodes should be exactly "
 "where you left them!""", nil)
   imnNodeEditor:
-    if igIsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows.Imguifocusedflags) and
+    if igIsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows.cint) and
         imnodes_IsEditorHovered() and igIsKeyReleasedNil(ImGuiKey_A):
       inc this.current_id
       let node_id = this.current_id
@@ -75,12 +75,12 @@ proc show*(this: var SaveLoadEditor) =
           igTextUnformatted("input", nil)
         imnStaticAttribute(node.id shl 16):
           igPushItemWidth(120.cfloat)
-          igDragFloat("value", node.value.addr, 0.01f, 0f, 0f, "%.3f", 0.ImGuiSliderFlags)
+          igDragFloat("value", node.value.addr, 0.01f, 0f, 0f, "%.3f", 0)
           igPopItemWidth()
         imnOutputAttribute(node.id shl 24, ImNodesPinShape_CircleFilled):
           var wOut, wVal: ImVec2
-          igCalcTextSize(wOut.addr, "output", nil, false, -1.0.cfloat)
-          igCalcTextSize(wVal.addr, "value", nil, false, -1.0.cfloat)
+          igCalcTextSize(wOut.addr, "output", nil, false, -1.0)
+          igCalcTextSize(wVal.addr, "value", nil, false, -1.0)
           igIndent(120f + wVal.x - wOut.x)
           igTextUnformatted("output", nil)
     for link in this.links:
@@ -159,7 +159,7 @@ proc load*(this: var SaveLoadEditor) =
 var obj: SaveLoadEditor
 proc NodeEditorInitialize*() =
   imNodes_GetIO().LinkDetachWithModifierClick.Modifier = getIOKeyCtrlPtr()
-  imNodes_PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick.ImNodesAttributeFlags)
+  imNodes_PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick.cint)
   obj.load()
 
 proc NodeEditorShow*() = obj.show()

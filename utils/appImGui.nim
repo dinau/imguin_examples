@@ -32,7 +32,7 @@ type Window* = object
 #--- Forward definitions
 proc loadIni*(this: var Window)
 proc saveIni*(this: var Window)
-proc setTheme*(this: var Window, theme:Theme)
+proc setTheme*(this: var Window, theme:Theme): string
 
 #--------------
 # Configration
@@ -74,17 +74,28 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot
     if fViewport:
       fDocking = true
 
-  if TransparentViewport:
-    glfwWindowHint(GLFWVisible, GLFW_FALSE)
+  var glfwWin: GLFWwindow
+  var glsl_version:string
+  const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+  for ver in versions:
+    let major = ver[0].int32
+    let minor = ver[1].int32
+    if TransparentViewport:
+      glfwWindowHint(GLFWVisible, GLFW_FALSE)
 
-  glfwWindowHint(GLFWContextVersionMajor, 3)
-  glfwWindowHint(GLFWContextVersionMinor, 3)
-  glfwWindowHint(GLFWOpenglForwardCompat, GLFW_TRUE)
-  glfwWindowHint(GLFWOpenglProfile, GLFW_OPENGL_CORE_PROFILE)
-  glfwWindowHint(GLFWResizable, GLFW_TRUE)
-  #
-  glfwWindowHint(GLFWVisible, GLFW_FALSE)
-  var glfwWin = glfwCreateWindow(result.ini.viewportWidth, result.ini.viewportHeight, title=title)
+    glfwWindowHint(GLFWContextVersionMajor, major)
+    glfwWindowHint(GLFWContextVersionMinor, minor)
+    glfwWindowHint(GLFWOpenglForwardCompat, GLFW_TRUE)
+    glfwWindowHint(GLFWOpenglProfile, GLFW_OPENGL_CORE_PROFILE)
+    glfwWindowHint(GLFWResizable, GLFW_TRUE)
+    #
+    glfwWindowHint(GLFWVisible, GLFW_FALSE)
+    glfwWin = glfwCreateWindow(result.ini.viewportWidth, result.ini.viewportHeight, title=title)
+    glsl_version = fmt"#version {major * 100 + minor * 10}"
+    if not glfwWin.isNil:
+      echo "GLSL: ",glsl_version
+      break
+
   if glfwWin.isNil:
     quit(-1)
   glfwWin.makeContextCurrent()
@@ -128,9 +139,8 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot
       pio.ConfigViewports_NoAutomerge = true
 
   # GLFW + OpenGL
-  const glsl_version = "#version 330"  # OpenGL 3.3
   doAssert ImGui_ImplGlfw_InitForOpenGL(cast[ptr GLFWwindow](glfwwin), true)
-  doAssert ImGui_ImplOpenGL3_Init(glsl_version)
+  doAssert ImGui_ImplOpenGL3_Init(glsl_version.cstring)
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
@@ -271,7 +281,7 @@ proc loadIni*(this: var Window) =
     this.ini.startupPosY = 200
     this.ini.clearColor = ccolor(elm:(x:0.25f, y:0.65f, z:0.85f, w:1.0f))
     this.ini.imageSaveFormatIndex = 0
-    this.ini.theme = classic
+    this.ini.theme = Classic
 
 #---------
 # saveIni   --- save iniFile
@@ -307,9 +317,10 @@ proc saveIni*(this: var Window) =
 #----------
 # setTheme
 #----------
-proc setTheme*(this: var Window, theme:Theme) =
+proc setTheme*(this: var Window, theme:Theme): string =
   this.ini.theme = theme
   utils.setTheme(theme)
+  return $theme
 
 #----------
 # getTheme

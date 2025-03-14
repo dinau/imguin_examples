@@ -122,7 +122,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
   result.handle = window
 
-  setTheme(classic)
+  setTheme(Classic)
 
   discard setupFonts() # Add multibytes font
 

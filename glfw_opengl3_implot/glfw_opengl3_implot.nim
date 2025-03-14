@@ -2,7 +2,7 @@
 # nim c -d:ImPlotEnable glfw_opengl3_implot
 
 import std/[random, sugar, paths]
-import ../utils/appImGui
+import ../utils/[appImGui, infoWindow]
 import implotFuncs
 
 when defined(windows):
@@ -44,14 +44,7 @@ proc main() =
   defer: destroyImGui(win)
 
   var
-    showDemoWindow = true
-    showAnotherWindow = false
     showImPlotWindow = true
-    showFirstWindow = true
-    fval = 0.5f
-    counter = 0
-    sBuf = newString(200)
-    sFnameSelected{.global.}:Path
 
   # for ImPlot
   discard initRand()
@@ -62,59 +55,15 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow:
-      igShowDemoWindow(addr showDemoWindow)
-      ImplotShowDemoWindow(addr showDemoWindow)
-
-    # show a simple window that we created ourselves.
-    if showFirstWindow:
-      igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
-      defer: igEnd()
-      #
-      igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-      igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
-
-      igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
-      var s = "Input result:" & sBuf
-      igText(s.cstring)
-      igCheckbox("Demo window", addr showDemoWindow)
-      igCheckbox("Another window", addr showAnotherWindow)
-      igSliderFloat("Float", addr fval, 0.0f, 1.0f, "%.3f", 0)
-      igColorEdit3("Background color", win.ini.clearColor.array3, 0.ImGuiColorEditFlags)
-
-      if igButton("Button", vec2(0.0f, 0.0f)):
-        inc counter
-      igSameLine(0.0f, -1.0f)
-      igText("counter = %d", counter)
-      igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
-      igSeparatorText(ICON_FA_WRENCH & " Icon font test ")
-      igText(ICON_FA_TRASH_CAN & " Trash")
-      igText(ICON_FA_MAGNIFYING_GLASS_PLUS &
-        " " & ICON_FA_POWER_OFF &
-        " " & ICON_FA_MICROPHONE &
-        " " & ICON_FA_MICROCHIP &
-        " " & ICON_FA_VOLUME_HIGH &
-        " " & ICON_FA_SCISSORS &
-        " " & ICON_FA_SCREWDRIVER_WRENCH &
-        " " & ICON_FA_BLOG)
-
-    # show further samll window
-    if showAnotherWindow:
-      igBegin("imgui Another Window", addr showAnotherWindow, 0)
-      defer: igEnd()
-      igText("Hello from imgui")
-      if igButton("Close me", vec2(0.0f, 0.0f)):
-        showAnotherWindow = false
+    infoWindow(win)
 
     # ImPlot test
     if showImPlotWindow:
+      ImplotShowDemoWindow(addr showImPlotWindow)
       imPlotWindow(showImPlotWindow)
     #
     render(win)
-    if not showFirstWindow and not showDemoWindow and not showAnotherWindow and
-       not showImPlotWindow:
+    if not showImPlotWindow:
       win.handle.setWindowShouldClose(true) # End program
 
   #### end while

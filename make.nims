@@ -7,6 +7,7 @@ var projDirs = @[
 "glfw_opengl3_iconfont_viewer",
 "glfw_opengl3_image_load",
 "glfw_opengl3_image_save",
+"glfw_opengl3_imColorTextEdit",
 "glfw_opengl3_imgui_toggle",
 "glfw_opengl3_implot",
 "glfw_opengl3_implot3d",

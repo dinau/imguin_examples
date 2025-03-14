@@ -2,7 +2,7 @@
 # nim c glfw_opengl3_base
 
 import std/[paths,math]
-import ../utils/[appImGui, togglebutton]
+import ../utils/[appImGui, togglebutton, infoWindow]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -20,22 +20,12 @@ proc main() =
   defer: destroyImGui(win)
 
   var
-    showDemoWindow = true
     showAnotherWindow = false
     showFirstWindow = true
     fval = 0.5f
     counter = 0
     sBuf = newString(200)
     sFnameSelected{.global.}:Path
-    sw:bool
-    strSw:string
-
-  if win.getTheme() == classic:
-    sw = false
-    strSw = "OFF"
-  else:
-    sw = true
-    strSw = "ON"
 
   #-----------
   # main loop
@@ -44,32 +34,16 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow:
-      igShowDemoWindow(addr showDemoWindow)
+    infoWindow(win)
 
     # show a simple window that we created ourselves.
     if showFirstWindow:
       igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
       defer: igEnd()
-      if igToggleButton(strSw, sw):
-        if sw:
-          strSw = "ON"
-          win.setTheme(microsoft)
-        else:
-          strSw ="OFF"
-          win.setTheme(classic)
       #
-      igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-      igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
-
       igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
       igText(("Input result:" & sBuf).cstring)
-      igCheckbox("Demo window", addr showDemoWindow); igSameLine()
       igCheckbox("Another window", addr showAnotherWindow)
-      igSliderFloat("Float", addr fval, 0.0f, 1.0f, "%.3f", 0)
-      igColorEdit3("Background color", win.ini.clearColor.array3, 0.ImGuiColorEditFlags)
 
       # Show file open dialog
       when defined(windows):
@@ -90,7 +64,6 @@ proc main() =
         inc counter
       igSameLine()
       igText("counter = %d", counter)
-      igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
       igSeparatorText(ICON_FA_WRENCH & " Icon font test ")
       igText(ICON_FA_TRASH_CAN & " Trash")
       igText(ICON_FA_MAGNIFYING_GLASS_PLUS &
@@ -114,7 +87,7 @@ proc main() =
     # render
     #--------
     render(win)
-    if not showFirstWindow and not showDemoWindow and not showAnotherWindow:
+    if not showFirstWindow and not showAnotherWindow:
       win.handle.setWindowShouldClose(true) # Exit program
 
   #### end while

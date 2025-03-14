@@ -1,5 +1,5 @@
 import imguin/cimgui
-import ../utils/vecs
+import ../utils/[utils,vecs]
 
 #--------------------------------------------------------
 # This is very simple toggle button implement from
@@ -11,11 +11,6 @@ import ../utils/vecs
 # If you'd like to use customizable toggle button, refer to
 # examples/glfw_opengl3_imgui_toggle
 
-#----------
-# IM_COL32
-#----------
-proc IM_COL32*(a,b,c,d:uint32): ImU32  =
-  return igGetColorU32_Vec4(vec4(a.cfloat/255,b.cfloat/255,c.cfloat/255,d.cfloat/255))
 
 #----------------
 # igToggleButton

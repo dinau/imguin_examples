@@ -5,7 +5,10 @@ ImageSaved_*.*
 utils/sdl3/
 utils/fonts/
 glfw_opengl3_tables/
+glfw_opengl3_bench/
 fontx2v/
+mandel/
+*.new
 glfw_dx11/
 bugtest/
 im_libs/

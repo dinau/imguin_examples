@@ -1,7 +1,7 @@
 # Compiling:
 # nim c -d:ImKnobsEnable --warning:HoleEnumConv:off glfw_opengl3_imknobs
 
-import ../utils/appImGui
+import ../utils/[appImGui, infoWindow]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -18,9 +18,7 @@ proc main() =
   defer: destroyImGui(win)
 
   var
-    showDemoWindow = true
     showKnobsWindow = true
-    showFirstWindow = true
 
   let pio = igGetIO()
 
@@ -31,18 +29,7 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow:
-      igShowDemoWindow(addr showDemoWindow)
-
-    # show a simple window that we created ourselves.
-    if showFirstWindow:
-      igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
-      defer: igEnd()
-      #
-      igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-      igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
+    infoWindow(win)
 
     #-----------------------
     # Show ImGui-Knobs demo
@@ -83,9 +70,9 @@ proc main() =
       igSameLine(0, -1.0)
 
       # Custom colors
-      igPushStyleColor_Vec4(ImGuiCol_ButtonActive.ImGuiCol,  vec4(255, 0,   0, 0.7))
-      igPushStyleColor_Vec4(ImGuiCol_ButtonHovered.ImGuiCol, vec4(255, 0,   0, 1))
-      igPushStyleColor_Vec4(ImGuiCol_Button.ImGuiCol,        vec4(0  , 255, 0,  1))
+      igPushStyleColor_Vec4(ImGuiCol_ButtonActive.cint,  vec4(255, 0,   0, 0.7))
+      igPushStyleColor_Vec4(ImGuiCol_ButtonHovered.cint, vec4(255, 0,   0, 1))
+      igPushStyleColor_Vec4(ImGuiCol_Button.cint,        vec4(0  , 255, 0,  1))
       #// Push/PopStyleColor() for each colors used (namely ImGuiCol_ButtonActive and ImGuiCol_ButtonHovered for primary and ImGuiCol_Framebg for Track)
       if IgKnobEx("Pitch", addr val3, 0.0, 1.0, 0.01, "%.1f" , IgKnobVariant_WiperOnly.IgKnobVariant
                          ,0 # size
@@ -141,7 +128,7 @@ proc main() =
     render(win)
     win.setClearColor(ccolor(elm:(x: val1,y: val2, z: val3, w: val4)))
 
-    if not showFirstWindow and not showDemoWindow and not showKnobsWindow:
+    if not showKnobsWindow:
       win.handle.setWindowShouldClose(true) # End program
 
   #### end while

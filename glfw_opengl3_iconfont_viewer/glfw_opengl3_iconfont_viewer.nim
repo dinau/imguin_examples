@@ -2,7 +2,7 @@
 # nim c glfw_opengl3_iconfont_viewer
 import std/[pegs,strformat]
 
-import ../utils/appImGui
+import ../utils/[appImGui, infoWindow]
 import ./iconFontsTblDef
 import ./iconFontsTbl2Def
 
@@ -20,11 +20,9 @@ const MainWinHeight = 800
 proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="Icon font viewer demo")
   defer: destroyImGui(win)
-  setTheme(dark)
+  setTheme(Dark)
   var
-    showDemoWindow = true
     showIconFontViewWindow = true
-    showFirstWindow = true
     sBuf = newString(200)
 
   var listBoxTextureID: GLuint # Must be == 0 at first
@@ -40,19 +38,7 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow:
-      igShowDemoWindow(addr showDemoWindow)
-
-    # show a simple window that we created ourselves.
-    if showFirstWindow:
-      igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
-      defer: igEnd()
-      #
-      igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-      igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-      igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-      igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
-      igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)
+    infoWindow(win)
 
     if showIconFontViewWindow:
       igBegin("Icon Font Viewer", addr showIconFontViewWindow, 0)
@@ -129,7 +115,7 @@ proc main() =
 
     #
     render(win)
-    if not showFirstWindow and not showDemoWindow and not showIconFontViewWindow:
+    if not showIconFontViewWindow:
       win.handle.setWindowShouldClose(true) # End program
 
     #### end while

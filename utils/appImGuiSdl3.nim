@@ -65,23 +65,33 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
   result.loadIni()
-  const glsl_version = "#version 330"
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0)
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE.cint)
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3)
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3)
+  #
+  var window:ptr SDL_Window
+  var glsl_version:string
+  const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+  for ver in versions:
+    let major = ver[0].int32
+    let minor = ver[1].int32
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE.cint)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor)
 
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1)
-  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24)
-  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8)
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1)
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24)
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8)
 
-  const SDL_WINDOW_RESIZABLE = 0x0000000000000020'u64
-  const SDL_WINDOW_OPENGL    = 0x0000000000000002'u64
-  const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
-  var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_OPENGL or SDL_WINDOW_HIDDEN
-  var window = SDL_CreateWindow(title
-                               , result.ini.viewportWidth , result.ini.viewportHeight
-                               , flags.SDL_WindowFlags)
+    const SDL_WINDOW_RESIZABLE = 0x0000000000000020'u64
+    const SDL_WINDOW_OPENGL    = 0x0000000000000002'u64
+    const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
+    var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_OPENGL or SDL_WINDOW_HIDDEN
+    window = SDL_CreateWindow(title
+                                 , result.ini.viewportWidth , result.ini.viewportHeight
+                                 , flags.SDL_WindowFlags)
+    glsl_version = fmt"#version {major * 100 + minor * 10}"
+    if not window.isNil:
+      break
+
   if isNil window:
     echo "Error!: SDL_CreateWindow()"
     quit 1
@@ -139,14 +149,14 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   if not ImGui_ImplSdl3_InitForOpenGL(window, result.gl_context):
     echo "Error!: ImGui_ImplSdl3_InitForOpenGL()"
 
-  if not ImGui_ImplOpenGL3_Init(glsl_version):
+  if not ImGui_ImplOpenGL3_Init(glsl_version.cstring):
     echo "Error!: ImGui_ImplOpenGL3_Init()"
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
   result.handle = window
 
-  setTheme(classic)
+  setTheme(Classic)
 
   discard setupFonts() # Add multibytes font
 

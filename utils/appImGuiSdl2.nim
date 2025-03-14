@@ -66,24 +66,35 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
   result.loadIni()
-  discard sdl.glSetAttribute(GLattr.GL_CONTEXT_FLAGS, 0)
-  discard sdl.glSetAttribute(GLattr.GL_CONTEXT_PROFILE_MASK, GL_CONTEXT_PROFILE_CORE)
-  discard sdl.glSetAttribute(GLattr.GL_CONTEXT_MAJOR_VERSION, 3)
-  discard sdl.glSetAttribute(GLattr.GL_CONTEXT_MINOR_VERSION, 3)
+  #
+  var window:Window
+  var glsl_version:string
+  const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+  for ver in versions:
+    let major = ver[0].int32
+    let minor = ver[1].int32
+    discard sdl.glSetAttribute(GLattr.GL_CONTEXT_FLAGS, 0)
+    discard sdl.glSetAttribute(GLattr.GL_CONTEXT_PROFILE_MASK, GL_CONTEXT_PROFILE_CORE)
+    discard sdl.glSetAttribute(GLattr.GL_CONTEXT_MAJOR_VERSION, major)
+    discard sdl.glSetAttribute(GLattr.GL_CONTEXT_MINOR_VERSION, minor)
 
-  # Basic IME support. App needs to call 'SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");'
-  # before SDL_CreateWindow()!.
-  discard sdl.setHint("SDL_HINT_IME_SHOW_UI", "1") # SDL2: must be v2.0.18 or later
+    # Basic IME support. App needs to call 'SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");'
+    # before SDL_CreateWindow()!.
+    discard sdl.setHint("SDL_HINT_IME_SHOW_UI", "1") # SDL2: must be v2.0.18 or later
 
-  discard sdl.glSetAttribute(GLattr.GL_DOUBLEBUFFER, 1)
-  discard sdl.glSetAttribute(GLattr.GL_DEPTH_SIZE, 24)
-  discard sdl.glSetAttribute(GLattr.GL_STENCIL_SIZE, 8)
+    discard sdl.glSetAttribute(GLattr.GL_DOUBLEBUFFER, 1)
+    discard sdl.glSetAttribute(GLattr.GL_DEPTH_SIZE, 24)
+    discard sdl.glSetAttribute(GLattr.GL_STENCIL_SIZE, 8)
 
-  # Initialy main window is hidden.  See: showWindowDelay
-  var flags:cuint = WINDOW_HIDDEN or WINDOW_OPENGL or WINDOW_RESIZABLE or WINDOW_ALLOW_HIGHDPI
-  var window = sdl.createWindow( title
-                               , result.ini.startupPosX, result.ini.startupPosY
-                               , result.ini.viewportWidth, result.ini.viewportHeight, flags)
+    # Initialy main window is hidden.  See: showWindowDelay
+    var flags:cuint = WINDOW_HIDDEN or WINDOW_OPENGL or WINDOW_RESIZABLE or WINDOW_ALLOW_HIGHDPI
+    window = sdl.createWindow( title
+                                 , result.ini.startupPosX, result.ini.startupPosY
+                                 , result.ini.viewportWidth, result.ini.viewportHeight, flags)
+    glsl_version = fmt"#version {major * 100 + minor * 10}"
+    if not window.isNil:
+      break
+
   if isNil window:
     echo "Fail to create window: ", sdl.getError()
     quit -1
@@ -114,15 +125,14 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
       pio.ConfigViewports_NoAutomerge = true
 
   # GLFW + OpenGL
-  const glsl_version = "#version 330"  # OpenGL 3.3
   doAssert ImGui_ImplSdl2_InitForOpenGL(cast[ptr SDL_Window](window) , result.glContext)
-  doAssert ImGui_ImplOpenGL3_Init(glsl_version)
+  doAssert ImGui_ImplOpenGL3_Init(glsl_version.cstring)
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
   result.handle = window
 
-  setTheme(classic)
+  setTheme(Classic)
 
   discard setupFonts() # Add multibytes font
 

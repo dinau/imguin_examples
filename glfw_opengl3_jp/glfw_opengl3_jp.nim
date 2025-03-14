@@ -5,7 +5,7 @@
 # Written by audin 2023/02
 
 import std/[paths,math]
-import ../utils/appImGui
+import ../utils/[appImGui, infoWindow]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -18,9 +18,7 @@ const MainWinHeight = 800
 
 proc firstWindow(win:Window)
 
-var
-  showFirstWindow = true
-  showDemoWindow = true
+var showAnotherWindow = true
 
 #------
 # main
@@ -29,7 +27,6 @@ proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="JP window")
   defer: destroyImGui(win)
 
-  var showAnotherWindow = false
 
   #--------------
   # メインループ
@@ -38,14 +35,14 @@ proc main() =
     glfwPollEvents()
     newFrame()
 
-    if showDemoWindow: # ImGuiデモ画面の表示
-      igShowDemoWindow(showDemoWindow.addr)
-    if showFirstWindow:
-      firstWindow(win) # 画面左のWindowを描画
+    if showAnotherWindow:
+      infoWindow(win)
+    firstWindow(win)
     #
     render(win)
-    if not showFirstWindow and not showDemoWindow:
-      win.handle.setWindowShouldClose(true) # exit program
+
+   # if not showFirstWindow:
+   #   win.handle.setWindowShouldClose(true) # exit program
 
 #-------------
 # firstWindow    画面左のWindowを描画
@@ -61,18 +58,13 @@ proc firstWindow(win:Window) =
 
   let pio = igGetIO()
   block:
-    igBegin("Window".cstring, showFirstWindow.addr, 0)
+    igBegin("Window".cstring, nil, 0)
     defer: igEnd()
-
-    igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
-    igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
-    igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
-    igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
     igText("これは日本語表示テスト")
     igInputTextWithHint("テキスト入力", "ここに日本語を入力", sBuf)
     igText(("入力結果:" & sBuf).cstring)
-    igCheckbox("デモ・ウインドウ表示", showDemoWindow.addr)
+    igCheckbox("他Window表示", showAnotherWindow.addr)
     igSliderFloat("浮動小数", somefloat.addr, 0.0f, 1.0f, "%3f", 0)
     igColorEdit3("背景色変更", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
     when defined(windows):

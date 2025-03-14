@@ -122,7 +122,7 @@ proc winMain(hWin: glfw.GLFWWindow) =
   else:
     clearColor = ccolor(elm:(x:0.25f, y:0.65f, z:0.85f, w:1.0f))
 
-  setTheme(dark)
+  setTheme(Dark)
 
   # Add multibytes font
   discard setupFonts()
@@ -148,10 +148,10 @@ proc winMain(hWin: glfw.GLFWWindow) =
       if igToggleButton(strSw, sw):
         if sw:
           strSw = "ON"
-          setTheme(light)
+          setTheme(Light)
         else:
           strSw ="OFF"
-          setTheme(dark)
+          setTheme(Dark)
       var s = "GLFW v" & $glfwGetVersionString()
       s = ICON_FA_COMMENT & " " & s
       igText(s.cstring)
@@ -166,7 +166,7 @@ proc winMain(hWin: glfw.GLFWWindow) =
       igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
       s = "Input result:" & sBuf
       igText(s.cstring)
-      igCheckbox("Demo window", addr showDemoWindow)
+      igCheckbox("Demo window", addr showDemoWindow); igSameLine()
       igCheckbox("Another window", addr showAnotherWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.0f, "%.3f", 0)
       igColorEdit3("Background color", clearColor.array3, 0.ImGuiColorEditFlags)

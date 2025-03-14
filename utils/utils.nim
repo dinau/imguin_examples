@@ -1,10 +1,11 @@
 import imguin/[cimgui]
 import ../utils/themes/[themeMicrosoft]
+import ./vecs
 
 #---------------
 #--- setTooltip
 #---------------
-proc setTooltip*(str:string, delay=Imgui_HoveredFlags_DelayNormal.ImguiHoveredFlags, color=ImVec4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)) =
+proc setTooltip*(str:string, delay=Imgui_HoveredFlags_DelayNormal.cint, color=ImVec4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)) =
   if igIsItemHovered(delay):
     if igBeginTooltip():
       igPushStyleColorVec4(ImGuiCol_Text.cint, color)
@@ -14,7 +15,7 @@ proc setTooltip*(str:string, delay=Imgui_HoveredFlags_DelayNormal.ImguiHoveredFl
 
 type
   Theme* = enum
-    light, dark, classic ,microsoft
+    Light, Dark, Classic ,Microsoft
 
 # Forward definition
 #----------
@@ -22,11 +23,17 @@ type
 #----------
 proc setTheme*(themeName: Theme) =
   case themeName
-  of light:
+  of Light:
     igStyleColorsLight(nil)
-  of dark:
+  of Dark:
     igStyleColorsDark(nil)
-  of classic:
+  of Classic:
     igStyleColorsClassic(nil)
-  of microsoft:
+  of Microsoft:
     themeMicrosoft()
+
+#----------
+# IM_COL32
+#----------
+proc IM_COL32*(a,b,c,d:uint32): ImU32  =
+  return igGetColorU32_Vec4(vec4(a.cfloat/255, b.cfloat/255, c.cfloat/255, d.cfloat/255))

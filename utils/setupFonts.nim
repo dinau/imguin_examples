@@ -9,7 +9,7 @@ let IconfontFullPath = os.joinPath(os.getAppDir(),"../utils/fonticon/fa6/fa-soli
 #--------------
 # point2px
 #--------------
-proc point2px(point: float32): cfloat =
+proc point2px*(point: float32): cfloat =
   ## Convert point to pixel
 
   ((point * 96) / 72).cfloat
@@ -28,7 +28,7 @@ when defined(windows):
        osRootDir: os.getEnv("windir") # get OS root
        ,fontDir: "fonts"
        ,fontTable: @[ #
-        ("meiryo.ttc","メイリオ",14.5)
+         ("meiryo.ttc","メイリオ",14.5)
         ,("segoeui.ttf","Seoge UI",14.4) # English region standard font
         ,("YuGothM.ttc","遊ゴシック M",11.0)
         ,("meiryob.ttc","メイリオ B",14.0)
