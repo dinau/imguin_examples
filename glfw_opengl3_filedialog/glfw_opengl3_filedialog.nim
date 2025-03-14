@@ -2,7 +2,7 @@
 # nim c -d:ImGuiFileDialogEnable glfw_opengl3_filedialog
 
 import ../utils/appImGui
-import ../utils/[infowindow, themes/themeGold]
+import ../utils/[infoWindow, themes/themeGold]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP

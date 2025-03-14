@@ -69,7 +69,10 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   #
   var window:Window
   var glsl_version:string
-  const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+  when defined(windows):
+    const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+  else:
+    const versions = [[3, 3]]
   for ver in versions:
     let major = ver[0].int32
     let minor = ver[1].int32

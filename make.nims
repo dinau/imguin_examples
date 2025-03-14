@@ -11,6 +11,7 @@ var projDirs = @[
 "glfw_opengl3_imgui_toggle",
 "glfw_opengl3_implot",
 "glfw_opengl3_implot3d",
+"glfw_opengl3_imspinner",
 "glfw_opengl3_imguizmo",
 "glfw_opengl3_imknobs",
 "glfw_opengl3_imnodes",
