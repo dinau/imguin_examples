@@ -7,15 +7,6 @@ switch "hint","XDeclaredButNotUsed:off"
 
 #switch "passC","-std=c++17"
 
-when defined(windows):
-  switch "define", "release"
-  #switch "define", "danger"
-  #switch "opt", "size"
-  discard
-else: # Linux
-  switch "define", "release"
-  discard
-
 #const LTO = true # further reudce code size
 const LTO = false
 
