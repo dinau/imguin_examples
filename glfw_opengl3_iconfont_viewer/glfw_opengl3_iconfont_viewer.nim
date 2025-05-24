@@ -32,6 +32,8 @@ proc main() =
   var item_current = 0.cint
   var wsZoom:cfloat = 2.5
 
+  let green = vec4(0.0, 1.0, 0.0, 1.0)
+
   #-----------
   # main loop
   #-----------
@@ -48,7 +50,7 @@ proc main() =
       #
       const listBoxWidth = 320.int             # The value must be 2^n
       block:
-        igText("No.[%4d]", item_current);     igSameLine(0,-1.0)
+        igText("No.[%4d]", item_current);     igSameLine()
         sBuf = $iconFontsTbl[item_current]
         if igButton(ICON_FA_COPY & " Copy to", vec2(0, 0)):
           if sBuf =~ peg"@' '{'ICON'.+}":
@@ -114,7 +116,7 @@ proc main() =
                item_current = ix
 
             let iconFontLabel = iconFontsTbl2[ix][1]
-            setTooltip(iconfontLabel, color=vec4(0.0, 1.0, 0.0, 1.0))
+            setTooltip(iconfontLabel, color=green)
             igSetWindowFontScale(wsNormal)
             block:
               igPushID_int(ix)
@@ -126,7 +128,28 @@ proc main() =
                   item_current = ix
                   igSetClipboardText(iconFontsTbl2[ix][1].cstring)
 
-    #
+    #----------------------
+    #-- Text filter window
+    #----------------------
+    block:
+      igBegin("Icon Font filter", nil, 0)
+      defer:igEnd()
+      var seqFilter{.global.}:seq[string]
+      igText("(Copy)")
+      if igIsItemHovered(ImGui_HoveredFlags_DelayNone.cint):
+        if seqFilter[0] =~ peg("@{ICON.+}"):
+          igSetClipboardText(matches[0].cstring)
+      seqFilter = @[]
+      setTooltip("Copied first line to clipboard !", color=green) # Show tooltip help
+      igSameLine()
+      var filter = ImGuiTextFilter_ImGuiTextFilter("")
+      ImGuiTextFilter_Draw(filter, "Filter", 0)
+      for i, str in iconFontsTbl:
+        if ImGuiTextFilter_PassFilter(filter, str, nil):
+          igText("[%04d]  %s", i, str)
+          seqFilter.add $str
+
+    #------------
     render(win)
     if not showIconFontViewWindow:
       win.handle.setWindowShouldClose(true) # End program
