@@ -1,5 +1,5 @@
 import std/[os]
-import imguin/cimgui
+import imguin/[cimgui,simple]
 #import imguin/lang/imgui_ja_gryph_ranges
 import ../utils/fonticon/IconsFontAwesome6
 export IconsFontAwesome6

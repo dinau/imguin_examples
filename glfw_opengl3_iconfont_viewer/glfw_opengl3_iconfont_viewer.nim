@@ -29,7 +29,8 @@ proc main() =
   defer: glDeleteTextures(1, addr listBoxTextureID)
 
   var pio = igGetIO()
-  var item_current{.global.} = 0.cint
+  var item_current = 0.cint
+  var wsZoom:cfloat = 2.5
 
   #-----------
   # main loop
@@ -84,22 +85,34 @@ proc main() =
     #---------------------
     block:
       igBegin("Icon Font Viewer2", nil, 0)
-      const wsZoom = 2.5
-      const wsNormal = 1.0
       defer: igEnd()
+      igText("%s", " Zoom x"); igSameLine()
+      igSliderFloat("##Zoom1", addr wsZoom, 0.8, 5.0, "%.1f", 0)
+      igSeparator()
+      igBeginChild("child2")
+      defer: igEndChild()
+      const wsNormal = 1.0
       var flags{.global.} = ImGuiTableFlags_RowBg.cint or ImGuiTableFlags_BordersOuter.cint or ImGuiTableFlags_BordersV.cint or ImGuiTableFlags_Resizable.cint or ImGuiTableFlags_Reorderable.cint or ImGuiTableFlags_Hideable.cint
       let TEXT_BASE_HEIGHT = igGetTextLineHeightWithSpacing()
       let outer_size = vec2(0.0f, TEXT_BASE_HEIGHT * 8)
       const COL = 10
       if igBeginTable("table_scrolly", COL, flags, outer_size, 0):
         defer: igEndTable()
-        for row in 0..<(1390 div COL):
+        for row in 0..<(iconFontsTbl2.len div COL):
           igTableNextRow(0, 0.0)
           for column in 0 ..< COL:
             let ix = (row * COL + column).cint
             igTableSetColumnIndex(column.cint)
             igSetWindowFontScale(wsZoom)
+            # Select 1: text
             igText("%s", iconFontsTbl2[ix][0])
+            # Select 2: Button
+            #if igButton(iconFontsTbl2[ix][0], vec2(0,0)):
+            #  discard
+            if igIsItemHovered(0):
+               #item_highlighted_idx = ix
+               item_current = ix
+
             let iconFontLabel = iconFontsTbl2[ix][1]
             setTooltip(iconfontLabel, color=vec4(0.0, 1.0, 0.0, 1.0))
             igSetWindowFontScale(wsNormal)

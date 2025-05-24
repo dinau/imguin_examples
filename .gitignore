@@ -1,3 +1,4 @@
+.ccache/
 setenv.common.bat
 *.org
 *.zip

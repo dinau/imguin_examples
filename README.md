@@ -42,7 +42,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed ImGui**n** verion: : **v1.91.8.1** (2025/02)
+Confirmed **ImGuin** verion: **v1.91.9.0** (ImGui/CImGui version: 1.91.9b) (2025/05)
 
 This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -122,7 +122,8 @@ Library name / C lang wrapper
 - [x] [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog) / [CImGuiFileDialog](https://github.com/dinau/CImGuiFileDialog)
 - [x] [ImGui_Toggle](https://github.com/cmdwtf/imgui_toggle) / [CimGui_Toggle](https://github.com/dinau/cimgui_toggle)
 - [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
-- [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/CImSpinner) 
+- [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) 
+- [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/03)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) WIP
 
 #### Screen shot (examples)
@@ -707,7 +708,7 @@ Linux Mint 22
 | **Nelua**            | Compiler | SDL2        | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)
 | **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
-| **Zig**              | Compiler | SDL2        | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
+| **Zig**              | Compiler | SDL3 / SDL2 | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
 
 [^order]: Alphabectial order
 

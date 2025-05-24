@@ -105,7 +105,7 @@ proc main() =
       var
         imageBoxPosTop:ImVec2
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
-      igImage(cast[ImTextureID](textureId), size, uv0, uv1, tint_col, border_col);
+      igImage(cast[ImTextureID](textureId), size, uv0, uv1) #, tint_col, border_col);
       # Magnifiying glass TODO: Not works well on Linux OS ?.
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(cast[ImTextureID](textureId), textureWidth, textureHeight, imageBoxPosTop)

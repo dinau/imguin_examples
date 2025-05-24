@@ -53,7 +53,7 @@ proc setTheme*(this: var Window, theme:Theme): string
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot3d=false, title:string="ImGui window", docking:bool=false): Window =
+proc createImGui*(w:cint=1024, h:cint=900, imnodes:bool = false, implot:bool = false, implot3d=false, title:string="ImGui window", docking:bool=true): Window =
   doAssert glfwInit()
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
@@ -77,7 +77,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot: bool = false,  implot
   var glfwWin: GLFWwindow
   var glsl_version:string
   when defined(windows):
-    const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] doesn't work well on Windows OS.
+    const versions = [[4, 4], [4, 3], [4, 2], [4, 1], [4, 0], [3, 3]] # [4, 5] or later doesn't work well on my Windows OS.
   else:
     const versions = [[3, 3]]
 

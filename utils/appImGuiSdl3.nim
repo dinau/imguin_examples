@@ -118,7 +118,6 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   ###-----------------------------------------------------------
 
   discard SDL_GL_SetSwapInterval(1)
-  SDL_ShowWindow(window)
 
   # Setup ImGui
   result.context = igCreateContext(nil)
@@ -163,7 +162,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   discard setupFonts() # Add multibytes font
 
-  result.showWindowDelay = 2 # TODO
+  result.showWindowDelay = 4 # TODO
 
 #--------
 # render

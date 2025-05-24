@@ -8,7 +8,7 @@ switch "app","gui" # dismiss background Window
 #{.passL:staticExec("sdl2-config --static-libs").}
 
 const STATIC_LINK_CC = true
-const STATIC_LINK_SDL = false  # true: NG: TODO
+const STATIC_LINK_SDL = true  # true: NG: TODO
 
 ### SDL2 definition
 const SDL_VER = "SDL2-2.30.7"

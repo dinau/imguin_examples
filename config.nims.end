@@ -47,10 +47,11 @@ case TC
     switch "clang.exe","zigcc" & ext
     switch "clang.linkerexe","zigcpp" & ext
     switch "passL","-lgcc_s"
+    switch "passC", "--forceBuild"
   of "vcc":
     switch "cc",TC
     switch "passL","/Zc:strictStrings-" # Eliminates C2440 error at C++. Notice: TODO
-    switch "passC","/MP"
+    switch "passC","/MP /EHsc"
 
 when LTO: # These options let link time slow while reducing code size.
   switch "define", "lto"

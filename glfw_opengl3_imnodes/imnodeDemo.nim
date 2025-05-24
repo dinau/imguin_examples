@@ -107,7 +107,7 @@ proc show*(this: var SaveLoadEditor) =
 #------
 proc save*(this: var SaveLoadEditor) =
   # Save the internal imnodes state
-  imnodes_SaveCurrentEditorStateToIniFile("save_load.ini");
+  imnodes_SaveCurrentEditorStateToIniFile("save_load.ini")
   # Dump our editor state as bytes into a file
   var f = open("save_load.bytes", fmWrite)
   var fout = newFileStream(f)
