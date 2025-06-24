@@ -5,7 +5,8 @@
 # Specify custom icon header file
 {.passC:"-I.".}
 {.passC:"-I../utils/fonticon".}
-{.passC:"-DCUSTOM_IMGUIFILEDIALOG_CONFIG=<customIconFont.h>".}
+when defined(windows):
+  {.passC:"-DCUSTOM_IMGUIFILEDIALOG_CONFIG=<customIconFont.h>".}
 
 import ../utils/appImGui
 import ../utils/[infoWindow, themes/themeGold]

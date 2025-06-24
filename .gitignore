@@ -1,3 +1,7 @@
+sdl3_renderer_nim_sdl3/
+utils/sdl/nim_sdl3/
+utils/appImGuiSdlrenderer3_nim_sdl3.nim
+
 .ccache/
 setenv.common.bat
 *.org

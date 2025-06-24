@@ -64,7 +64,3 @@ when defined(windows):
       #cpFile(fmt"{SDL_BIN_DIR}/sdl3.dll",".")
       #switch "passL","-lsdl3.dll"
       switch "passL","-limm32"
-      discard
-
-else: # for Linux
-  const STATIC_LINK_CC = false
