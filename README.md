@@ -42,9 +42,9 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed **ImGuin** verion: **v1.91.9.0** (ImGui/CImGui version: 1.91.9b) (2025/05)
+Confirmed **ImGuin** verion: **v1.91.9.1** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
 
-This project is example project to use ImGui, ImPlot, futhark and so on with Nim language.  
+This project is example project to use Dear ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
 
 - Notice  
@@ -60,14 +60,14 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
 ---
 
-- [Nim-2.0.14](https://nim-lang.org) or later
+- [Nim-2.0.16](https://nim-lang.org) or later
 - Windows10 or later  
 [MSys2/MinGW](https://www.msys2.org/) command line tools (Unix tools), make, cp, rm, git, ...etc
 - Linux: Debian / Ubuntu families 
 
   ```sh
   $ sudo apt install gcc g++ make git 
-  $ sudo apt install xorg-dev lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
+  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
   ```
 
 #### Build examples
@@ -304,7 +304,6 @@ Image load and magnifying glass
    ```
 
 - Build sdl3 version  
-Only windows OS at this moment.
 
    ```sh
    pwd
@@ -339,7 +338,6 @@ SDL renderer backend.
    ```
 
 - Build sdl3 version  
-Only windows OS at this moment.
 
    ```sh
    pwd
@@ -638,30 +636,28 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 ---
 
 Windows11 (main)
-- **Nim Compiler Version 2.2.2**
-- **GCC (Rev1, Built by MSYS2 project) 14.2.0**
+- **Nim Compiler Version 2.2.4**
+- **GCC (Rev1, Built by MSYS2 project) 15.1.0**
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-gcc
    ```
 
-- Clang version 19.1.7
+- Clang version 20.1.7
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-clang
    ```
 - Visual Studio C++/C 2022
 - git version 2.46.0.windows.1
-- SDL2.dll: 2.30.7
 - Make: GNU Make 4.4.1
 - MSys2/MinGW tools
 
-Linux Mint 22
-- **Nim Compiler Version 2.2.0**
-- gcc 13.2.0
-- SDL2: 2.30.0
+Linux OS: Debain 
+- **Nim Compiler Version 2.2.4**
+- gcc 12.2.0
 - make: GNU Make 4.3
-- git version 2.43.0
+- git version 2.39.5
 
 
 ### Other link
