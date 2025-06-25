@@ -42,7 +42,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed **ImGuin** verion: **v1.91.9.1** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
+Confirmed **ImGuin** verion: **v1.91.9.2** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
 
 This project is example project to use Dear ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
