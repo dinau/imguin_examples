@@ -5,6 +5,7 @@ when defined(windows):
   const sdlPath = "../utils/sdl/SDL2/x86_64-w64-mingw32" # for windows10 or later
   {.passC:"-I" & sdlPath & "/include/SDL2".}
   {.passC:"-I" & sdlPath & "/include/SDL2/include".}
+  {.passL:"-L" & sdlPath & "/lib".}
 else: # for linux Debian 11 Bullseye or later
   {.passC:"-I/usr/include/SDL2".}
   {.passL:"-lSDL2".}
