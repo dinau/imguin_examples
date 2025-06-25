@@ -1,5 +1,17 @@
 import std/[os, strutils, parsecfg, parseutils, strformat]
 
+# SDL3 settings
+when defined(windows):
+  const sdlPath = "../utils/sdl/SDL3/x86_64-w64-mingw32"
+  {.passC:"-I" & sdlPath & "/include".}
+  {.passC:"-I" & sdlPath & "/include/SDL3".}
+  {.passL:"-L" & sdlPath & "/lib".}
+  when defined(vcc): # Fail: TODO
+    {.passC:"libSDL3.dll.a".}
+    {.passL:"/LIBPATH:" & sdl3LibPath.}
+when defined(linux): # for linux Debian 11 Bullseye or later
+  {.passC:"-I/usr/include/SDL3".}
+
 import sdl3_nim
 export sdl3_nim
 

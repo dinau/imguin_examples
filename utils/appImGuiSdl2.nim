@@ -1,5 +1,13 @@
 import std/[os, strutils, parsecfg, parseutils, strformat]
 
+# SDL2 settings
+when defined(windows):
+  const sdlPath = "../utils/sdl/SDL2/x86_64-w64-mingw32" # for windows10 or later
+  {.passC:"-I" & sdlPath & "/include/SDL2".}
+  {.passC:"-I" & sdlPath & "/include".}
+else: # for linux Debian 11 Bullseye or later
+  {.passC:"-I/usr/include/SDL2".}
+#
 import sdl2_nim/sdl
 export sdl
 
