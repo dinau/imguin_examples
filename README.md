@@ -303,20 +303,6 @@ Image load and magnifying glass
    nim c -d:SDL sdl2_opengl3.nim  
    ```
 
-- Build sdl3 version  
-
-   ```sh
-   pwd
-   sdl3_opengl3
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:SDL sdl3_opengl3.nim  
-   ```
-
 ###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer)  / [sdl3_opengl3](sdl3_opengl3) / [sdl3_sdlgpu3](sdl3_sdlgpu3)
 
 ---
@@ -335,6 +321,21 @@ SDL renderer backend.
 
    ```sh
    nim c -d:SDL sdl2_renderer.nim  
+   ```
+
+- Build sdl3 version  
+  See [SDL3 installation on Linux OS](https://github.com/dinau/sdl3_nim?tab=readme-ov-file#for-linux-os)
+
+   ```sh
+   pwd
+   sdl3_opengl3
+   make 
+   ```
+
+   or 
+
+   ```sh
+   nim c -d:SDL sdl3_opengl3.nim  
    ```
 
 - Build sdl3 version  
