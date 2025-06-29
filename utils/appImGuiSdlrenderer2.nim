@@ -2,7 +2,7 @@ import std/[os, strutils, parsecfg, parseutils]
 
 # SDL2 settings
 when defined(windows):
-  const sdlPath = "../utils/sdl/SDL2/x86_64-w64-mingw32" # for windows10 or later
+  const sdlPath = "../libs/SDL2/x86_64-w64-mingw32" # for windows10 or later
   {.passC:"-I" & sdlPath & "/include/SDL2".}
   {.passC:"-I" & sdlPath & "/include/SDL2/include".}
   {.passL:"-L" & sdlPath & "/lib".}
@@ -175,6 +175,14 @@ proc destroyImGui*(win: var WindowSdl) =
   sdl.destroyRenderer(win.renderer)
   sdl.destroyWindow(win.handle)
   sdl.quit()
+
+#----------------
+# isIconifySleep
+#----------------
+proc isIconifySleep*(win:WindowSdl): bool =
+  if 0 != (sdl.getWindowFlags(win.handle) and sdl.WindowMinimized):
+    sdl.delay(10)
+    return true
 
 #----------
 # newFrame

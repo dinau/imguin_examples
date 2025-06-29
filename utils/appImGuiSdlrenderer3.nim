@@ -1,14 +1,14 @@
 import std/[os, strutils, parsecfg, parseutils]
 
 # SDL3 settings
-when defined(windows):
-  const sdlPath = "../utils/sdl/SDL3/x86_64-w64-mingw32"
-  {.passC:"-I" & sdlPath & "/include".}
-  {.passC:"-I" & sdlPath & "/include/SDL3".}
-  {.passL:"-L" & sdlPath & "/lib".}
-  when defined(vcc): # Fail: TODO
-    {.passC:"libSDL3.dll.a".}
-    {.passL:"/LIBPATH:" & sdl3LibPath.}
+#when defined(windows):
+#  const sdlPath = "../utils/sdl/SDL3/x86_64-w64-mingw32"
+#  {.passC:"-I" & sdlPath & "/include".}
+#  {.passC:"-I" & sdlPath & "/include/SDL3".}
+#  {.passL:"-L" & sdlPath & "/lib".}
+#  when defined(vcc): # Fail: TODO
+#    {.passC:"libSDL3.dll.a".}
+#    {.passL:"/LIBPATH:" & sdl3LibPath.}
 when defined(linux): # for linux Debian 11 Bullseye or later
   {.passC:"-I/usr/include/SDL3".}
 
@@ -180,6 +180,15 @@ proc destroyImGui*(win: var WindowSdl) =
   SDL_DestroyRenderer(win.renderer)
   SDL_destroyWindow(win.handle)
   SDL_quit_proc()
+
+#----------------
+# isIconifySleep
+#----------------
+proc isIconifySleep*(win:WindowSdl): bool =
+  const SDL_WINDOW_MINIMIZED = 0x0000000000000040'u64
+  if 0 != (SDL_GetWindowFlags(win.handle) and SDL_WINDOW_MINIMIZED):
+    SDL_Delay(10)
+    return true
 
 #----------
 # newFrame

@@ -133,6 +133,10 @@ proc winMain(hWin: glfw.GLFWWindow) =
   while not hWin.windowShouldClose:
     glfwPollEvents()
 
+    if getWindowAttrib(hWin, GLFW_ICONIFIED) != 0:
+      ImGui_ImplGlfw_Sleep(10)
+      continue
+
     # start imgui frame
     ImGui_ImplOpenGL3_NewFrame()
     ImGui_ImplGlfw_NewFrame()

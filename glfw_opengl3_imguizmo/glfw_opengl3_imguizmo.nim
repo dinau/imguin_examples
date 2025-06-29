@@ -21,7 +21,10 @@ proc main() =
   # main loop
   #-----------
   while not win.handle.windowShouldClose:
-    glfwPollEvents()
+    pollEvents()
+
+    if isIconifySleep(win):
+      continue
     newFrame()
 
     # Show gizmo demo

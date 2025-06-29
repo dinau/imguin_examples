@@ -51,6 +51,8 @@ proc main() =
       if event.type_field == SDL_EVENT_WINDOW_CLOSE_REQUESTED.uint32 and event.window.windowID == SDL_GetWindowID(win.handle):
         xQuit = true
 
+    if isIconifySleep(win):
+      continue
     newFrame()
 
     if showDemoWindow:

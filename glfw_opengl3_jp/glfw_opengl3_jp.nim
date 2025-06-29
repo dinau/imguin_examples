@@ -32,7 +32,10 @@ proc main() =
   # メインループ
   #--------------
   while not win.handle.windowShouldClose:
-    glfwPollEvents()
+    pollEvents()
+
+    if isIconifySleep(win):
+      continue
     newFrame()
 
     if showAnotherWindow:

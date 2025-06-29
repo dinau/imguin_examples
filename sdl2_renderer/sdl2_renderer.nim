@@ -51,6 +51,8 @@ proc main() =
         event.window.windowID == sdl.getWindowID(win.handle):
         xQuit = true
 
+    if isIconifySleep(win):
+      continue
     newFrame()
 
     if showDemoWindow:

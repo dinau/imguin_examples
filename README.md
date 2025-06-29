@@ -13,8 +13,8 @@
         - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
         - [glfw_opengl3_imspinner](#glfw_opengl3_imspinner)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
-        - [glfw_opengl3_image_load / sdl2_opengl3  / sdl3_opengl3](#glfw_opengl3_image_load--sdl2_opengl3---sdl3_opengl3)
-        - [sdl2_renderer  / sdl3_renderer](#sdl2_renderer---sdl3_renderer)
+        - [glfw_opengl3_image_load / sdl2_opengl3](#glfw_opengl3_image_load--sdl2_opengl3)
+        - [sdl2_renderer  / sdl3_renderer  / sdl3_opengl3 / sdl3_sdlgpu3](#sdl2_renderer---sdl3_renderer---sdl3_opengl3--sdl3_sdlgpu3)
         - [glfw_opengl3_image_save](#glfw_opengl3_image_save)
         - [glfw_opengl3_jp](#glfw_opengl3_jp)
         - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -42,7 +42,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed **ImGuin** verion: **v1.91.9.3** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
+Confirmed **ImGuin** verion: **v1.91.9.4** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
 
 This project is example project to use Dear ImGui, ImPlot, futhark and so on with Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
@@ -267,7 +267,7 @@ Icon font viewer and magnifying glass
    ```
 
 
-###### [glfw_opengl3_image_load](glfw_opengl3_image_load) / [sdl2_opengl3](sdl2_opengl3)  / [sdl3_opengl3](sdl3_opengl3) 
+###### [glfw_opengl3_image_load](glfw_opengl3_image_load) / [sdl2_opengl3](sdl2_opengl3) 
 
 ---
 
@@ -317,7 +317,7 @@ Image load and magnifying glass
    nim c -d:SDL sdl3_opengl3.nim  
    ```
 
-###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer) 
+###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer)  / [sdl3_opengl3](sdl3_opengl3) / [sdl3_sdlgpu3](sdl3_sdlgpu3)
 
 ---
 

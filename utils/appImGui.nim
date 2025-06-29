@@ -11,6 +11,15 @@ export                  zoomglass, loadImage
 import ../utils/[saveImage, setupFonts, utils, vecs]
 export           saveImage, setupFonts, utils, vecs
 
+# Tentatvie function: nimgl/glfw-3.4 dosen't have this function.
+# https://www.glfw.org/docs/latest/group__init.html#ga6d6a983d38bd4e8fd786d7a9061d399e
+#const  GLFW_PLATFORM_WIN32   = 0x00060001
+#const  GLFW_PLATFORM_COCOA   = 0x00060002
+#const  GLFW_PLATFORM_WAYLAND = 0x00060003
+#const  GLFW_PLATFORM_X11     = 0x00060004
+#const  GLFW_PLATFORM_NULL    = 0x00060005
+proc glfwGetPlatform*(): int32 {.importc: "glfwGetPlatform".} # GLFW 3.4 >=
+
 type IniData = object
   clearColor*: ccolor
   startupPosX*, startupPosY*:cint
@@ -155,6 +164,19 @@ proc createImGui*(w:cint=1024, h:cint=900, imnodes:bool = false, implot:bool = f
   discard setupFonts() # Add multibytes font
 
   result.showWindowDelay = 2 # TODO
+
+#----------------
+# pollEvents
+#----------------
+proc pollEvents*() = glfwPollEvents()
+
+#----------------
+# isIconifySleep
+#----------------
+proc isIconifySleep*(win:Window): bool =
+  if getWindowAttrib(win.handle, GLFW_ICONIFIED) != 0:
+    ImGui_ImplGlfw_Sleep(10)
+    return true
 
 #--------
 # render
