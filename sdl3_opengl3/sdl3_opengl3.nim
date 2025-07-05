@@ -14,7 +14,7 @@ const MainWinHeight = 900
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="SDL3: ImGui window")
+  var win = createImGui(MainWinWidth, MainWinHeight, title="SDL3-Opengl3: ImGui window")
   defer: destroyImGui(win)
 
   var
@@ -62,7 +62,7 @@ proc main() =
     # showFirstWindow
     #-----------------
     if showFirstWindow:
-      igBegin("Nim: Dear ImGui test with Futhark", showFirstWindow.addr, 0)
+      igBegin("Nim: Dear ImGui", showFirstWindow.addr, 0)
       defer: igEnd()
 
       igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
@@ -108,7 +108,7 @@ proc main() =
         imageBoxPosTop:ImVec2
         imageBoxPosEnd:ImVec2
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
-      igImage(cast[ImTextureID](textureId), size, uv0, uv1) #, tint_col, border_col);
+      igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
       igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
       # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):

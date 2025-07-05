@@ -14,7 +14,7 @@ const MainWinHeight = 900
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui window: SDL3 backend")
+  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui window: SDL3-renderer backend")
   defer: destroyImGui(win)
 
   var
@@ -101,12 +101,10 @@ proc main() =
         size = vec2(textureWidth, textureHeight)
         uv0 = vec2(0, 0)
         uv1 = vec2(1, 1)
-        tint_col =   vec4(1, 1, 1, 1)
-        border_col = vec4(0, 0, 0, 0)
       var
         imageBoxPosTop:ImVec2
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
-      igImage(cast[ImTextureID](textureId), size, uv0, uv1) #, tint_col, border_col);
+      igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
       # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(cast[ImTextureID](textureId), textureWidth, textureHeight, imageBoxPosTop)

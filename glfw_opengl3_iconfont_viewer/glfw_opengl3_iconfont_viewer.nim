@@ -30,7 +30,7 @@ proc main() =
 
   var pio = igGetIO()
   var item_current = 0.cint
-  var wsZoom:cfloat = 2.5
+  var wsZoom:cfloat = 45
 
   let green = vec4(0.0, 1.0, 0.0, 1.0)
 
@@ -92,7 +92,7 @@ proc main() =
       igBegin("Icon Font Viewer2", nil, 0)
       defer: igEnd()
       igText("%s", " Zoom x"); igSameLine()
-      igSliderFloat("##Zoom1", addr wsZoom, 0.8, 5.0, "%.1f", 0)
+      igSliderFloat("##Zoom1", addr wsZoom, 30, 90, "%.1f", 0)
       igSeparator()
       igBeginChild("child2")
       defer: igEndChild()
@@ -108,7 +108,8 @@ proc main() =
           for column in 0 ..< COL:
             let ix = (row * COL + column).cint
             igTableSetColumnIndex(column.cint)
-            igSetWindowFontScale(wsZoom)
+            #igSetWindowFontScale(wsZoom)
+            igPushFont(nil, wsZoom)
             # Select 1: text
             igText("%s", iconFontsTbl2[ix][0])
             # Select 2: Button
@@ -117,10 +118,10 @@ proc main() =
             if igIsItemHovered(0):
                #item_highlighted_idx = ix
                item_current = ix
-
+            igPopFont()
             let iconFontLabel = iconFontsTbl2[ix][1]
             setTooltip(iconfontLabel, color=green)
-            igSetWindowFontScale(wsNormal)
+            #igSetWindowFontScale(wsNormal)
             block:
               igPushID_int(ix)
               defer: igPopID()

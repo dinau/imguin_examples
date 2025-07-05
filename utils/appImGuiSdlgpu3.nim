@@ -84,8 +84,9 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
   const SDL_WINDOW_HIGH_PIXEL_DENSITY = 0x0000000000002000'u64
   var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_HIDDEN or SDL_WINDOW_HIGH_PIXEL_DENSITY
+  let main_scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay())
   var window = SDL_CreateWindow(title
-                               , result.ini.viewportWidth , result.ini.viewportHeight
+                               , (result.ini.viewportWidth.float * main_scale).cint , (result.ini.viewportHeight.float * main_scale).cint
                                , flags.SDL_WindowFlags)
   if isNil window:
     echo "Error!: SDL_CreateWindow()"
@@ -205,6 +206,13 @@ proc render*(win: var WindowSdl) =
 
       SDL_EndGPURenderPass(render_pass)
     ## end if
+
+    # Update and Render additional Platform Windows
+    var pio = igGetIO()
+    if 0 != (pio.ConfigFlags.uint32 and ImGuiConfigFlags_ViewportsEnable.uint32):
+      igUpdatePlatformWindows()
+      igRenderPlatformWindowsDefault(nil, nil)
+
     #---------------------------
     # Submit the command buffer
     #---------------------------

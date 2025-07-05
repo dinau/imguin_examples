@@ -227,10 +227,8 @@ proc imgui_toggle_example*() =
   igSeparator()
 
   if show_custom_toggle:
-    igSetWindowFontScale(0.96)
     imgui_toggle_custom()
   else:
-    igSetWindowFontScale(1.0)
     imgui_toggle_simple()
   # pop the color styles
   igPopStyleColor(2)

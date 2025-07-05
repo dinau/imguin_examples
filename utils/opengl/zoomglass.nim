@@ -37,4 +37,5 @@ proc zoomGlass*(textureID: var uint32, itemWidth:int, itemPosTop, itemPosEnd:ImV
     let tint_col =  ImVec4(x: 1.0f, y: 1.0f, z: 1.0f, w: 1.0f) #// No tint
     let border_col = ImVec4(x: 0.22f, y: 0.56f, z: 0.22f, w: 1.0f) # Green
     igText(ICON_FA_MAGNIFYING_GLASS & " 4 x")
-    igImage(cast[ImTextureID](textureID), ImVec2(x: region_sz * zoom, y: region_sz * zoom), uv0, uv1) #, tint_col, border_col)
+    let texRef = ImTextureRef(internal_TexData: nil, internal_TexID: textureID)
+    igImage(texRef, ImVec2(x: region_sz * zoom, y: region_sz * zoom), uv0, uv1) #, tint_col, border_col)

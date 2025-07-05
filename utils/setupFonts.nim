@@ -81,7 +81,7 @@ proc setupFonts*(): (bool,string,string) =
     let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
     if os.fileExists(fontFullPath):
       seqFontNames.add (fontName,fontTitle)
-      pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, addr config,  pio.Fonts.ImFontAtlas_GetGlyphRangesJapanese());
+      pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, nil,  nil);
       echo "Added: ",fontFullPath
       break
   if seqFontNames.len > 0:

@@ -42,13 +42,12 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed **ImGuin** verion: **v1.91.9.4** (Dear ImGui/CImGui version: 1.91.9b) (2025/06)
+Confirmed **ImGuin** verion: **v1.92.0.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.0) (2025/07)
 
-This project is example project to use Dear ImGui, ImPlot, futhark and so on with Nim language.  
-Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin)
+This project is example project to use Dear ImGui, ImPlot and so on in Nim language.  
+Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
 
-- Notice  
-It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
+[^notice]: It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
 ,updated project [nimgl-imgui](https://github.com/dinau/nimgl-imgui) (ImGui v1.89.9) ,sub project [nim_implot](https://github.com/dinau/nim_implot) and test project [nimgl_test](https://github.com/dinau/nimgl_test),  
 or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-imgui)(ImGui v1.91.1)
 
@@ -62,13 +61,16 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
 - [Nim-2.0.16](https://nim-lang.org) or later
 - Windows10 or later  
-[MSys2/MinGW](https://www.msys2.org/) command line tools (Unix tools), make, cp, rm, git, ...etc
+[MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
+   ```sh
+   pacman -S mingw-w64-x86_64-{gcc,glfw} make
+   ```
 - Linux: Debian / Ubuntu families 
 
-  ```sh
-  $ sudo apt install gcc g++ make git 
-  $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
-  ```
+   ```sh
+   $ sudo apt install gcc g++ make git 
+   $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
+   ```
 
 #### Build examples
 
@@ -103,11 +105,13 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 If you'd like to build executables with static link (not using `*.dll`),  
 edit `./linkControl.nim` in respective example folder.  
    To not depend on any other `*.dll` files,  
-   change to
+   change to [^glfwStatic]
       ```nim
-        const STATIC_LINK_GLFW = true   # if true, it doesn't need glfw3.dll
-        const STATIC_LINK_CC= true      # if true, it doesn't need libstd++-6.dll
+      const STATIC_LINK_GLFW = true   # if true, it doesn't need glfw3.dll
+      const STATIC_LINK_CC   = true   # if true, it doesn't need libstd++-6.dll
       ```
+
+[^glfwStatic]: `STATIC_LINK_GLFW = false` can only be set at Dear ImGui 1.92.0 or later
 
 #### Available libraries 
 
