@@ -86,6 +86,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
    ```sh
    cd imguin_examples
+   nimble refresh
    nimble dep
    ```
 
