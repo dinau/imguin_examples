@@ -44,10 +44,10 @@ case TC
     when defined(windows):
       ext = ".cmd"
       switch "passL","-Wl,--subsystem,windows"
+      switch "passL","-Lc:/drvdx/msys64/mingw64/lib" # Specify MinGW libraries folder
     switch "clang.exe","zigcc" & ext
     switch "clang.linkerexe","zigcpp" & ext
     switch "passL","-lgcc_s"
-    switch "passC", "--forceBuild"
   of "vcc":
     switch "cc",TC
     switch "passL","/Zc:strictStrings-" # Eliminates C2440 error at C++. Notice: TODO

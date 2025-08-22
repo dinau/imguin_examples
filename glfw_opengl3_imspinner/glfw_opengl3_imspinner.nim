@@ -1,7 +1,6 @@
 # Compiling:
 # nim c -d:ImSpinner glfw_opengl3_imspinner.nim
 
-import std/[paths,math]
 import ../utils/[appImGui, infoWindow]
 
 when defined(windows):
@@ -14,20 +13,21 @@ when defined(windows):
 #---------------------------------------
 # See: https://github.com/dinau/imguin/blob/main/src/imguin/private/cimspinner/cimspinner.h
 #      https://github.com/dinau/imguin/blob/main/src/imguin/private/cimspinner/cimspinner.cpp
-{.passC:"-DSPINNER_RAINBOWMIX".}
-{.passC:"-DSPINNER_DNADOTS".}
-{.passC:"-DSPINNER_ANG8".}
-{.passC:"-DSPINNER_CLOCK".}
-{.passC:"-DSPINNER_PULSAR".}
-{.passC:"-DSPINNER_DOTSTOBAR".}
-{.passC:"-DSPINNER_ATOM".}
-{.passC:"-DSPINNER_BARCHARTRAINBOW".}
-{.passC:"-DSPINNER_SWINGDOTS".}
+{.passC:"-D SPINNER_RAINBOWMIX".}
+{.passC:"-D SPINNER_DNADOTS".}
+{.passC:"-D SPINNER_ANG8".}
+{.passC:"-D SPINNER_CLOCK".}
+{.passC:"-D SPINNER_PULSAR".}
+{.passC:"-D SPINNER_DOTSTOBAR".}
+{.passC:"-D SPINNER_ATOM".}
+{.passC:"-D SPINNER_BARCHARTRAINBOW".}
+{.passC:"-D SPINNER_SWINGDOTS".}
+{.passC:"-D SPINNER_CAMERA".}
 
 #----------------------------
 # Enable ImSipnner full demo
 #----------------------------
-{.passC:"-DIMSPINNER_DEMO".}
+{.passC:"-D IMSPINNER_DEMO".}
 
 const MainWinWidth = 1024
 const MainWinHeight = 800
@@ -38,9 +38,6 @@ const MainWinHeight = 800
 proc main() =
   var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui Window")
   defer: destroyImGui(win)
-
-  var
-    showDemoWindow = true
 
   #-----------
   # main loop
@@ -62,40 +59,35 @@ proc main() =
       defer: igEnd()
       demoSpinners()
 
-    #----------------
+    #-----------------
     # CImSpinner demo
-    #----------------
+    #-----------------
     block:
       igBegin("Nim: CImSpinner / ImSpinner demo 2025/02", nil, 0)
       defer: igEnd()
       const red  = ImColor(Value: ImVec4(x: 1.0,   y : 0.0,   z : 0.0, w : 1.0))
       const gold = ImColor(Value: ImVec4(x: 255.0, y : 215.0, z : 0.0, w : 1.0))
-      SpinnerDnaDotsEx("DnaDots", 16, 2, red, 1.2, 8, 0.25, true)
-      igSameLine()
-      SpinnerRainbowMix("Rmix", 16, 2, gold, 4)
-      igSameLine()
-      SpinnerAng8("Ang", 16, 2)
-      igSameLine()
-      SpinnerPulsar("Pulsar", 16, 2)
-      igSameLine()
-      SpinnerClock("Clock", 16, 2)
-      igSameLine()
-      SpinnerAtom("atom", 16, 2)
-      igSameLine()
-      SpinnerSwingDots("wheel", 16, 6)
-      igSameLine()
-      SpinnerDotsToBar("tobar", 16, 2, 0.5)
-      igSameLine()
-      SpinnerBarChartRainbow("rainbow", 16, 4, red, 4)
 
-    # show a simple window that we created ourselves.
+      SpinnerDnaDotsEx(      "DnaDots", 16, 2, red, 1.2, 8, 0.25, true) ;igSameLine() # Defined by "SPINNER_DNADOTS"
+      SpinnerRainbowMix(     "Rmix",    16, 2, gold, 4)                 ;igSameLine() # Defined by "SPINNER_RAINBOWMIX"
+      SpinnerAng8(           "Ang",     16, 2)                          ;igSameLine() # ...
+      SpinnerPulsar(         "Pulsar",  16, 2)                          ;igSameLine()
+      SpinnerClock(          "Clock",   16, 2)                          ;igSameLine()
+      SpinnerAtom(           "atom",    16, 2)                          ;igSameLine()
+      SpinnerSwingDots(      "wheel",   16, 6)                          ;igSameLine()
+      SpinnerDotsToBar(      "tobar",   16, 2, 0.5)                     ;igSameLine()
+      SpinnerBarChartRainbow("rainbow", 16, 4, red, 4)                  ;igSameLine()
+
+      proc genColor(i:cint): ImColor {.cdecl.} =
+        var col: ImColor
+        ImColor_HSV(addr col, i.float32 * 0.25, 0.8, 0.8, 1.0)
+        return col
+      SpinnerCamera(         "Camera",  16, 8, genColor)  # Defined by "SPINNER_CAMERA"
+
     #--------
     # render
     #--------
     render(win)
-
-    #if  not showDemoWindow:
-    #  win.handle.setWindowShouldClose(true) # Exit program
 
   #### end while
 

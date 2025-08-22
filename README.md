@@ -42,7 +42,7 @@
 
 ![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
 
-Confirmed **ImGuin** verion: **v1.92.0.1** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.0) (2025/07)
+Confirmed **ImGuin** verion: **v1.92.0.2** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.0) (2025/07)
 
 This project is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -645,13 +645,13 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 
 Windows11 (main)
 - **Nim Compiler Version 2.2.4**
-- **GCC (Rev1, Built by MSYS2 project) 15.1.0**
+- **GCC (Rev1, Built by MSYS2 project) 15.2.0**
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-gcc
    ```
 
-- Clang version 20.1.7
+- Clang version 20.1.8
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-clang

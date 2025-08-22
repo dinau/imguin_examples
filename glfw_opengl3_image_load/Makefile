@@ -1,4 +1,4 @@
 
-#OPT += -d:release
+OPT += -d:release
 
 include ../makefile.common.mk

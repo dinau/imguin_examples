@@ -91,12 +91,14 @@ proc main() =
     block:
       igBegin("Icon Font Viewer2", nil, 0)
       defer: igEnd()
+
       igText("%s", " Zoom x"); igSameLine()
       igSliderFloat("##Zoom1", addr wsZoom, 30, 90, "%.1f", 0)
       igSeparator()
+
       igBeginChild("child2")
       defer: igEndChild()
-      const wsNormal = 1.0
+
       var flags{.global.} = ImGuiTableFlags_RowBg.cint or ImGuiTableFlags_BordersOuter.cint or ImGuiTableFlags_BordersV.cint or ImGuiTableFlags_Resizable.cint or ImGuiTableFlags_Reorderable.cint or ImGuiTableFlags_Hideable.cint
       let TEXT_BASE_HEIGHT = igGetTextLineHeightWithSpacing()
       let outer_size = vec2(0.0f, TEXT_BASE_HEIGHT * 8)
