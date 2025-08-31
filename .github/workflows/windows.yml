@@ -31,3 +31,6 @@ jobs:
         run: |
           pacman -S --needed --noconfirm mingw-w64-x86_64-glfw
           nimble all
+        env:
+            MSYSTEM: MINGW64
+            MSYS2_PATH_TYPE: inherit
