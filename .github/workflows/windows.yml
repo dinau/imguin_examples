@@ -17,5 +17,8 @@ jobs:
         with:
           nim-version: '2.2.4'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
+      - name: Build
+        shell: msys2 {0}
+        run: |
+          pacman -S --needed --noconfirm mingw-w64-x86_64-glfw
           nimble all
