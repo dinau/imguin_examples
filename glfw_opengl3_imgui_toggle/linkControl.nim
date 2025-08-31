@@ -4,8 +4,8 @@ switch "app","gui" # dismiss background Window
 # Select static link or shared/dll link
 #---------------------------------------
 when defined(windows):
-  const STATIC_LINK_GLFW = false
-  const STATIC_LINK_CC = true      #libstd++ or libc
+  const STATIC_LINK_GLFW = false   # true: unsupported at this moment
+  const STATIC_LINK_CC = true      # true: include libstd++ or libc
   if TC == "vcc":
     switch "passL","d3d9.lib kernel32.lib user32.lib gdi32.lib winspool.lib"
     switch "passL","comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib"

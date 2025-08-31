@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.92.0.2"
+version       = "1.92.2.0"
 author        = "dinau"
 description   = "The examples for ImGuin that wrapper for ImGui libraries with Nim language."
 license       = "MIT"
@@ -10,7 +10,7 @@ skipDirs      = @[""]
 
 # Dependencies
 
-requires "imguin == 1.92.0.2"
+requires "imguin == 1.92.2.0"
 requires "nim >= 2.0.16"
 requires "sdl3_nim == 3.2.16.0"
 requires "nimgl == 1.3.2"

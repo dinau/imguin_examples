@@ -64,13 +64,13 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 [MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
 
    ```sh
-   pacman -S mingw-w64-x86_64-{gcc,glfw} make
+   pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
    ```
 
 - Linux: Debian / Ubuntu families 
 
    ```sh
-   $ sudo apt install gcc g++ make git 
+   $ sudo apt install gcc make 
    $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
    ```
 

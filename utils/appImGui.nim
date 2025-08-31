@@ -58,11 +58,18 @@ proc setTheme*(this: var Window, theme:Theme): string
 #  |    -      | -        |     true            ||    v    |     v       |   -     | Transparent Viewport and docking
 #  `-----------'----------'---------------------'`---------'-------------'---------'-------------
 
+#-------------------
+# glfwErrorCallback
+#-------------------
+proc glfwErrorCallback(err: cint, mesg: cstring) : void {.cdecl.} =
+  echo fmt"GLFW Error!:  0x{err:<X} : {mesg}\n"
+  stdout.flushFile
 
 #-------------
 # createImGui
 #-------------
 proc createImGui*(w:cint=1024, h:cint=900, imnodes:bool = false, implot:bool = false, implot3d=false, title:string="ImGui window", docking:bool=true): Window =
+  discard glfwSetErrorCallback(glfwErrorCallback)
   doAssert glfwInit()
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
