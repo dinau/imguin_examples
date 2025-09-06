@@ -19,5 +19,9 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           sudo apt-get update
-          sudo apt-get install --fix-missing libopengl-dev libgl1-mesa-dev libglfw3 libglfw3-dev libsdl2-dev
-      - run: nimble all
+          sudo apt-get install --fix-missing libopengl-dev libgl1-mesa-dev libglfw3 libglfw3-dev libsdl2-dev ccache
+      - run: |
+          sudo ln -s /usr/bin/ccache /usr/local/bin/gcc
+          sudo ln -s /usr/bin/ccache /usr/local/bin/g++
+          export PATH=/usr/local/bin:$PATH
+          nimble all
