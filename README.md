@@ -40,9 +40,7 @@
 
 ## ImGuin examples project
 
-![alt](https://github.com/dinau/imguin_examples/actions/workflows/windows.yml/badge.svg)  ![alt](https://github.com/dinau/imguin_examples/actions/workflows/linux.yml/badge.svg)
-
-Confirmed **ImGuin** verion: **v1.92.0.2** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.0) (2025/07)
+Confirmed **ImGuin** verion: **v1.92.2.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.2b) (2025/08)
 
 This project is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -685,15 +683,14 @@ Linux OS: Debain
   - [Immediate Mode Plotting](https://github.com/epezent/implot)
      ![alt](https://raw.githubusercontent.com/wiki/epezent/implot/screenshots3/stem.gif)
 
-
 ###### Similar project ImGui / CImGui
 
 ---
 
-| Language [^order]    |          | Project                                                                                                                                         |
+| Language             |          | Project                                                                                                                                         |
 | -------------------: | :---:    | :----------------------------------------------------------------:                                                                              |
 | **Lua**              | Script   | [LuaJITImGui](https://github.com/dinau/luajitImGui)                                                                                             |
-| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui)                                                                                               |
+| **NeLua**            | Compiler | [NeLuaImGui](https://github.com/dinau/neluaImGui) / [NeLuaImGui2](https://github.com/dinau/neluaImGui2)                                         |
 | **Nim**              | Compiler | [ImGuin](https://github.com/dinau/imguin), [Nimgl_test](https://github.com/dinau/nimgl_test), [Nim_implot](https://github.com/dinau/nim_implot) |
 | **Python**           | Script   | [DearPyGui for 32bit WindowsOS Binary](https://github.com/dinau/DearPyGui32/tree/win32)                                                         |
 | **Ruby**             | Script   | [igRuby_Examples](https://github.com/dinau/igruby_examples)                                                                                     |
@@ -706,15 +703,13 @@ Linux OS: Debain
 
 ![ald](https://github.com/dinau/nelua-platformer/raw/main/img/platformer-nelua-sdl2.gif)
 
-| Language    [^order] |          | SDL         | Project                                                                                                                                               |
+| Language             |          | SDL         | Project                                                                                                                                               |
 | -------------------: | :---:    | :---:       | :----------------------------------------------------------------:                                                                                    |
 | **LuaJIT**           | Script   | SDL2        | [LuaJIT-Platformer](https://github.com/dinau/luajit-platformer)
 | **Nelua**            | Compiler | SDL2        | [NeLua-Platformer](https://github.com/dinau/nelua-platformer)
 | **Nim**              | Compiler | SDL3 / SDL2 | [Nim-Platformer-sdl2](https://github.com/def-/nim-platformer)/ [Nim-Platformer-sdl3](https://github.com/dinau/sdl3_nim/tree/main/examples/platformer) |
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
 | **Zig**              | Compiler | SDL3 / SDL2 | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
-
-[^order]: Alphabectial order
 
 ###### Other link2
 

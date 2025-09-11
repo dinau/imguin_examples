@@ -1,7 +1,7 @@
 # Compiling:
 # nim c -d:ImPlotEnable glfw_opengl3_implot
 
-import std/[random, sugar, paths]
+import std/[random, sugar]
 import ../utils/[appImGui, infoWindow]
 import implotFuncs
 

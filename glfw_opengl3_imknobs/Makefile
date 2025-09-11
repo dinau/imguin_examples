@@ -1,5 +1,5 @@
 
-IMOPT += -d:ImKnobsEnable --warning:HoleEnumConv:off
+IMOPT += -d:ImKnobsEnable
 
 OPT += -d:release
 

@@ -2,6 +2,7 @@
 switch "hint","User:off"
 switch "hint","Name:off"
 switch "hint","XDeclaredButNotUsed:off"
+switch "warning","HoleEnumConv:off"
 
 #switch "app","gui" # dismiss background Window
 

@@ -4,6 +4,7 @@
 import std/[os]
 import ../utils/appImGuiSdlgpu3
 
+
 when defined(windows):
   include ./res/resource
 
@@ -11,6 +12,7 @@ const MainWinWidth = 1024
 const MainWinHeight = 900
 
 const fImageLoad = false # TODO
+
 
 #------
 # main
@@ -34,13 +36,12 @@ proc main() =
   #-------------
   # Load image
   #-------------
-  when fImageLoad:
-    var
-      textureId: ptr SDL_Texture
-      textureWidth = 0
-      textureHeight = 0
-    var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
-    loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth,textureHeight)
+  var
+    textureId: ptr SDL_GPUTexture
+    textureWidth:cint = 0
+    textureHeight:cint = 0
+  var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
+  #discard loadTextureFromFileSDLGPU3(ImageName, win.gpu_device, textureId, textureWidth,textureHeight)
 
   let pio = igGetIO()
 
@@ -99,11 +100,13 @@ proc main() =
         uv1 = vec2(1, 1)
       var
         imageBoxPosTop:ImVec2
+        imageBoxPosEnd:ImVec2
       igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
+      igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
       # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
-        zoomGlass(cast[ImTextureID](textureId), textureWidth, textureHeight, imageBoxPosTop)
+        zoomGlass(cast[var int32](textureId), textureWidth, imageBoxPosTop, imageBoxPosEnd)
 
     #--------
     # render

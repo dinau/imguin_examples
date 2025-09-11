@@ -2,7 +2,7 @@
 # nim c glfw_opengl3_base
 
 import std/[paths,math]
-import ../utils/[appImGui, togglebutton, infoWindow]
+import ../utils/[appImGui, infoWindow]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP

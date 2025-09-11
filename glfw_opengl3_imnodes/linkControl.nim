@@ -14,7 +14,7 @@ when defined(windows):
   else:
     switch "passL","-lgdi32 -limm32 -lcomdlg32 -luser32 -lshell32"
 else: # for Linux
-  const STATIC_LINK_GLFW = true
+  const STATIC_LINK_GLFW = false
   const STATIC_LINK_CC= false
 
 #

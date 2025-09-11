@@ -18,8 +18,8 @@ export sdl3_nim
 import imguin/[glad/gl, cimgui, impl_sdl3, impl_sdlgpu3, simple]
 export              gl, cimgui, impl_sdl3, impl_sdlgpu3, simple
 
-import ../utils/sdlrenderer/[zoomglass, sdl3/loadImage]
-export                       zoomglass,      loadImage
+import ../utils/sdlgpu3/[zoomglass, loadImage_SDLGPU3]
+export                       zoomglass,      loadImage_SDLGPU3
 import ../utils/[saveImage, setupFonts, utils, vecs]
 export           saveImage, setupFonts, utils, vecs
 
@@ -32,7 +32,7 @@ type WindowSdl* = object
   handle*: ptr SDL_Window
   context*: ptr ImGuiContext
   renderer*: ptr SDL_Renderer
-  gpu_device: ptr SDL_GPUDevice
+  gpu_device*: ptr SDL_GPUDevice
   imnodes*:bool
   implot*:bool
   implotContext: ptr ImPlotContext
