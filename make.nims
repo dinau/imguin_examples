@@ -9,6 +9,7 @@ var projDirs = @[
 "glfw_opengl3_image_save",
 "glfw_opengl3_imColorTextEdit",
 "glfw_opengl3_imgui_toggle",
+"glfw_opengl3_imguiTextSelect",
 "glfw_opengl3_imguizmo",
 "glfw_opengl3_imknobs",
 "glfw_opengl3_imnodes",

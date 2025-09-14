@@ -11,6 +11,7 @@
         - [glfw_opengl3_imknobs](#glfw_opengl3_imknobs)
         - [glfw_opengl3_filedialog](#glfw_opengl3_filedialog)
         - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
+        - [glfw_opengl3_imguiTextSelect](#glfw_opengl3_imguitextselect)
         - [glfw_opengl3_imspinner](#glfw_opengl3_imspinner)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
         - [glfw_opengl3_image_load / sdl2_opengl3](#glfw_opengl3_image_load--sdl2_opengl3)
@@ -40,7 +41,7 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.2.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.2b) (2025/08)
+Confirmed **ImGuin** verion: **v1.92.2.1** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.2b) (2025/08)
 
 This project is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -129,6 +130,7 @@ Library name / C lang wrapper
 - [x] [ImPlot3d](https://github.com/brenocq/implot3d) / [CImPlot3d](https://github.com/cimgui/cimplot3d) 
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) 
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/03)
+- [x] [ImGuiTextSelect](https://github.com/AidanSun05/ImGuiTextSelect) / [CImGuiTextSelect](https://github.com/dinau/CImGuiTextSelect) (2025/09)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) WIP
 
 #### Screen shot (examples)
@@ -226,6 +228,28 @@ Basic example with icon fonts
 
    ```sh
    nim c -d:ImGuiToggle  glfw_opengl3_imgui_toggle.nim  
+   ```
+
+###### [glfw_opengl3_imguiTextSelect](glfw_opengl3_imguiTextSelect)  
+
+---
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/imguiTextSelect.png)
+
+![alt](https://github.com/dinau/CImGuiTextSelect/raw/main/img/CImGuiTextSelect.gif)
+
+- Build
+
+   ```sh
+   pwd
+   glfw_opengl3_imguiTextSelect
+   make 
+   ```
+
+   or 
+
+   ```sh
+   nim c -d:ImGuiTextSelect  glfw_opengl3_imguiTextSelect.nim  
    ```
 
 ###### [glfw_opengl3_imspinner](glfw_opengl3_imspinner)  
@@ -644,27 +668,17 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 Windows11 (main)
 - **Nim Compiler Version 2.2.4**
 - **GCC (Rev1, Built by MSYS2 project) 15.2.0**
-
-   ```sh
-   pacman -S mingw-w64-ucrt-x86_64-gcc
-   ```
-
 - Clang version 20.1.8
-
-   ```sh
-   pacman -S mingw-w64-ucrt-x86_64-clang
-   ```
 - Visual Studio C++/C 2022
 - git version 2.46.0.windows.1
 - Make: GNU Make 4.4.1
 - MSys2/MinGW tools
 
-Linux OS: Debain 
+Linux OS: Debain 13
 - **Nim Compiler Version 2.2.4**
-- gcc 12.2.0
-- make: GNU Make 4.3
-- git version 2.39.5
-
+- gcc 14.2.0
+- make: GNU Make 4.4.1
+- git version 2.47.3
 
 ### Other link
 
