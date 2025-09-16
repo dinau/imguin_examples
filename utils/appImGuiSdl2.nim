@@ -30,8 +30,6 @@ type WindowSdl* = object
   clearColor*: ccolor
   context*: ptr ImGuiContext
   glContext*: sdl.GLContext
-  imnodes*:bool
-  implot*:bool
   implotContext: ptr ImPlotContext
   showWindowDelay:int
   ini*:IniData
@@ -68,7 +66,7 @@ block:
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window"): WindowSdl =
+proc createImGui*(w,h: cint, title:string="ImGui window"): WindowSdl =
   if sdl.init(sdl.InitVideo or sdl.InitTimer or sdl.InitGameController) != 0:
     echo "ERROR: Can't initialize SDL: ", sdl.getError()
     quit -1
@@ -120,14 +118,6 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   # Setup ImGui
   result.context = igCreateContext(nil)
-  if imnodes: # setup ImNodes
-    result.imnodes = imnodes
-    when defined(ImNodesEnable):
-      imnodes_CreateContext()
-  if implot: # setup ImPlot
-    result.implot = implot
-    when defined(ImPlotEnable):
-      result.imPlotContext = ImPlot_CreateContext()
 
   if fDocking:
     var pio = igGetIO()
@@ -183,12 +173,6 @@ proc destroyImGui*(win: var WindowSdl) =
   win.saveIni()
   ImGui_ImplOpenGL3_Shutdown()
   ImGui_ImplSdl2_Shutdown()
-  when defined(ImPlotEnable):
-    if win.implot:
-      win.imPlotContext.ImPlotDestroyContext()
-  when defined(ImNodesEnable):
-    if win.imnodes:
-      imnodes_DestroyContext(nil)
   igDestroyContext(nil)
   sdl.glDeleteContext(win.context)
   sdl.destroyWindow(win.handle)

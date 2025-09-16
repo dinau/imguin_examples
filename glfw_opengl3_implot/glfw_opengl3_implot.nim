@@ -40,11 +40,14 @@ proc imPlotWindow(fshow:var bool) =
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, implot = true)
+  var win = createImGui(MainWinWidth, MainWinHeight)
   defer: destroyImGui(win)
 
   var
     showImPlotWindow = true
+
+  var imPlotContext = ImPlot_CreateContext()
+  defer: imPlotContext.ImPlotDestroyContext()
 
   # for ImPlot
   discard initRand()

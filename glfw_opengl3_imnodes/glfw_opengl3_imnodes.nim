@@ -12,9 +12,13 @@ const MainWinHeight = 800
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, imnodes = true, title="ImNodes demo")
+  var win = createImGui(MainWinWidth, MainWinHeight, title="ImNodes demo")
   defer: destroyImGui(win)
 
+  imnodes_CreateContext()
+  defer: imnodes_DestroyContext(nil)
+
+  # See ./imnodesDemo.nim
   # ImNode demo init
   NodeEditorInitialize()
   defer: NodeEditorShutdown()

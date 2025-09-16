@@ -75,8 +75,13 @@ proc imPlot3dWindow() =
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, implot3d = true)
+  var win = createImGui(MainWinWidth, MainWinHeight)
   defer: destroyImGui(win)
+
+  var imPlotContext = ImPlot_CreateContext()
+  defer: imPlotContext.ImPlotDestroyContext()
+  var imPlot3dContext = ImPlot3d_CreateContext()
+  defer: imPlot3dContext.ImPlot3dDestroyContext()
 
   # for ImPlot
   discard initRand()

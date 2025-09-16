@@ -32,8 +32,6 @@ type WindowSdl* = object
   handle*: ptr SDL_Window
   context*: ptr ImGuiContext
   glContext*: SDL_GLContext
-  imnodes*:bool
-  implot*:bool
   implotContext: ptr ImPlotContext
   showWindowDelay:int
   ini*:IniData
@@ -70,7 +68,7 @@ block:
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:string="ImGui window SDL3"): WindowSdl =
+proc createImGui*(w,h: cint, title:string="ImGui window SDL3"): WindowSdl =
   if not SDL_Init(SDL_INIT_VIDEO or SDL_INIT_GAMEPAD):
     echo "\nError!: SDL_Init()"
 
@@ -135,14 +133,6 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   result.context = igCreateContext(nil)
   if isNIl result.context:
     echo "Error!: igCreateContext()"
-  if imnodes: # setup ImNodes
-    result.imnodes = imnodes
-    when defined(ImNodesEnable):
-      imnodes_CreateContext()
-  if implot: # setup ImPlot
-    result.implot = implot
-    when defined(ImPlotEnable):
-      result.imPlotContext = ImPlot_CreateContext()
 
   var pio = igGetIO()
   pio.ConfigFlags = pio.ConfigFlags or ImGui_ConfigFlags_NavEnableKeyboard.cint
@@ -209,12 +199,6 @@ proc destroyImGui*(win: var WindowSdl) =
   win.saveIni()
   ImGui_ImplOpenGL3_Shutdown()
   ImGui_ImplSdl3_Shutdown()
-  when defined(ImPlotEnable):
-    if win.implot:
-      win.imPlotContext.ImPlotDestroyContext()
-  when defined(ImNodesEnable):
-    if win.imnodes:
-      imnodes_DestroyContext(nil)
   igDestroyContext(win.context)
   discard SDL_GL_DestroyContext(win.gl_context)
   SDL_destroyWindow(win.handle)

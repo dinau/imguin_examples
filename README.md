@@ -6,7 +6,7 @@
     - [Prerequisites](#prerequisites)
     - [Build examples](#build-examples)
     - [Available libraries](#available-libraries)
-    - [Screen shot (examples)](#screen-shot-examples)
+    - [Screenshot (examples)](#screenshot-examples)
         - [glfw_opengl3](#glfw_opengl3)
         - [glfw_opengl3_imknobs](#glfw_opengl3_imknobs)
         - [glfw_opengl3_filedialog](#glfw_opengl3_filedialog)
@@ -131,13 +131,13 @@ Library name / C lang wrapper
 - [x] [ImSpinner](https://github.com/dalerank/imspinner) / [CImSpinner](https://github.com/dinau/cimspinner) 
 - [x] [ImGuiColorTextEdit](https://github.com/santaclose/ImGuiColorTextEdit) / [cimCTE](https://github.com/cimgui/cimCTE) (2025/03)
 - [x] [ImGuiTextSelect](https://github.com/AidanSun05/ImGuiTextSelect) / [CImGuiTextSelect](https://github.com/dinau/CImGuiTextSelect) (2025/09)
-- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) WIP
+- [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) / [CImGui_Markdown](https://github.com/dinau/cimgui_markdown) WIP
 
-#### Screen shot (examples)
+#### Screenshot (examples)
 
 ---
 
-These screen shots are on Windows10.
+These screenshots are on Windows10.
 
 ###### [glfw_opengl3](glfw_opengl3)  
 
@@ -152,16 +152,8 @@ Basic example with icon fonts
    ```sh
    pwd
    glfw_opengl3
-   make        # or make run
+   make        # or   nim c glfw_opengl3.nim
    ```
-
-   or 
-
-   ```sh
-   nim c glfw_opengl3.nim    # or  nim c -r glfw_opengl3.nim   or   nim r glfw_opengl3.nim 
-   ```
-
-
 
 ###### [glfw_opengl3_imknobs](glfw_opengl3_imknobs)
 
@@ -175,18 +167,11 @@ Basic example with icon fonts
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/imgui_knobs.png)
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_imknobs
-   make 
-   ```
-   or 
-
-   ```sh
-   nim c -d:ImKnobsEnable --warning:HoleEnumConv:off glfw_opengl3_imknobs.nim  
-   ```
+```sh
+pwd
+glfw_opengl3_imknobs
+make     # or  nim c -d:ImKnobs glfw_opengl3_imknobs.nim  
+```
 
 ###### [glfw_opengl3_filedialog](glfw_opengl3_filedialog)
 
@@ -196,19 +181,11 @@ Basic example with icon fonts
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/filedialog.png)
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_filedialog
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:ImGuiFileDialogEnable  glfw_opengl3_filedialog.nim  
-   ```
+```sh
+pwd
+glfw_opengl3_filedialog
+make    # or   nim c -d:ImGuiFileDialog glfw_opengl3_filedialog.nim  
+```
 
 ###### [glfw_opengl3_imgui_toggle](glfw_opengl3_imgui_toggle)  
 
@@ -216,19 +193,11 @@ Basic example with icon fonts
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/imgui_toggle_simple.png)  
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_imgui_toggle
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:ImGuiToggle  glfw_opengl3_imgui_toggle.nim  
-   ```
+```sh
+pwd
+glfw_opengl3_imgui_toggle
+make    # or   nim c -d:ImGuiToggle glfw_opengl3_imgui_toggle.nim  
+```
 
 ###### [glfw_opengl3_imguiTextSelect](glfw_opengl3_imguiTextSelect)  
 
@@ -238,18 +207,10 @@ Basic example with icon fonts
 
 ![alt](https://github.com/dinau/CImGuiTextSelect/raw/main/img/CImGuiTextSelect.gif)
 
-- Build
-
    ```sh
    pwd
    glfw_opengl3_imguiTextSelect
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:ImGuiTextSelect  glfw_opengl3_imguiTextSelect.nim  
+   make    # or    nim c -d:ImGuiTextSelect  glfw_opengl3_imguiTextSelect.nim  
    ```
 
 ###### [glfw_opengl3_imspinner](glfw_opengl3_imspinner)  
@@ -259,77 +220,50 @@ Basic example with icon fonts
 ![alt](https://github.com/dinau/cimspinner/raw/main/img/cimspinner.gif)  
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/imspinner.png)  
 
-- Build
-
    ```sh
    pwd
    glfw_opengl3_imspinner
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:ImSpinner glfw_opengl3_imspinner.nim  
+   make    # or    nim c -d:ImSpinner glfw_opengl3_imspinner.nim  
    ```
 
 ###### [glfw_opengl3_iconfont_viewer](glfw_opengl3_iconfont_viewer)  
 
 ---
 
-Icon font viewer and magnifying glass
+Icon font viewer.
+
+- [x] Magnifying glass
+- [x] Incremantal search
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/iconfont_viewer.png)
 
-- Build
-
-   ```sh
-   pwd
-   iconFontViewer
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c iconFontViewer.nim  
-   ```
-
+```sh
+pwd
+iconFontViewer
+make       # or    nim c iconFontViewer.nim  
+```
 
 ###### [glfw_opengl3_image_load](glfw_opengl3_image_load) / [sdl2_opengl3](sdl2_opengl3) 
 
 ---
 
-Image load and magnifying glass
+- [x] Image loading
+- [x] Magnifying glass
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/image_load.png)
-
-- Build
 
    ```sh
    pwd
    glfw_opengl3_image_load
-   make 
+   make     # or    nim c glfw_opengl3_image_load.nim  
    ```
 
-   or 
-
-   ```sh
-   nim c glfw_opengl3_image_load.nim  
-   ```
-
-- Build sdl2 version
+- sdl2 version
 
    ```sh
    pwd
    sdl2_opengl3
-   make 
-   ```
-
-   or 
-
-   ```sh
-   nim c -d:SDL sdl2_opengl3.nim  
+   make     # or    nim c -d:SDL sdl2_opengl3.nim  
    ```
 
 ###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer)  / [sdl3_opengl3](sdl3_opengl3) / [sdl3_sdlgpu3](sdl3_sdlgpu3)
@@ -338,72 +272,54 @@ Image load and magnifying glass
 
 SDL renderer backend.
 
-- Build sdl2 version
+- Build sdl2 renderer backend
 
    ```sh
    pwd
    sdl2_renderer
-   make 
+   make     # or    nim c -d:SDL sdl2_renderer.nim  
    ```
 
-   or 
-
-   ```sh
-   nim c -d:SDL sdl2_renderer.nim  
-   ```
-
-- Build sdl3 version  
+- Build sdl3 backend  
   See [SDL3 installation on Linux OS](https://github.com/dinau/sdl3_nim?tab=readme-ov-file#for-linux-os)
 
    ```sh
    pwd
    sdl3_opengl3
-   make 
+   make     # or    nim c -d:SDL sdl3_opengl3.nim  
    ```
 
-   or 
-
-   ```sh
-   nim c -d:SDL sdl3_opengl3.nim  
-   ```
-
-- Build sdl3 version  
+- Build sdl3 renderer backend
 
    ```sh
    pwd
    sdl3_renderer
-   make 
+   make     # or    nim c -d:SDL sdl3_renderer.nim  
    ```
 
-   or 
+- Build sdl3 GPU backend
 
    ```sh
-   nim c -d:SDL sdl3_renderer.nim  
+   pwd
+   sdl3_sdlgpu3
+   make     # or    nim c -d:SDL sdl3_sdlgpu3.nim  
    ```
-
 
 ###### [glfw_opengl3_image_save](glfw_opengl3_image_save)  
 
 ---
 
-Image load / save  and magnifying glass  
-It can save a screen shot as [ jpg, bmp, png or tga ] file.
+- [x] Image loading / saving  
+It can save a screenshot as [ jpg, bmp, png or tga ] file.
+- [x] Magnifying glass  
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/image_save.png)
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_image_save
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c glfw_opengl3_image_save.nim
-   ```
+```sh
+pwd
+glfw_opengl3_image_save
+make        # or   nim c glfw_opengl3_image_save.nim
+```
 
 ###### [glfw_opengl3_jp](glfw_opengl3_jp)
 
@@ -412,19 +328,11 @@ It can save a screen shot as [ jpg, bmp, png or tga ] file.
 Showing UTF-8 text and input text with a local country language.  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/screenshot2.png)
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_jp
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c glfw_opengl3_jp.nim
-   ```
+```sh
+pwd
+glfw_opengl3_jp
+make        # or    nim c glfw_opengl3_jp.nim
+```
 
 ###### [glfw_opengl3_implot](glfw_opengl3_implot)
 
@@ -433,19 +341,11 @@ Showing UTF-8 text and input text with a local country language.
 Showing ImGui demo with ImPlot demo.  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/implot1.png)  
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_implot
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImPlotEnable glfw_opengl3_implot.nim
-   ```
+```sh
+pwd
+glfw_opengl3_implot
+make        # or    nim c -d:ImPlot glfw_opengl3_implot.nim
+```
 
 ###### [glfw_opengl3_implot3d](glfw_opengl3_implot3d)
 
@@ -456,56 +356,34 @@ Showing ImPlot3D demo. WIP
 ![alt](img/implot3d1.png)
 ![alt](img/implot3d2.png)
 
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_implot3d
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImPlotEnable -d:ImPlot3DEnable glfw_opengl3_implot3d.nim
-   ```
+```sh
+pwd
+glfw_opengl3_implot3d
+make       # or   nim c -d:ImPlot3D glfw_opengl3_implot3d.nim
+```
 
 ###### [glfw_opengl3_imnodes](glfw_opengl3_imnodes)
 
 ---
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/imnodes-demo.png)  
-- Build
 
-   ```sh
-   pwd
-   glfw_opengl3_imnodes
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImNodesEnable glfw_opengl3_imnodes.nim
-   ```
+```sh
+pwd
+glfw_opengl3_imnodes
+make        # or    nim c -d:ImNodes glfw_opengl3_imnodes.nim
+```
 
 ###### [glfw_opengl3_imguizmo](glfw_opengl3_imguizmo)
 
 ---
 
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/imguizmo.png)  
-- Build
 
    ```sh
    pwd
    glfw_opengl3_imguizmo
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImGuizmoEnable glfw_opengl3_imguizmo.nim
+   make        # or    nim c -d:ImGuizmo glfw_opengl3_imguizmo.nim
    ```
 
 ###### [glfw_opengl3_imColorTextEdit](glfw_opengl3_imColorTextEdit)
@@ -514,19 +392,11 @@ Showing ImPlot3D demo. WIP
 
 ![alt](https://github.com/dinau/imguin_examples/raw/main/img/imColorTextEdit.png)  
 
-
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_imColorTextEdit
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImColorTextEdit glfw_opengl3_imColorTextEdit.nim
+```sh
+pwd
+glfw_opengl3_imColorTextEdit
+make        # or    nim c -d:ImColorTextEdit glfw_opengl3_imColorTextEdit.nim
+```
 
 ###### [glfw_opengl3_imgui_markdown](glfw_opengl3_imgui_markdown)
 
@@ -534,22 +404,13 @@ Showing ImPlot3D demo. WIP
 
 WIP at this moment.
 
-![alt](https://github.com/dinau/imguin_examples/raw/main/img/imgui_markdown.png)  
+![alt](https://github.com/dinau/cimgui_markdown/raw/main/demo/img/cimgui_markdown.png)
 
-
-- Build
-
-   ```sh
-   pwd
-   glfw_opengl3_imgui_markdown
-   make        # or make run
-   ```
-   
-   or 
-
-   ```sh
-   nim c -d:ImGuiMarkdownEnable glfw_opengl3_imgui_markdown.nim
-   ```
+```sh
+pwd
+glfw_opengl3_imgui_markdown
+make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
+```
 
 ######  My test app movie using imguin
 
@@ -581,16 +442,11 @@ or
 
 ```sh
 nim c -d:mingw glfw_opengl3
-```
 or 
-
-```sh
 nim c --os:windows glfw_opengl3
 ```
 
-
 `glfw_opengl3.exe` will be generated in the current folder.
-
 
 ### Selection backend compiler
 
