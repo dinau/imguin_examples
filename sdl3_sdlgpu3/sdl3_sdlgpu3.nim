@@ -29,7 +29,7 @@ proc main() =
     xQuit: bool
     sBuf = newString(200)
 
-  #discard setupFonts() # TODO Add multibytes font
+  discard setupFonts() # Add multibytes font
 
   igStyleColorsDark(nil)
 
