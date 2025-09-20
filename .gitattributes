@@ -1,0 +1,5 @@
+*.zig linguist-language=Zig
+*.c linguist-vendored
+*.cpp linguist-vendored
+*.lua linguist-vendored
+libs/** linguist-vendored
