@@ -150,7 +150,15 @@ proc createImGui*(w:cint=1024, h:cint=900, title:string="ImGui window", docking:
 #----------------
 # pollEvents
 #----------------
-proc pollEvents*() = glfwPollEvents()
+proc pollEvents*() =
+  glfwWaitEventsTimeout(1.0 / 60.0)  # Reduce CPU load
+
+proc pollEvents*(timeout:float) =
+  if timeout != 0:
+    glfwWaitEventsTimeout(timeout)   # Sepcify CPU perofrmance
+  else:
+    glfwPollEvents() # timeout == 0  # Use standard PollEvents()
+
 
 #----------------
 # isIconifySleep
