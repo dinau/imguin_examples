@@ -69,8 +69,8 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 - Linux: Debian / Ubuntu families 
 
    ```sh
-   $ sudo apt install gcc make 
-   $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev}
+   $ sudo apt install gcc g++ make 
+   $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev,xcursor-dev,xinerama-dev,xi-dev,sdl2-dev} git 
    ```
 
 #### Build examples
