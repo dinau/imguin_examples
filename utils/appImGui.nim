@@ -100,6 +100,8 @@ proc createImGui*(w:cint=1024, h:cint=900, title:string="ImGui window", docking:
     glfwWindowHint(GLFWOpenglForwardCompat, GLFW_TRUE)
     glfwWindowHint(GLFWOpenglProfile, GLFW_OPENGL_CORE_PROFILE)
     glfwWindowHint(GLFWResizable, GLFW_TRUE)
+    when defined(linux) and not defined(android): # For WSL2: WSLg
+      glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API)
     #
     glfwWindowHint(GLFWVisible, GLFW_FALSE)
     glfwWin = glfwCreateWindow(result.ini.viewportWidth, result.ini.viewportHeight, title=title)

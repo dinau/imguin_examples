@@ -40,7 +40,7 @@ proc main() =
     var val1 {.global.}: cfloat = 0.25
     var val2 {.global.}: cfloat = 0.65
     var val3 {.global.}: cfloat = 0.85
-    var val4 {.global.}: cfloat = 1.0
+    var val4 {.global.}: cfloat = 0.6
 
     if showKnobsWindow:
       igBegin("ImGui-knobs / CImGui-Knobs Demo", addr showKnobsWindow, 0)

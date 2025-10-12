@@ -66,12 +66,18 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
    ```
 
-- Linux: Debian / Ubuntu families 
+- Linux: Debian13 / Ubuntu families 
 
    ```sh
    $ sudo apt install gcc g++ make 
-   $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,libsdl2-dev,xcursor-dev,xinerama-dev,xi-dev,sdl2-dev} git 
+   $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,xcursor-dev,xinerama-dev,xi-dev,sdl2-dev} git 
    ```
+
+   - If you have Debian13 Trixie
+
+      ```sh
+      $ sudo apt install libsdl3-dev
+      ``` 
 
 #### Build examples
 
@@ -328,10 +334,17 @@ make        # or   nim c glfw_opengl3_image_save.nim
 Showing UTF-8 text and input text with a local country language.  
 ![alt](https://github.com/dinau/imguin/raw/main/src/img/screenshot2.png)
 
+
 ```sh
 pwd
 glfw_opengl3_jp
 make        # or    nim c glfw_opengl3_jp.nim
+```
+
+If you are on Debian13 in WSL2 on Windows OS,
+
+```sh
+sudo apt install fonts-ipafont
 ```
 
 ###### [glfw_opengl3_implot](glfw_opengl3_implot)
