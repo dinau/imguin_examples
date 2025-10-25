@@ -29,10 +29,10 @@ when defined(windows):
        ,fontDir: "fonts"
        ,fontTable: @[ #
          ("meiryo.ttc","メイリオ",14.5)
-        ,("segoeui.ttf","Seoge UI",14.4) # English region standard font
         ,("YuGothM.ttc","遊ゴシック M",11.0)
-        ,("meiryob.ttc","メイリオ B",14.0)
         ,("msgothic.ttc","MS ゴシック",11.0)
+        ,("segoeui.ttf","Seoge UI",14.4) # English region standard font
+        ,("meiryob.ttc","メイリオ B",14.0)
         ,("myricam.ttc","MyricaM",11.0)
          ])
 else: # For Debian/Ubuntu/Mint
@@ -40,10 +40,11 @@ else: # For Debian/Ubuntu/Mint
         osRootDir: "/"
        ,fontDir: "usr/share/fonts"
        ,fontTable: @[
-          ("opentype/ipafont-gothic/ipag.ttf","IPAゴシック",14.0)        # Debian
-         ,("opentype/ipafont-gothic/ipam.ttf","IPAゴシック M",14.0)      # Debian
-         ,("opentype/noto/NotoSansCJK-Regular.ttc","Noto Sans CJK",14.0) # Linux Mint
-         ,("truetype/liberation/LiberationMono-Regular.ttf","LiberationMono",13.0) # Ubuntu english
+         ("opentype/ipafont-gothic/ipag.ttf",               "IPAゴシック",    14.0), # Debian
+         ("opentype/ipafont-gothic/ipam.ttf",               "IPAゴシック M",  14.0), # Debian
+         ("opentype/noto/NotoSansCJK-Regular.ttc",          "Noto Sans CJK",  14.0), # Linux Mint
+         ("truetype/liberation/LiberationMono-Regular.ttf", "LiberationMono", 13.0), # Ubuntu english
+         ("truetype/dejavu/DejaVuSansMono.ttf",             "DejaVuSansMono", 13.0), # English region standard font
         ])
 
 # Add Icon font
@@ -66,7 +67,7 @@ proc new_ImFontConfig(): ImFontConfig =
     result.MergeMode = false
     result.EllipsisChar = cast[ImWchar](-1)
 
-proc setupFonts*(): (bool,string,string) =
+proc setupFonts*(): (bool,string,string, ptr ImFont) =
   let pio = igGetIO()
   #
   #var config {.global.}  = ImFontconfig_ImFontConfig()
@@ -75,19 +76,20 @@ proc setupFonts*(): (bool,string,string) =
   #--------------------------
   # Load first base font
   #--------------------------
-  result =  (false,"Default","ProggyClean.ttf") #
+  result =  (false,"Default","ProggyClean.ttf", nil) #
   var seqFontNames: seq[(string,string)]
+  var font: ptr ImFont
   for (fontName,fontTitle,point) in fontInfo.fontTable:
     let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
     if os.fileExists(fontFullPath):
       seqFontNames.add (fontName,fontTitle)
-      pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, nil,  nil);
+      font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, nil,  nil);
       echo "Added: ",fontFullPath
       break
   if seqFontNames.len > 0:
-    result = (true,seqFontNames[0][0].extractFilename ,seqFontNames[0][1])
+    result = (true, seqFontNames[0][0].extractFilename ,seqFontNames[0][1], font)
   else:
-    pio.Fonts.ImFontAtlas_AddFontDefault(nil)
+    font =  pio.Fonts.ImFontAtlas_AddFontDefault(nil)
 
   #-----------------
   # Merge Icon font
@@ -95,6 +97,6 @@ proc setupFonts*(): (bool,string,string) =
   config.MergeMode = true
   var ranges_icon_fonts {.global.} = [ICON_MIN_FA.uint16,  ICON_MAX_FA.uint16, 0]
   if os.fileExists(IconfontFullPath):
-    pio.Fonts.ImFontAtlas_AddFontFromFileTTF(IconfontFullPath.cstring, 11.point2px, addr config, addr ranges_icon_fonts[0]);
+    font =  pio.Fonts.ImFontAtlas_AddFontFromFileTTF(IconfontFullPath.cstring, 11.point2px, addr config, addr ranges_icon_fonts[0]);
   else:
     echo "Error!: Can't find Icon fonts: " , IconfontFullPath

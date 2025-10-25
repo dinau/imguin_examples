@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.92.3.1"
+version       = "1.92.3.2"
 author        = "dinau"
 description   = "The examples for ImGuin that wrapper for ImGui libraries with Nim language."
 license       = "MIT"
@@ -19,6 +19,7 @@ requires "stb_image == 2.5"
 requires "tinydialogs == 1.1.0"
 requires "glfw == 3.4.0.4"
 requires "opengl"
+requires "naylib"
 
 
 task all,"Build all examples":

@@ -13,6 +13,7 @@
         - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
         - [glfw_opengl3_imguiTextSelect](#glfw_opengl3_imguitextselect)
         - [glfw_opengl3_imspinner](#glfw_opengl3_imspinner)
+        - [rlimgui_basic (Naylib / Raylib / rlImgui)](#rlimgui_basic-naylib--raylib--rlimgui)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
         - [glfw_opengl3_image_load / sdl2_opengl3](#glfw_opengl3_image_load--sdl2_opengl3)
         - [sdl2_renderer  / sdl3_renderer  / sdl3_opengl3 / sdl3_sdlgpu3](#sdl2_renderer---sdl3_renderer---sdl3_opengl3--sdl3_sdlgpu3)
@@ -31,19 +32,19 @@
   - [Compressing binary file](#compressing-binary-file)
   - [My tools version](#my-tools-version)
   - [Other link](#other-link)
-        - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
-        - [SDL Game tutorial Platfromer](#sdl-game-tutorial-platfromer)
-        - [Other link2](#other-link2)
-        - [Memo](#memo)
+    - [Similar project ImGui / CImGui](#similar-project-imgui--cimgui)
+    - [SDL Game tutorial Platfromer](#sdl-game-tutorial-platfromer)
+    - [Other link2](#other-link2)
+    - [Memo](#memo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.2.1** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.2b) (2025/08)
+Confirmed **ImGuin** verion: **v1.92.3.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.3) (2025/10)
 
-This project is example project to use Dear ImGui, ImPlot and so on in Nim language.  
+This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
 
 [^notice]: It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
@@ -58,12 +59,12 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
 ---
 
-- [Nim-2.0.16](https://nim-lang.org) or later
+- [Nim-2.2.4](https://nim-lang.org) or later
 - Windows10 or later  
 [MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
 
    ```sh
-   pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
+   pacman -S mingw-w64-ucrt-x86_64-{gcc,glfw,SDL2,sdl3} make
    ```
 
 - Linux: Debian13 / Ubuntu families 
@@ -139,13 +140,16 @@ Library name / C lang wrapper
 - [x] [ImGuiTextSelect](https://github.com/AidanSun05/ImGuiTextSelect) / [CImGuiTextSelect](https://github.com/dinau/CImGuiTextSelect) (2025/09)
 - [ ] [ImGui_Markdown](https://github.com/enkisoftware/imgui_markdown) / [CImGui_Markdown](https://github.com/dinau/cimgui_markdown) WIP
 
+Additional examples
+- [x] [Naylib](https://github.com/planetis-m/naylib)([Raylib](https://github.com/raysan5/raylib)) , [rlImGui](https://github.com/raylib-extras/rlImGui) (2025/10)
+
 #### Screenshot (examples)
 
 ---
 
 These screenshots are on Windows10.
 
-###### [glfw_opengl3](glfw_opengl3)  
+###### glfw_opengl3
 
 ---
 
@@ -161,7 +165,7 @@ Basic example with icon fonts
    make        # or   nim c glfw_opengl3.nim
    ```
 
-###### [glfw_opengl3_imknobs](glfw_opengl3_imknobs)
+###### glfw_opengl3_imknobs
 
 ---
 
@@ -179,7 +183,7 @@ glfw_opengl3_imknobs
 make     # or  nim c -d:ImKnobs glfw_opengl3_imknobs.nim  
 ```
 
-###### [glfw_opengl3_filedialog](glfw_opengl3_filedialog)
+###### glfw_opengl3_filedialog
 
 ---
 
@@ -193,7 +197,7 @@ glfw_opengl3_filedialog
 make    # or   nim c -d:ImGuiFileDialog glfw_opengl3_filedialog.nim  
 ```
 
-###### [glfw_opengl3_imgui_toggle](glfw_opengl3_imgui_toggle)  
+###### glfw_opengl3_imgui_toggle
 
 ---
 
@@ -205,7 +209,7 @@ glfw_opengl3_imgui_toggle
 make    # or   nim c -d:ImGuiToggle glfw_opengl3_imgui_toggle.nim  
 ```
 
-###### [glfw_opengl3_imguiTextSelect](glfw_opengl3_imguiTextSelect)  
+###### glfw_opengl3_imguiTextSelect
 
 ---
 
@@ -219,7 +223,7 @@ make    # or   nim c -d:ImGuiToggle glfw_opengl3_imgui_toggle.nim
    make    # or    nim c -d:ImGuiTextSelect  glfw_opengl3_imguiTextSelect.nim  
    ```
 
-###### [glfw_opengl3_imspinner](glfw_opengl3_imspinner)  
+###### glfw_opengl3_imspinner
 
 ---
 
@@ -232,7 +236,20 @@ make    # or   nim c -d:ImGuiToggle glfw_opengl3_imgui_toggle.nim
    make    # or    nim c -d:ImSpinner glfw_opengl3_imspinner.nim  
    ```
 
-###### [glfw_opengl3_iconfont_viewer](glfw_opengl3_iconfont_viewer)  
+
+###### rlimgui_basic (Naylib / Raylib / rlImgui)
+
+---
+
+![alt](https://github.com/dinau/imguin_examples/raw/main/img/rlimgui.gif)  
+
+   ```sh
+   pwd
+   rlimgui_basic
+   make    # or    nim c rlimgui_basic.nim  
+   ```
+
+###### glfw_opengl3_iconfont_viewer
 
 ---
 
@@ -249,7 +266,7 @@ iconFontViewer
 make       # or    nim c iconFontViewer.nim  
 ```
 
-###### [glfw_opengl3_image_load](glfw_opengl3_image_load) / [sdl2_opengl3](sdl2_opengl3) 
+###### glfw_opengl3_image_load / sdl2_opengl3
 
 ---
 
@@ -272,7 +289,10 @@ make       # or    nim c iconFontViewer.nim
    make     # or    nim c -d:SDL sdl2_opengl3.nim  
    ```
 
-###### [sdl2_renderer](sdl2_renderer)  / [sdl3_renderer](sdl3_renderer)  / [sdl3_opengl3](sdl3_opengl3) / [sdl3_sdlgpu3](sdl3_sdlgpu3)
+
+
+
+###### sdl2_renderer  / sdl3_renderer  / sdl3_opengl3 / sdl3_sdlgpu3
 
 ---
 
@@ -311,7 +331,7 @@ SDL renderer backend.
    make     # or    nim c -d:SDL sdl3_sdlgpu3.nim  
    ```
 
-###### [glfw_opengl3_image_save](glfw_opengl3_image_save)  
+###### glfw_opengl3_image_save
 
 ---
 
@@ -327,7 +347,7 @@ glfw_opengl3_image_save
 make        # or   nim c glfw_opengl3_image_save.nim
 ```
 
-###### [glfw_opengl3_jp](glfw_opengl3_jp)
+###### glfw_opengl3_jp
 
 ---
 
@@ -347,7 +367,7 @@ If you are on Debian13 in WSL2 on Windows OS,
 sudo apt install fonts-ipafont
 ```
 
-###### [glfw_opengl3_implot](glfw_opengl3_implot)
+###### glfw_opengl3_implot
 
 ---
 
@@ -360,7 +380,7 @@ glfw_opengl3_implot
 make        # or    nim c -d:ImPlot glfw_opengl3_implot.nim
 ```
 
-###### [glfw_opengl3_implot3d](glfw_opengl3_implot3d)
+###### glfw_opengl3_implot3d
 
 ---
 
@@ -375,7 +395,7 @@ glfw_opengl3_implot3d
 make       # or   nim c -d:ImPlot3D glfw_opengl3_implot3d.nim
 ```
 
-###### [glfw_opengl3_imnodes](glfw_opengl3_imnodes)
+###### glfw_opengl3_imnodes
 
 ---
 
@@ -387,7 +407,7 @@ glfw_opengl3_imnodes
 make        # or    nim c -d:ImNodes glfw_opengl3_imnodes.nim
 ```
 
-###### [glfw_opengl3_imguizmo](glfw_opengl3_imguizmo)
+###### glfw_opengl3_imguizmo
 
 ---
 
@@ -399,7 +419,7 @@ make        # or    nim c -d:ImNodes glfw_opengl3_imnodes.nim
    make        # or    nim c -d:ImGuizmo glfw_opengl3_imguizmo.nim
    ```
 
-###### [glfw_opengl3_imColorTextEdit](glfw_opengl3_imColorTextEdit)
+###### glfw_opengl3_imColorTextEdit
 
 ---
 
@@ -411,7 +431,7 @@ glfw_opengl3_imColorTextEdit
 make        # or    nim c -d:ImColorTextEdit glfw_opengl3_imColorTextEdit.nim
 ```
 
-###### [glfw_opengl3_imgui_markdown](glfw_opengl3_imgui_markdown)
+###### glfw_opengl3_imgui_markdown
 
 ---
 
@@ -493,7 +513,7 @@ Install `UPX` with MSys console on WindowsOS,
 
 
 ```sh
-pacman -S mingw-w64-x86_64-upx
+pacman -S mingw-w64-ucrt-x86_64-upx
 ```
 
 For compression exe file,
@@ -537,7 +557,7 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 Windows11 (main)
 - **Nim Compiler Version 2.2.4**
 - **GCC (Rev1, Built by MSYS2 project) 15.2.0**
-- Clang version 20.1.8
+- Clang version 21.1.4
 - Visual Studio C++/C 2022
 - git version 2.46.0.windows.1
 - Make: GNU Make 4.4.1
@@ -564,11 +584,14 @@ Linux OS: Debain 13
 
 - Graphical
   - [Immediate Mode Plotting](https://github.com/epezent/implot)
-     ![alt](https://raw.githubusercontent.com/wiki/epezent/implot/screenshots3/stem.gif)
 
-###### Similar project ImGui / CImGui
+  ![alt](https://raw.githubusercontent.com/wiki/epezent/implot/screenshots3/stem.gif)
+
+#### Similar project ImGui / CImGui
 
 ---
+
+![alt](https://github.com/dinau/luajitImGui/raw/main/examples/img/glfw_opengl3_implot.gif)
 
 | Language             |          | Project                                                                                                                                         |
 | -------------------: | :---:    | :----------------------------------------------------------------:                                                                              |
@@ -580,7 +603,7 @@ Linux OS: Debain 13
 | **Zig**, C lang.     | Compiler | [Dear_Bindings_Build](https://github.com/dinau/dear_bindings_build)                                                                             |
 | **Zig**              | Compiler | [ImGuinZ](https://github.com/dinau/imguinz)                                                                                                     |
 
-###### SDL Game tutorial Platfromer
+#### SDL Game tutorial Platfromer
 
 ---
 
@@ -594,7 +617,7 @@ Linux OS: Debain 13
 | **Ruby**             | Script   | SDL3        | [Ruby-Platformer](https://github.com/dinau/ruby-platformer)                                                                                           |
 | **Zig**              | Compiler | SDL3 / SDL2 | [Zig-Platformer](https://github.com/dinau/zig-platformer)                                                                                             |
 
-###### Other link2
+#### Other link2
 
 ---
 
@@ -602,7 +625,7 @@ Linux OS: Debain 13
 SOIL2 is a tiny C library used primarily for uploading textures into OpenGL. 
 
 
-###### Memo
+#### Memo
 
 ---
 
@@ -613,3 +636,16 @@ error: assignment to 'char **' from incompatible pointer type 'const char * cons
 ```nim
 type ConstCstring {.importc: const char *.} = cstring
 ```
+
+
+
+
+Notes:
+
+- Using ImPlot3D / ImPlot with Nim
+- Nim + ImGui + ImPlot3D / ImPlot demo
+- Build with ImPlot3D / ImPlot
+- ImPlot3D integration example
+- This project builds and runs Dear ImGui + ImPlot3D / ImPlotusing Nim.
+- ImPlot3D is compiled from source (implot3d.h / implot3d.cpp)
+- ImPlot is compiled from source (implot.h / implot.cpp)

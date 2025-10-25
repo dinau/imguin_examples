@@ -1,8 +1,9 @@
 sdl3_renderer_nim_sdl3/
 utils/nim_sdl3/
 utils/appImGuiSdlrenderer3_nim_sdl3.nim
-
+.githubx
 .ccache/
+glfw_opengl3_simple_skelton/
 setenv.common.bat
 *.org
 *.zip

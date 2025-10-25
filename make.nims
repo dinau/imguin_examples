@@ -20,6 +20,7 @@ var projDirs = @[
 "glfw_opengl3_jp",
 "sdl2_opengl3",
 "sdl2_renderer",
+"rlimgui_basic",
 #"sdl3_opengl3",
 #"sdl3_renderer",
 #"sdl3_sdlgpu3",

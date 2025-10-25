@@ -1,0 +1,16 @@
+ rlimgui/rlImGui.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rlimgui/rlImGui.h b/rlimgui/rlImGui.h
+index 92d2e2c..d7969fe 100644
+--- a/rlimgui/rlImGui.h
++++ b/rlimgui/rlImGui.h
+@@ -32,6 +32,8 @@
+ 
+ #include "raylib.h"
+ 
++#include "rlimgui_patch.h"
++
+ // Function specifiers in case library is build/used as a shared library
+ // NOTE: Microsoft specifiers to tell compiler that symbols are imported/exported from a .dll
+ // NOTE: visibility("default") attribute makes symbols "visible" when compiled with -fvisibility=hidden
