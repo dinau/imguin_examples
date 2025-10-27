@@ -1,8 +1,7 @@
 import raylib
 import ./rlimgui
-import imguin/cimgui
+import imguin/[cimgui, simple]
 
-#import ../utils/fonticon/IconsFontAwesome6
 import ../utils/setupFonts
 
 when defined(windows):
@@ -24,8 +23,7 @@ proc testShowCursor() =
 
 proc testDrawRectangle() =
   let rec = Rectangle(x: 50, y: 50, width: 400, height: 150)
-  let color = LightGray
-  drawRectangle(rec, color)
+  drawRectangle(rec, LightGray)
 
 proc testDrawText() =
   drawText("Hello, World!", 70, 100, 20, Magenta)
@@ -66,12 +64,13 @@ proc main =
 
   #-----------------
   rlImGuiSetup(true)
+  #-----------------
 
   let (_, _, _, font) = setupFonts()
-
   let pio = igGetIO_nil()
   pio.MouseDrawCursor = true
 
+  var mapColor = ccolor(elm:(x:152/255, y:203/255, z:47/255, w:1.0))
 
   # --------------------------------------------------------------------------------------
   # Main game loop
@@ -100,23 +99,26 @@ proc main =
       igBegin("Test Window " & ICON_FA_DOG  , nil, 0)
       igText("%s", ICON_FA_SUN & " Sun")
       igText("%s", ICON_FA_CLOUD_RAIN & " Rain" )
+      igText("Change Color")
+      igColorEdit3("##Change color", mapColor.array3, 0)
       igEnd()
 
     #-------------------
-    # raylib draw texts
+    # Raylib draw texts
     #-------------------
     testDrawRectangle()
     testDrawText()
     testDrawTextWithFont()
 
     #------------------------
-    # raylib draw height map
+    # Raylib draw height map
     #------------------------
     beginDrawing()
     clearBackground(RayWhite)
 
     beginMode3D(camera)
-    drawModel(Model(model), mapPosition, 1, Green)
+    let color = raylib.Color(r: (mapColor.elm.x * 255).uint8, g: (mapColor.elm.y * 255).uint8, b: (mapColor.elm.z * 255).uint8, a: (mapColor.elm.w * 255).uint8)
+    drawModel(Model(model), mapPosition, 1, color)
     drawGrid(20, 1)
     endMode3D()
 
@@ -124,7 +126,7 @@ proc main =
     drawRectangleLines(screenWidth - texture.width - 20, 20, texture.width, texture.height, Green)
     drawFPS(10, 10)
 
-    drawText("Congrats! You created your first window!", 50, 220, 20, Orange)
+    drawText("Congrats! You created your first window!", 50, 250, 20, Orange)
     #----------
     # end proc
     #----------
