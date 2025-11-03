@@ -1,3 +1,4 @@
+import strutils
 import raylib
 import ./rlimgui
 import imguin/[cimgui, simple]
@@ -23,15 +24,16 @@ proc testShowCursor() =
 
 proc testDrawRectangle() =
   let rec = Rectangle(x: 50, y: 50, width: 400, height: 150)
-  drawRectangle(rec, LightGray)
+  drawRectangle(rec, raylib.Color(r: 64, g: 166, b: 217, a: 55))
 
 proc testDrawText() =
-  drawText("Hello, World!", 70, 100, 20, Magenta)
+  drawText("Nim-" & NimVersion,                                    70, 70,  20, DarkBlue)
+  drawText("Raylib v$#.$#" % [$RaylibVersion[0], $RaylibVersion[1]], 70, 100, 20, DarkBlue)
+  drawText("2025/10",                                                70, 130, 20, DarkBlue)
 
-proc testDrawTextWithFont() =
   let font = getFontDefault()
-  let position = Vector2(x: 150, y: 150)
-  drawText(font, "Hello with custom font", position, 24, 2, DarkGray)
+  let position = Vector2(x: 150, y: 160)
+  drawText(font, "Hello with custom font", position, 24, 2, Gray)
 
 # ----------------------------------------------------------------------------------------
 # Program main entry point
@@ -51,26 +53,26 @@ proc main =
     projection: Perspective                 # Camera projection type
   )
 
-  var image = loadImage("istockphoto_com-1209065219-128.png") # https://www.istockphoto.com  search "grayscale height map"
-  let texture = loadTextureFromImage(image) # Convert image to texture (VRAM)
-  let mesh = genMeshHeightmap(image, Vector3(x: 16, y: 8, z: 16)) # Generate heightmap mesh (RAM and VRAM)
-  var model = loadModelFromMesh(mesh) # Load model from generated mesh
+  var image = loadImage("istockphoto_com-1209065219-128.png")                # https://www.istockphoto.com  search "grayscale height map"
+  let texture = loadTextureFromImage(image)                                  # Convert image to texture (VRAM)
+  let mesh = genMeshHeightmap(image, Vector3(x: 16, y: 8, z: 16))            # Generate heightmap mesh (RAM and VRAM)
+  var model = loadModelFromMesh(mesh)                                        # Load model from generated mesh
   Model(model).materials[0].maps[MaterialMapIndex.Diffuse].texture = texture # Set map diffuse texture
 
-  let mapPosition = Vector3(x: -8, y: 0, z: -8) # Define model position
-  reset(image) # Unload heightmap image from RAM, already uploaded to VRAM
+  let mapPosition = Vector3(x: -8, y: 0, z: -8)                              # Define model position
+  reset(image)                                                               # Unload heightmap image from RAM, already uploaded to VRAM
 
-  setTargetFPS(60) # Set our game to run at 60 frames-per-second
+  setTargetFPS(60)                                                           # Set our game to run at 60 frames-per-second
 
   #-----------------
   rlImGuiSetup(true)
   #-----------------
 
   let (_, _, _, font) = setupFonts()
-  let pio = igGetIO_nil()
+  let pio = igGetIO()
   pio.MouseDrawCursor = true
 
-  var mapColor = ccolor(elm:(x:152/255, y:203/255, z:47/255, w:1.0))
+  var mapColor = ccolor(elm:(x:(255 - 73)/255, y:(255 - 113)/255, z:(255 - 166)/255, w:1.0))
 
   # --------------------------------------------------------------------------------------
   # Main game loop
@@ -83,7 +85,6 @@ proc main =
     # Draw
     # ------------------------------------------------------------------------------------
     beginDrawing()
-    clearBackground(DarkGreen)
     rlImGuiBegin()
 
     #-------------
@@ -108,13 +109,11 @@ proc main =
     #-------------------
     testDrawRectangle()
     testDrawText()
-    testDrawTextWithFont()
 
     #------------------------
     # Raylib draw height map
     #------------------------
-    beginDrawing()
-    clearBackground(RayWhite)
+    clearBackground(BLACK)
 
     beginMode3D(camera)
     let color = raylib.Color(r: (mapColor.elm.x * 255).uint8, g: (mapColor.elm.y * 255).uint8, b: (mapColor.elm.z * 255).uint8, a: (mapColor.elm.w * 255).uint8)
@@ -123,10 +122,11 @@ proc main =
     endMode3D()
 
     drawTexture(texture, screenWidth - texture.width - 20, 20, White)
-    drawRectangleLines(screenWidth - texture.width - 20, 20, texture.width, texture.height, Green)
-    drawFPS(10, 10)
+    drawRectangleLines(screenWidth - texture.width - 20, 20, texture.width, texture.height, DarkBlue)
+    drawText("$# FPS" % [$getFPS()], 10, 10, 20, GRAY)
 
-    drawText("Congrats! You created your first window!", 50, 250, 20, Orange)
+    drawText("Dear ImGui + Nalylib(Raylib) + rlImGui", 50, 250, 20, RayWhite)
+
     #----------
     # end proc
     #----------

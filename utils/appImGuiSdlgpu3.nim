@@ -19,7 +19,7 @@ import imguin/[glad/gl, cimgui, impl_sdl3, impl_sdlgpu3, simple]
 export              gl, cimgui, impl_sdl3, impl_sdlgpu3, simple
 
 import ../utils/sdlgpu3/[zoomglass, loadImage_SDLGPU3]
-export                       zoomglass,      loadImage_SDLGPU3
+export                       zoomglass,      loadImage_sdlgpu3
 import ../utils/[saveImage, setupFonts, utils, vecs]
 export           saveImage, setupFonts, utils, vecs
 
