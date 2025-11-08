@@ -42,7 +42,7 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.3.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.3) (2025/10)
+Confirmed **ImGuin** verion: **v1.92.4.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.4) (2025/11)
 
 This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -59,12 +59,12 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
 ---
 
-- [Nim-2.2.4](https://nim-lang.org) or later
-- Windows10 or later  
+- [Nim-2.2.6](https://nim-lang.org) or later
+- Windows11
 [MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
 
    ```sh
-   pacman -S mingw-w64-ucrt-x86_64-{gcc,glfw,SDL2,sdl3} make
+   pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
    ```
 
 - Linux: Debian13 / Ubuntu families 
@@ -455,39 +455,50 @@ make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
 
 ---
 
-See:  
+1. See:  
 [Cross compilation to Windows, linker error (unrecognized option '-z'](https://forum.nim-lang.org/t/11302#73838)  
 https://nim-lang.org/docs/nimc.html#crossminuscompilation-for-windows
 
-For example on Linux Mint 22 and so on,
+1. Download GLFW3 Windows pre-compiled binaries form [here](https://www.glfw.org/download).
+1. Extracts `glfw-3.4.bin.WIN64.zip`
+1.
+   ```sh
+   cp glfw-3.4.bin.WIN64/lib-mingw-w64/{glfw3.dll,libglfw3dll.a} imguin_examples/glfw_opengl3/
+   ```
 
-```sh
-pwd
-examples
-cd glfw_opengl3
-```
+1. Rename lib name
 
-```sh
-make win  
-```
+   ```sh
+   pwd
+   imguin_examples/glfw_opengl3
+   mv libglfw3dll.a libglfw3.dll.a
+   ```
 
-or
+1. Edit `Makefile`  
+Add the following line to `imguin_examples/glfw_opengl3/Makefile`
 
-```sh
-nim c -d:mingw glfw_opengl3
-or 
-nim c --os:windows glfw_opengl3
-```
+   ```shj
+   OPT += -d:release
+   OPT += --passL:"-L ."    # <----- added line
+   
+   include ../makefile.common.mk
+   ```
 
-`glfw_opengl3.exe` will be generated in the current folder.
+1. Run make to build example
 
-### Selection backend compiler
+   ```sh
+   make win
+   ```
 
----
-
-You might be able to use another C/C++ compiler,  
-`Clang, vcc(Visual Studio C/C++) , zig cc`  
-by changing variable `TC` in [config.nims.common](config.nims.common).
+   or
+   
+   ```sh
+   nim c -d:mingw glfw_opengl3
+   or 
+   nim c --os:windows glfw_opengl3
+   ```
+   
+   `glfw_opengl3.exe` will be generated in the current folder.
 
 ### TODO
 
@@ -513,7 +524,7 @@ Install `UPX` with MSys console on WindowsOS,
 
 
 ```sh
-pacman -S mingw-w64-ucrt-x86_64-upx
+pacman -S mingw-w64-x86_64-upx
 ```
 
 For compression exe file,
