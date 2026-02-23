@@ -68,17 +68,14 @@ proc main() =
       # Show icons in ListBox
       #-----------------------
       block:
-        var
-          listBoxPosTop:ImVec2
-          listBoxPosEnd:ImVec2
         igNewline()
-        igGetCursorScreenPos(addr listBoxPosTop) # Get absolute pos.
+        let listBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
         igSetNextItemWidth(listBoxWidth.float)
         igListBox_Str_arr("##".cstring
                           , addr item_current
                           , cast[ptr UncheckedArray[cstring]](addr iconFontsTbl[0])
                           , iconFontsTbl.len.cint, 34)
-        igGetCursorScreenPos(addr listBoxPosEnd) # Get absolute pos.
+        let listBoxPosEnd =  igGetCursorScreenPos() # Get absolute pos.
 
         # Show magnifying glass (Zoom in Toolchip)
         if igIsItemHovered(ImGui_HoveredFlags_DelayNone.cint):

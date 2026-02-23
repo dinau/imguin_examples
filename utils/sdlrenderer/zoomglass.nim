@@ -1,10 +1,11 @@
 import imguin/[cimgui, simple]
 import ../fonticon/IconsFontAwesome6
 
+
 #--------------
 #--- zoomGlass
 #--------------
-proc zoomGlass*(textureID: ImTextureID, itemWidth, itemHeight:int, itemPosTop:ImVec2) =
+proc zoomGlass*(textureID: ImTextureID, itemWidth, itemHeight:int, itemPosTop:ImVec2_c) =
   # itemPosTop : absolute position in main window.
   if igBeginItemTooltip():
     defer: igEndTooltip()
@@ -23,9 +24,9 @@ proc zoomGlass*(textureID: ImTextureID, itemWidth, itemHeight:int, itemPosTop:Im
       region_y = 0.0f
     elif region_y > my_tex_h - region_sz:
       region_y = my_tex_h - region_sz
-    let uv0 = ImVec2(x: (region_x) / my_tex_w, y: (region_y) / my_tex_h)
-    let uv1 = ImVec2(x: (region_x + region_sz) / my_tex_w, y: (region_y + region_sz) / my_tex_h)
+    let uv0 = ImVec2_c(x: (region_x) / my_tex_w, y: (region_y) / my_tex_h)
+    let uv1 = ImVec2_c(x: (region_x + region_sz) / my_tex_w, y: (region_y + region_sz) / my_tex_h)
     let tint_col =  ImVec4(x: 1.0f, y: 1.0f, z: 1.0f, w: 1.0f) #// No tint
     let border_col = ImVec4(x: 0.22f, y: 0.56f, z: 0.22f, w: 1.0f) # Green
     igText(ICON_FA_MAGNIFYING_GLASS & " 4 x")
-    igImage(ImTextureRef(internal_TexData: nil, internal_TexID: textureID), ImVec2(x: region_sz * zoom, y: region_sz * zoom), uv0, uv1) #, tint_col, border_col)
+    igImage(ImTextureRef(internal_TexData: nil, internal_TexID: textureID), ImVec2_c(x: region_sz * zoom, y: region_sz * zoom), uv0, uv1) #, tint_col, border_col)

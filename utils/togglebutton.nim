@@ -16,8 +16,7 @@ import ../utils/[utils,vecs]
 # igToggleButton
 #----------------
 proc igToggleButton*(str_id:string, v: var bool): bool =
-  var pos: ImVec2
-  igGetCursorScreenPos(addr pos)
+  let pos = igGetCursorScreenPos()
   let draw_list = igGetWindowDrawList()
   let height = igGetFrameHeight() * 0.9
   let width = height * 1.65

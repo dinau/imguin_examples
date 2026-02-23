@@ -54,24 +54,11 @@ else: # For Debian/Ubuntu/Mint
 # Q: How can I load multiple fonts?
 # https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#q-how-can-i-load-multiple-fonts
 
-proc new_ImFontConfig(): ImFontConfig =
-    #[Custom constructor with default params taken from imgui.h]#
-    result.FontDataOwnedByAtlas = true
-    result.FontNo = 0
-    result.OversampleH = 3
-    result.OversampleV = 1
-    result.PixelSnapH = false
-    result.GlyphMaxAdvanceX = float.high
-    result.RasterizerMultiply = 1.0
-    result.RasterizerDensity  = 1.0
-    result.MergeMode = false
-    result.EllipsisChar = cast[ImWchar](-1)
 
 proc setupFonts*(): (bool,string,string, ptr ImFont) =
   let pio = igGetIO()
   #
-  #var config {.global.}  = ImFontconfig_ImFontConfig()
-  var config {.global.}  = new_ImFontConfig()
+  var config {.global.}  = ImFontconfig_ImFontConfig()
 
   #--------------------------
   # Load first base font
@@ -83,20 +70,19 @@ proc setupFonts*(): (bool,string,string, ptr ImFont) =
     let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
     if os.fileExists(fontFullPath):
       seqFontNames.add (fontName,fontTitle)
-      font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, nil,  nil);
+      font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, config,  nil);
       echo "Added: ",fontFullPath
       break
   if seqFontNames.len > 0:
     result = (true, seqFontNames[0][0].extractFilename ,seqFontNames[0][1], font)
   else:
-    font =  pio.Fonts.ImFontAtlas_AddFontDefault(nil)
+    font = pio.Fonts.ImFontAtlas_AddFontDefault(nil)
 
   #-----------------
   # Merge Icon font
   #-----------------
   config.MergeMode = true
-  var ranges_icon_fonts {.global.} = [ICON_MIN_FA.uint16,  ICON_MAX_FA.uint16, 0]
   if os.fileExists(IconfontFullPath):
-    font =  pio.Fonts.ImFontAtlas_AddFontFromFileTTF(IconfontFullPath.cstring, 11.point2px, addr config, addr ranges_icon_fonts[0]);
+    font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(IconfontFullPath.cstring, 11.point2px, config, nil);
   else:
     echo "Error!: Can't find Icon fonts: " , IconfontFullPath

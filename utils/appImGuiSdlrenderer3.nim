@@ -78,9 +78,6 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   result.ini.viewportHeight = h
   result.loadIni()
 
-  const SDL_WINDOW_RESIZABLE = 0x0000000000000020'u64
-  const SDL_WINDOW_OPENGL    = 0x0000000000000002'u64
-  const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
   var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_OPENGL or SDL_WINDOW_HIDDEN
   var window = SDL_CreateWindow(title
                                , result.ini.viewportWidth , result.ini.viewportHeight
@@ -94,7 +91,6 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   if isNil result.renderer:
     quit -1
 
-  const SDL_WINDOWPOS_CENTERED = cast[cuint](805240832'i64)
   SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED.cint, SDL_WINDOWPOS_CENTERED.cint)
 
   # Setup ImGui
@@ -185,7 +181,6 @@ proc destroyImGui*(win: var WindowSdl) =
 # isIconifySleep
 #----------------
 proc isIconifySleep*(win:WindowSdl): bool =
-  const SDL_WINDOW_MINIMIZED = 0x0000000000000040'u64
   if 0 != (SDL_GetWindowFlags(win.handle) and SDL_WINDOW_MINIMIZED):
     SDL_Delay(10)
     return true

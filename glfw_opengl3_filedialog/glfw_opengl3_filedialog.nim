@@ -9,7 +9,7 @@ when defined(windows):
   {.passC:"-DCUSTOM_IMGUIFILEDIALOG_CONFIG=<customIconFont.h>".}
 
 import ../utils/appImGui
-import ../utils/[infoWindow, themes/themeGold]
+import ../utils/[vecs,infoWindow, themes/themeGold]
 
 when defined(windows):
   when not defined(vcc):   # imguinVcc.res TODO WIP
@@ -95,8 +95,8 @@ proc main() =
       # Start display FileDialog
       #------------------------------
       let ioptr = igGetIO()
-      let maxSize = vec2(ioptr.DisplaySize.x * 0.8, ioptr.DisplaySize.y * 0.8)
-      let minSize = vec2(maxSize.x * 0.25,  maxSize.y * 0.25)
+      let maxSize = ImVec2(x: ioptr.DisplaySize.x * 0.8, y: ioptr.DisplaySize.y * 0.8)
+      let minSize = ImVec2(x: maxSize.x * 0.25,  y: maxSize.y * 0.25)
 
       if IGFD_DisplayDialog(cfd, "filedlg".cstring, ImGuiWindowFlags_NoCollapse.ImGuiWindowFlags, minSize, maxSize):
         defer: IGFD_CloseDialog(cfd)

@@ -30,7 +30,7 @@ proc imPlotWindow() =
     igBegin("Plot Window", nil, 0)
     defer: igEnd()
     block:
-      ImPlotBeginPlot("My Plot",vec2(0.0f, 0.0f), 0.ImplotFlags)
+      ImPlotBeginPlot("My Plot",ImVec2_c(x: 0.0f, y: 0.0f), 0.ImplotFlags)
       defer: ImPlotEndPlot()
       # See ./implotFuncs.nim
       ImPlotPlotBars("My Bar Plot",bar_data.ptz ,bar_data.len.cint)
@@ -61,7 +61,7 @@ proc imPlot3dWindow() =
     igBegin("Plot3D Window", nil, 0)
     defer: igEnd()
     block:
-      ImPlot3dBeginPlot("Line Plots",vec2(0.0f, 0.0f), 0.cint)
+      ImPlot3dBeginPlot("Line Plots", ImVec2_c(x: 0.0f, y: 0.0f), 0.cint)
       defer: ImPlot3DEndPlot()
       # See ./implotFuncs.nim
       let IMPLOT3D_AUTO_COL = vec4(0, 0, 0, -1) # Deduce color automatically

@@ -11,17 +11,7 @@
 import sdl3_nim
 import stb_image/read as stbi
 
-#define SDL_GPU_TEXTUREUSAGE_SAMPLER                                 (1u << 0) /**< Texture supports sampling. */
-#define SDL_GPU_TEXTUREUSAGE_COLOR_TARGET                            (1u << 1) /**< Texture is a color render target. */
-#define SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET                    (1u << 2) /**< Texture is a depth stencil target. */
-#define SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ                   (1u << 3) /**< Texture supports storage reads in graphics stages. */
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ                    (1u << 4) /**< Texture supports storage reads in the compute stage. */
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE                   (1u << 5) /**< Texture supports storage writes in the compute stage. */
-#define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE (1u << 6) /**< Texture supports reads and writes in the same compute shader. This is NOT equivalent to READ | WRITE. */
-
-const SDL_GPU_TEXTUREUSAGE_SAMPLER  =  (1 shl 0) #/**< Texture supports sampling. */
-
-proc loadTextureFromBufferSDLGPU3*(data: seq[byte], data_size: csize_t, device: ptr SDL_GPUDevice , out_texture: ptr ptr SDL_GPUTexture , out_width: ptr cint, out_height: ptr cint): bool =
+proc loadTextureFromBufferSDLGPU3*(data: seq[byte], data_size: csize_t, device: ptr SDL_GPUDevice , out_texture: var ptr SDL_GPUTexture , out_width: var cint, out_height: var cint): bool =
     #// Load from disk into a raw RGBA buffer
     var image_width: uint32
     var image_height: uint32
@@ -78,18 +68,21 @@ proc loadTextureFromBufferSDLGPU3*(data: seq[byte], data_size: csize_t, device: 
 
     SDL_ReleaseGPUTransferBuffer(device, transferbuffer);
 
-    out_texture[] = texture;
-    out_width[] = image_width.int32;
-    out_height[] = image_height.int32;
+    out_texture = texture;
+    out_width = image_width.int32;
+    out_height = image_height.int32;
     return true;
 
 # Open and read a file, then forward to LoadTextureFromMemory()
-proc loadTextureFromFileSDLGPU3*(file_name: string, device: var ptr SDL_GPUDevice, out_texture: var ptr SDL_GPUTexture, out_width, out_height: var cint ): bool =
+proc loadTextureFromFileSDLGPU3*(file_name: string, device: var ptr SDL_GPUDevice, out_texture: var ptr SDL_GPUTexture, out_width: var cint, out_height: var cint ): bool =
     var channels: int
-    var file_data = stbi.load(file_name, cast[var int](out_width), cast[var int](out_height), channels, 4)
+    var width,height: int
+    var file_data = stbi.load(file_name, width, height, channels, 4)
+    out_width = width.cint
+    out_height = height.cint
     return  loadTextureFromBufferSDLGPU3(file_data
                                , file_data.len.csize_t
-                               , device, addr out_texture, addr out_width, addr out_height)
+                               , device, out_texture, out_width, out_height)
 
 proc DestroyTexture(device: ptr SDL_GPUDevice, texture: ptr SDL_GPUTexture) =
     SDL_ReleaseGPUTexture(device, texture);

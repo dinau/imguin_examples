@@ -62,9 +62,8 @@ proc show*(this: var SaveLoadEditor) =
         imnodes_IsEditorHovered() and igIsKeyReleasedNil(ImGuiKey_A):
       inc this.current_id
       let node_id = this.current_id
-      var pos: ImVec2
-      igGetMousePos(pos.addr)
-      imnodes_SetNodeScreenSpacePos(node_id, pos)
+      let pos =  igGetMousePos()
+      imnodes_SetNodeScreenSpacePos(node_id, ImVec2(x: pos.x, y: pos.y))
       this.nodes.add Node(id: node_id, value: 0f)
 
     for node in this.nodes.mitems:
@@ -78,9 +77,8 @@ proc show*(this: var SaveLoadEditor) =
           igDragFloat("value", node.value.addr, 0.01f, 0f, 0f, "%.3f", 0)
           igPopItemWidth()
         imnOutputAttribute(node.id shl 24, ImNodesPinShape_CircleFilled):
-          var wOut, wVal: ImVec2
-          igCalcTextSize(wOut.addr, "output", nil, false, -1.0)
-          igCalcTextSize(wVal.addr, "value", nil, false, -1.0)
+          let wOut = igCalcTextSize("output", nil, false, -1.0)
+          let wVal = igCalcTextSize("value", nil, false, -1.0)
           igIndent(120f + wVal.x - wOut.x)
           igTextUnformatted("output", nil)
     for link in this.links:

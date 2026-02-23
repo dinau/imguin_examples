@@ -30,7 +30,7 @@ proc imPlotWindow(fshow:var bool) =
     igBegin("Plot Window", addr fshow, 0)
     defer: igEnd()
     block:
-      ImPlotBeginPlot("My Plot",vec2(0.0f, 0.0f), 0.ImplotFlags)
+      ImPlotBeginPlot("My Plot",ImVec2_c(x: 0.0f, y: 0.0f), 0.ImplotFlags)
       defer: ImPlotEndPlot()
       # See ./implotFuncs.nim
       ImPlotPlotBars("My Bar Plot",bar_data.ptz ,bar_data.len.cint)

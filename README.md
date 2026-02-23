@@ -42,7 +42,8 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.4.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.4) (2025/11)
+Confirmed **ImGuin** verion: **v1.92.6.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) 
+version: 1.92.6) (2026/02)
 
 This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -74,11 +75,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,xcursor-dev,xinerama-dev,xi-dev,sdl2-dev} git 
    ```
 
-   - If you have Debian13 Trixie
-
-      ```sh
-      $ sudo apt install libsdl3-dev
-      ``` 
+   - See [Install SDL3](https://github.com/dinau/sdl3_nim#for-linux-os) 
 
 #### Build examples
 
@@ -106,7 +103,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    make  # or make run
    ```
 
-   After build, run `./glfw_opengl3_base(.exe)`  
+   After building, run `./glfw_opengl3_base(.exe)`  
    Compilation options depend on `./config.nims` and `./Makefile`.
 
 
@@ -115,12 +112,13 @@ If you'd like to build executables with static link (not using `*.dll`),
 edit `./linkControl.nim` in respective example folder.  
    To not depend on any other `*.dll` files,  
    change to [^glfwStatic]
+
       ```nim
       const STATIC_LINK_GLFW = true   # if true, it doesn't need glfw3.dll
       const STATIC_LINK_CC   = true   # if true, it doesn't need libstd++-6.dll
       ```
 
-[^glfwStatic]: `STATIC_LINK_GLFW = false` can only be set at Dear ImGui 1.92.0 or later
+[^glfwStatic]: Dear ImGui 1.92.0 or later must be set `STATIC_LINK_GLFW = false`.
 
 #### Available libraries 
 
@@ -566,15 +564,15 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 ---
 
 Windows11 (main)
-- **Nim Compiler Version 2.2.4**
+- **Nim Compiler Version 2.2.6**
 - **GCC (Rev1, Built by MSYS2 project) 15.2.0**
-- Clang version 21.1.4
+- Clang version 21.1.8
 - Visual Studio C++/C 2022
 - git version 2.46.0.windows.1
 - Make: GNU Make 4.4.1
 - MSys2/MinGW tools
 
-Linux OS: Debain 13
+WSL2 Linux OS: Debain 13
 - **Nim Compiler Version 2.2.4**
 - gcc 14.2.0
 - make: GNU Make 4.4.1

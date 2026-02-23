@@ -105,12 +105,9 @@ proc main() =
         uv1 = vec2(1, 1)
         tint_col   = vec4(1, 1, 1, 1)
         border_col = vec4(0, 0, 0, 0)
-      var
-        imageBoxPosTop:ImVec2
-        imageBoxPosEnd:ImVec2
-      igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
+      let imageBoxPosTop =  igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: textureId), size, uv0, uv1)
-      igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
+      let imageBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
       #
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd)

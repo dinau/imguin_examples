@@ -79,10 +79,8 @@ proc main() =
       SpinnerDotsToBar(      "tobar",   16, 2, 0.5)                       ;igSameLine()
       SpinnerBarChartRainbow("rainbow", 16, 4, red, 4)                    ;igSameLine()
 
-      proc genColor(i:cint): ImColor {.cdecl.} =
-        var col: ImColor
-        ImColor_HSV(addr col, i.float32 * 0.25, 0.8, 0.8, 1.0)
-        return col
+      proc genColor(i:cint): ImColor_c {.cdecl.} =
+        return  ImColor_HSV(i.float32 * 0.25, 0.8, 0.8, 1.0)
       SpinnerCamera(         "Camera",  16, 8, genColor)  # Defined by "SPINNER_CAMERA"
 
     #--------

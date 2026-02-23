@@ -66,7 +66,7 @@ proc main() =
       igText("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / pio.Framerate, pio.Framerate)
       igSeparatorText("Runing with C API");
 
-      igBeginChild_Str("text", ImVec2(x: 0, y: 0), 0, ImGuiWindowFlags_NoMove.cint);
+      igBeginChild_Str("text", Vec2(x: 0, y: 0), 0, ImGuiWindowFlags_NoMove.cint);
       igPushFont(nil, 30) # Zoom font
       var num = getNumLines(addr table[0])
       for i in 0..<num:

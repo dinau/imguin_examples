@@ -117,7 +117,7 @@ proc main() =
         if TextEditor_CanUndo(editor): "*".cstring else: " ".cstring, langNames[TextEditor_GetLanguageDefinition(editor).cuint], fileName.cstring)
 
       igPushFont(textFont, 0.0)
-      TextEditor_Render(editor, "texteditor", false, vec2(0,0), false)
+      TextEditor_Render(editor, "texteditor", false, ImVec2_c(x: 0, y: 0), false)
       igPopFont()
 
     #--------

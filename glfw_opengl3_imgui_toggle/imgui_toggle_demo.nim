@@ -13,7 +13,7 @@ proc imgui_toggle_simple*() =
   let green_shadow = vec4(0.0f, 1.0f, 0.0f, 0.4f)
 
   #let sz = vec2(40.0, 20.0)
-  let sz = vec2(0.0, 0.0)
+  let sz = ImVec2(x: 0.0, y: 0.0)
   # a default and default animated toggle
   Toggle("Default Toggle", addr values[value_index], sz)
   inc value_index
@@ -179,7 +179,7 @@ proc imgui_toggle_custom() =
 
   # should the toggle draw a11y glyphs
   igCheckboxFlags_IntPtr("A11y", addr config.Flags, ImGuiToggleFlags_A11y.cint)
-  igColumns(2, nil, true)
+  igColumns(1, nil, true)
 
   igSeparator()
 
@@ -222,7 +222,7 @@ proc imgui_toggle_example*() =
 
   # a toggle that will allow the user to view the demo for simple toggles or a custom toggle
   var show_custom_toggle{.global.} = false
-  let sz = vec2(40.0f, 20.0f)
+  let sz = ImVec2(x: 40.0f, y: 20.0f)
   Toggle( if show_custom_toggle: "Showing Custom Toggle".cstring else: "Showing Simple Toggles".cstring , addr show_custom_toggle, sz)
   igSeparator()
 

@@ -1,7 +1,7 @@
 # Compiling:
 # nim c -d:SDL sdl3_sdlgpu3
 
-import std/[os]
+import std/[os,strutils]
 import ../utils/appImGuiSdlgpu3
 
 
@@ -36,12 +36,13 @@ proc main() =
   #-------------
   # Load image
   #-------------
-  var
-    textureId: ptr SDL_GPUTexture
-    textureWidth:cint = 0
-    textureHeight:cint = 0
-  var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
-  #discard loadTextureFromFileSDLGPU3(ImageName, win.gpu_device, textureId, textureWidth,textureHeight)
+  when fImageLoad:
+    var
+      textureId: ptr SDL_GPUTexture
+      textureWidth:cint = 0
+      textureHeight:cint = 0
+    var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
+    discard loadTextureFromFileSDLGPU3(ImageName, win.gpu_device, textureId, textureWidth, textureHeight)
 
   let pio = igGetIO()
 
@@ -72,8 +73,8 @@ proc main() =
       igBegin("Nim: Dear ImGui in Nim lang.", showFirstWindow.addr, 0)
       defer: igEnd()
 
-      igText((getFrontendVersionString()).cstring)
-      igText((getBackendVersionString()).cstring)
+      igText((getFrontendVersionString().split(".")[0]).cstring)
+      igText((getBackendVersionString().split(".")[0]).cstring)
       igText("%s %s", " Dear ImGui", igGetVersion())
       igText("%s%s", " Nim-", NimVersion)
 
@@ -98,12 +99,9 @@ proc main() =
         size = vec2(textureWidth, textureHeight)
         uv0 = vec2(0, 0)
         uv1 = vec2(1, 1)
-      var
-        imageBoxPosTop:ImVec2
-        imageBoxPosEnd:ImVec2
-      igGetCursorScreenPos(addr imageBoxPosTop) # Get absolute pos.
+      let imageBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
-      igGetCursorScreenPos(addr imageBoxPosEnd) # Get absolute pos.
+      let imageBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
       # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(cast[var int32](textureId), textureWidth, imageBoxPosTop, imageBoxPosEnd)

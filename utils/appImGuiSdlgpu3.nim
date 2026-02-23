@@ -18,7 +18,7 @@ export sdl3_nim
 import imguin/[glad/gl, cimgui, impl_sdl3, impl_sdlgpu3, simple]
 export              gl, cimgui, impl_sdl3, impl_sdlgpu3, simple
 
-import ../utils/sdlgpu3/[zoomglass, loadImage_SDLGPU3]
+import ../utils/sdlgpu3/[zoomglass, loadImage_sdlgpu3]
 export                       zoomglass,      loadImage_sdlgpu3
 import ../utils/[saveImage, setupFonts, utils, vecs]
 export           saveImage, setupFonts, utils, vecs
@@ -31,7 +31,7 @@ type IniData = object
 type WindowSdl* = object
   handle*: ptr SDL_Window
   context*: ptr ImGuiContext
-  renderer*: ptr SDL_Renderer
+  #renderer*: ptr SDL_Renderer
   gpu_device*: ptr SDL_GPUDevice
   implotContext: ptr ImPlotContext
   showWindowDelay:int
@@ -69,35 +69,24 @@ block:
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w,h: cint, title:string="ImGui window SDL3 renderer"): WindowSdl =
+proc createImGui*(w,h: cint, title:string="ImGui window SDL3 GPU renderer"): WindowSdl =
   if not SDL_Init(SDL_INIT_VIDEO or SDL_INIT_GAMEPAD):
-    echo "\nError!: SDL_Init()"
+    echo "\nError!: SDL_Init(): " & $SDL_GetError()
 
   result.ini.viewportWidth = w
   result.ini.viewportHeight = h
   result.loadIni()
 
-  const SDL_WINDOW_RESIZABLE = 0x0000000000000020'u64
-  const SDL_WINDOW_OPENGL    = 0x0000000000000002'u64
-  const SDL_WINDOW_HIDDEN    = 0x0000000000000008'u64
-  const SDL_WINDOW_HIGH_PIXEL_DENSITY = 0x0000000000002000'u64
-  var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_HIDDEN or SDL_WINDOW_HIGH_PIXEL_DENSITY
   let main_scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay())
+  var flags = SDL_WINDOW_RESIZABLE or SDL_WINDOW_HIDDEN or SDL_WINDOW_HIGH_PIXEL_DENSITY
   var window = SDL_CreateWindow(title
                                , (result.ini.viewportWidth.float * main_scale).cint , (result.ini.viewportHeight.float * main_scale).cint
                                , flags.SDL_WindowFlags)
   if isNil window:
-    echo "Error!: SDL_CreateWindow()"
+    echo "Error!: SDL_CreateWindow(): " & $SDL_GetError()
     quit 1
 
   # Create GPU Device
-  const SDL_GPU_SHADERFORMAT_INVALID  =  0'u32
-  const SDL_GPU_SHADERFORMAT_PRIVATE  = (1'u32 shl 0) #/**< Shaders for NDA'd platforms. */
-  const SDL_GPU_SHADERFORMAT_SPIRV    = (1'u32 shl 1) #/**< SPIR-V shaders for Vulkan. */
-  const SDL_GPU_SHADERFORMAT_DXBC     = (1'u32 shl 2) #/**< DXBC SM5_1 shaders for D3D12. */
-  const SDL_GPU_SHADERFORMAT_DXIL     = (1'u32 shl 3) #/**< DXIL SM6_0 shaders for D3D12. */
-  const SDL_GPU_SHADERFORMAT_MSL      = (1'u32 shl 4) #/**< MSL shaders for Metal. */
-  const SDL_GPU_SHADERFORMAT_METALLIB = (1'u32 shl 5) #/**< Precompiled metallib shaders for Metal. */
   const flags_gpu = SDL_GPU_SHADERFORMAT_SPIRV +  SDL_GPU_SHADERFORMAT_DXIL + SDL_GPU_SHADERFORMAT_METALLIB
   result.gpu_device = SDL_CreateGPUDevice(flags_gpu.SDL_GPUShaderFormat, true , nil)
   if result.gpu_device.isNil:
@@ -108,10 +97,9 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3 renderer"): WindowS
   if not SDL_ClaimWindowForGPUDevice(result.gpu_device, window):
     echo(fmt"Error: SDL_ClaimWindowForGPUDevice(): {SDL_GetError()}\n")
     quit -1
-  #SDL_SetGPUSwapchainParameters(result.gpu_device, window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR, SDL_GPU_PRESENTMODE_MAILBOX)
   SDL_SetGPUSwapchainParameters(result.gpu_device, window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR, SDL_GPU_PRESENTMODE_VSYNC)
 
-  result.renderer = SDL_CreateRenderer(window, nil) # TODO for Image load ?
+  #result.renderer = SDL_CreateRenderer(window, nil) # TODO for Image load ?
   #SDL_SetRenderVSync(result.renderer, 1);
   #if isNil result.renderer:
   #  quit -1
@@ -143,6 +131,8 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3 renderer"): WindowS
   init_info.Device = result.gpu_device
   init_info.ColorTargetFormat = SDL_GetGPUSwapchainTextureFormat(result.gpu_device, window)
   init_info.MSAASamples = SDL_GPU_SAMPLECOUNT_1
+  init_info.SwapchainComposition = SDL_GPU_SWAPCHAINCOMPOSITION_SDR #  // Only used in multi-viewports mode.
+  init_info.PresentMode = SDL_GPU_PRESENTMODE_VSYNC                 #
   ImGui_ImplSDLGPU3_Init(addr init_info)
 
   if TransparentViewport:
@@ -174,21 +164,20 @@ proc render*(win: var WindowSdl) =
       #// Setup and start a render pass
       var target_info: SDL_GPUColorTargetInfo  # = {}
       target_info.texture = swapchain_texture
-      target_info.clear_color.r =  win.ini.clearColor.elm.x
-      target_info.clear_color.g =  win.ini.clearColor.elm.y
-      target_info.clear_color.b =  win.ini.clearColor.elm.z
-      target_info.clear_color.a =  win.ini.clearColor.elm.w
+      target_info.clear_color =  SDL_FColor(r: win.ini.clearColor.elm.x, g: win.ini.clearColor.elm.y, b: win.ini.clearColor.elm.z, a: win.ini.clearColor.elm.w)
       target_info.load_op = SDL_GPU_LOADOP_CLEAR
       target_info.store_op = SDL_GPU_STOREOP_STORE
       target_info.mip_level = 0
       target_info.layer_or_depth_plane = 0
       target_info.cycle = false
+      #
       target_info.resolve_texture = nil
       target_info.resolve_mip_level = 0
       target_info.resolve_layer = 0
       target_info.cycle_resolve_texture = false
       target_info.padding1 = 0
       target_info.padding2 = 0
+      #
       var render_pass = SDL_BeginGPURenderPass(command_buffer, addr target_info, 1, nil)
 
       # Render ImGui
