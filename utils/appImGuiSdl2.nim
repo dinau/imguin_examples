@@ -108,6 +108,7 @@ proc createImGui*(w,h: cint, title:string="ImGui window"): WindowSdl =
   if isNil window:
     echo "Fail to create window: ", sdl.getError()
     quit -1
+  result.handle = window
   result.glContext = glCreateContext(window)
   discard glMakeCurrent(window, result.glContext);
   discard glSetSwapInterval(1)
@@ -132,11 +133,10 @@ proc createImGui*(w,h: cint, title:string="ImGui window"): WindowSdl =
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
-  result.handle = window
 
   setTheme(Classic)
 
-  discard setupFonts() # Add multibytes font
+  # discard setupFonts() # Add multibytes font
 
   result.showWindowDelay = 2 # TODO
 

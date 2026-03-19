@@ -1,11 +1,11 @@
 # Compiling:
-# nim c glfw_opengl3_image_load
+# nim c glfw_opengl3_image_save
 
 import std/[os, strformat, strutils]
-import ../utils/[appImGui, infoWindow]
+import ../utils/appImGui
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
 
 const MainWinWidth = 1024
@@ -16,16 +16,13 @@ const SaveImageName = "ImageSaved"
 
 #--- Global vars
 var
-  imageExt:string
-  imageFormatTbl = [(kind:"JPEG 90%",ext:".jpg"), ("PNG",".png"), ("BMP",".bmp"), ("TGA",".tga")]
+  imageExt: string
+  imageFormatTbl = [(kind: "JPEG 90%", ext: ".jpg"), ("PNG", ".png"), ("BMP", ".bmp"), ("TGA", ".tga")]
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui image save demo")
-  defer: destroyImGui(win)
-
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
   var
     showFirstWindow = true
     counter = 0
@@ -37,23 +34,23 @@ proc main() =
     textureId: GLuint
     textureWidth = 0
     textureHeight = 0
-  var ImageName = os.joinPath(os.getAppDir(),"himeji-400.jpg")
-  loadTextureFromFile(ImageName, textureId, textureWidth,textureHeight)
+  var ImageName = os.joinPath(os.getAppDir(), "himeji-400.jpg")
+  loadTextureFromFile(ImageName, textureId, textureWidth, textureHeight)
   defer: glDeleteTextures(1, addr textureId)
 
   #-----------
   # main loop
   #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
     newFrame()
 
-    infoWindow(win)
+    win.infoWindow()
 
-    var svName:string
+    var svName: string
 
     # show a simple window that we created ourselves.
     if showFirstWindow:
@@ -62,17 +59,17 @@ proc main() =
       #
       #-- Save button for capturing window image
       igPushIDInt(0)
-      igPushStyleColorVec4(ImGuiCol_Button.cint,        vec4(0.7, 0.7, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_Button.cint, vec4(0.7, 0.7, 0.0, 1.0))
       igPushStyleColorVec4(ImGuiCol_ButtonHovered.cint, vec4(0.8, 0.8, 0.0, 1.0))
-      igPushStyleColorVec4(ImGuiCol_ButtonActive.cint,  vec4(0.9, 0.9, 0.0, 1.0))
-      igPushStyleColorVec4(ImGuiCol_Text.cint,          vec4(0.0, 0.0, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_ButtonActive.cint, vec4(0.9, 0.9, 0.0, 1.0))
+      igPushStyleColorVec4(ImGuiCol_Text.cint, vec4(0.0, 0.0, 0.0, 1.0))
 
       # Image save button
       imageExt = imageFormatTbl[win.ini.imageSaveFormatIndex].ext
       svName = fmt"{SaveImageName}_{counter:05}{imageExt}"
       if igButton("Save Image", vec2(0.0f, 0.0f)):
         let wkSize = igGetMainViewport().Worksize
-        saveImage(svName,0, 0, wkSize.x.int, wkSize.y.int) # --- Save Image !
+        saveImage(svName, 0, 0, wkSize.x.int, wkSize.y.int) # --- Save Image !
       igPopStyleColor(4)
       igPopID()
 
@@ -80,12 +77,12 @@ proc main() =
       setTooltip("Save to \"$#\"" % [svName])
       counter.inc
       #-- End Save button for window image
-      igSameLine(0.0,-1.0)
+      igSameLine(0.0, -1.0)
 
       #-- ComboBox: Select save image format
       igSetNextItemWidth(100)
       if igBeginCombo("##".cstring, imageFormatTbl[win.ini.imageSaveFormatIndex].kind.cstring, 0):
-        for n,val in imageFormatTbl:
+        for n, val in imageFormatTbl:
           var is_selected = (win.ini.imageSaveFormatIndex == n)
           if igSelectableBoolPtr(val.kind.cstring, is_selected.addr, 0, vec2(0.0, 0.0)):
             if is_selected:
@@ -103,20 +100,32 @@ proc main() =
         size = vec2(textureWidth, textureHeight)
         uv0 = vec2(0, 0)
         uv1 = vec2(1, 1)
-        tint_col   = vec4(1, 1, 1, 1)
+        tint_col = vec4(1, 1, 1, 1)
         border_col = vec4(0, 0, 0, 0)
-      let imageBoxPosTop =  igGetCursorScreenPos() # Get absolute pos.
+      let imageBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: textureId), size, uv0, uv1)
       let imageBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
-      #
+                                                  #
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd)
 
     render(win)
-    if not showFirstWindow :
-      win.handle.setWindowShouldClose(true) # End program
+
+    if not showFirstWindow:
+      win.shouldClose = true # End program
 
   #### end while
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImGui image save demo")
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

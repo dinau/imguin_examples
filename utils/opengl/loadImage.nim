@@ -1,10 +1,7 @@
 # Install packages  $ nimble stb_image nimgl
 
 import std/[os, strutils, strformat]
-when defined(SDL):
-  import imguin/[glad/gl]
-else:
-  import nimgl/[opengl,glfw]
+import imguin/[glad/gl]
 
 import stb_image/read as stbi
 
@@ -130,20 +127,20 @@ proc loadTextureFromFile*(filename: string, outTexture: var GLuint, outWidth: va
     , 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data[0].addr)
   return true
 
-when not defined(SDL):
-  #---------------------
-  # Load title bar icon
-  #---------------------
-  proc LoadTileBarIcon*(window:GLFWwindow, iconName:string) =
-    if iconName.fileExists:
-      var
-        w, h: int
-        channels: int
-        pixels: seq[byte]
-      pixels = stbi.load(iconName, w, h, channels, stbi.RGBA)
-      var img = GLFWImage(width: w.int32, height: h.int32
-                       , pixels: cast[ptr cuchar](pixels[0].addr))
-      glfw.setWindowIcon(window, 1, img.addr)
-    else:
-      echo "Not found: ",iconName
-      glfw.setWindowIcon(window, 0, nil)
+#when not defined(SDL):
+#  #---------------------
+#  # Load title bar icon
+#  #---------------------
+#  proc LoadTileBarIcon*(window:GLFWwindow, iconName:string) =
+#    if iconName.fileExists:
+#      var
+#        w, h: int
+#        channels: int
+#        pixels: seq[byte]
+#      pixels = stbi.load(iconName, w, h, channels, stbi.RGBA)
+#      var img = GLFWImage(width: w.int32, height: h.int32
+#                       , pixels: cast[ptr cuchar](pixels[0].addr))
+#      glfw.setWindowIcon(window, 1, img.addr)
+#    else:
+#      echo "Not found: ",iconName
+#      glfw.setWindowIcon(window, 0, nil)

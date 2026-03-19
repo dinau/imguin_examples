@@ -12,8 +12,10 @@ const MainWinHeight = 800
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImNodes demo")
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImNodes demo")
   defer: destroyImGui(win)
+
+  discard setupFonts()
 
   imnodes_CreateContext()
   defer: imnodes_DestroyContext(nil)
@@ -26,8 +28,8 @@ proc main() =
   #-----------
   # main loop
   #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue

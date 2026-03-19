@@ -14,8 +14,10 @@ const MainWinHeight = 900
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui: SDL2-renderer")
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImGui: SDL2-renderer")
   defer: destroyImGui(win)
+
+  discard setupFonts()
 
   var
     showDemoWindow = true
@@ -32,8 +34,8 @@ proc main() =
     textureId: sdl.Texture
     textureWidth = 0
     textureHeight = 0
-  var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
-  loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth,textureHeight)
+  var ImageName = os.joinPath(os.getAppDir(), "fuji-400.jpg")
+  loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth, textureHeight)
 
   let pio = igGetIO()
 
@@ -70,7 +72,7 @@ proc main() =
       igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
       igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
-      igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
+      igInputTextWithHint("InputText", "Input text here", sBuf)
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Demo window", addr showDemoWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
@@ -102,7 +104,7 @@ proc main() =
         size = vec2(textureWidth, textureHeight)
         uv0 = vec2(0, 0)
         uv1 = vec2(1, 1)
-      let imageBoxPosTop =  igGetCursorScreenPos() # Get absolute pos.
+      let imageBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
       # Magnifiying glass TODO: Not works well on Linux OS ?.
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
@@ -112,7 +114,7 @@ proc main() =
     # render
     #--------
     render(win)
-    if not showFirstWindow and not showDemoWindow :
+    if not showFirstWindow and not showDemoWindow:
       xQuit = true
 
   ### end while

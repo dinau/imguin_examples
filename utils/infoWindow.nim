@@ -5,10 +5,10 @@ proc infoWindow*(win: var Window) =
   var
     sw{.global.}:bool
     strSw{.global.}:string
-    showDemoWindow{.global.} = false
+    showDemoWindow{.global.} = true
   once:
     let theme = win.getTheme()
-    sw = if theme == Theme.Classic: false else: true
+    sw = if theme == Theme.Light: false else: true
     strSw = $theme
 
   if showDemoWindow:
@@ -19,9 +19,9 @@ proc infoWindow*(win: var Window) =
     defer: igEnd()
     if igToggleButton(strSw, sw):
       if sw:
-        strSw = win.setTheme(Light)
-      else:
         strSw = win.setTheme(Classic)
+      else:
+        strSw = win.setTheme(Light)
     #
     igText((ICON_FA_COMMENT & " " & getFrontendVersionString()).cstring)
     igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)

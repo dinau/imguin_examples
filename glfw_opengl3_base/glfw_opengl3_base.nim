@@ -1,37 +1,34 @@
 # Compiling:
 # nim c glfw_opengl3_base
 
-import std/[paths,math]
-import ../utils/[appImGui, infoWindow]
+import std/[paths, math]
+import ../utils/[appImGui]
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
   import tinydialogs
 
 const MainWinWidth = 1024
 const MainWinHeight = 800
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui Window base")
-  defer: destroyImGui(win)
-
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
   var
     showAnotherWindow = false
     showFirstWindow = true
     fval = 0.5f
     counter = 0
     sBuf = newString(200)
-    sFnameSelected{.global.}:Path
+    sFnameSelected{.global.}: Path
 
   #-----------
   # main loop
   #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
@@ -41,17 +38,17 @@ proc main() =
 
     # show a simple window that we created ourselves.
     if showFirstWindow:
-      igBegin("Nim: Dear ImGui test with Futhark", addr showFirstWindow, 0)
+      igBegin("Nim: Dear ImGui", addr showFirstWindow, 0)
       defer: igEnd()
       #
-      igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
+      igInputTextWithHint("InputText", "Input text here", sBuf)
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Another window", addr showAnotherWindow)
 
       # Show file open dialog
       when defined(windows):
         if igButton("Open file", vec2(0, 0)):
-           sFnameSelected = openFileDialog("File open dialog", (getCurrentDir() / "\0".Path).string, ["*.nim", "*.nims"], "Text file").Path
+          sFnameSelected = openFileDialog("File open dialog", (getCurrentDir() / "\0".Path).string, ["*.nim", "*.nims"], "Text file").Path
         igSameLine()
         # Show hint
         if igIsItemHovered(Imgui_HoveredFlagsDelayShort.cint) and igBeginTooltip():
@@ -60,7 +57,7 @@ proc main() =
           igPlotLines("Curve", ary, overlayText = "Overlay string")
           igText("Sin(time) = %.2f", sin(igGetTime()));
           igEndTooltip();
-        let (_,fname,ext) = sFnameSelected.splitFile()
+        let (_, fname, ext) = sFnameSelected.splitFile()
         igText("Selected file = %s", (fname.string & ext).cstring)
       # Counter up
       if igButton("Button", vec2(0.0f, 0.0f)):
@@ -91,9 +88,20 @@ proc main() =
     #--------
     render(win)
     if not showFirstWindow and not showAnotherWindow:
-      win.handle.setWindowShouldClose(true) # Exit program
+      win.shouldClose = true # Exit program
 
   #### end while
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImGui Window base")
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

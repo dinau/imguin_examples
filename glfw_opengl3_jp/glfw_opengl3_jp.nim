@@ -4,11 +4,11 @@
 # Modified: 2023/10
 # Written by audin 2023/02
 
-import std/[paths,math]
-import ../utils/[appImGui, infoWindow]
+import std/[paths, math]
+import ../utils/appImGui
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
   import tinydialogs
 
@@ -16,23 +16,19 @@ when defined(windows):
 const MainWinWidth = 1080
 const MainWinHeight = 800
 
-proc firstWindow(win:Window)
+proc firstWindow(win: AppWindow)
 
 var showAnotherWindow = true
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="JP window")
-  defer: destroyImGui(win)
-
-
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
   #--------------
   # メインループ
   #--------------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
@@ -44,13 +40,13 @@ proc main() =
     #
     render(win)
 
-   # if not showFirstWindow:
-   #   win.handle.setWindowShouldClose(true) # exit program
+    #if not showFirstWindow:
+    #  win.shouldClose = true # exit program
 
-#-------------
-# firstWindow    画面左のWindowを描画
-#-------------
-proc firstWindow(win:Window) =
+  #-------------
+  # firstWindow    画面左のWindowを描画
+  #-------------
+proc firstWindow(win: AppWindow) =
   var
     somefloat {.global.} = 0.0'f32
     counter {.global.} = 0'i32
@@ -82,7 +78,7 @@ proc firstWindow(win:Window) =
         igText("Sin(time) = %.2f", sin(igGetTime()));
         igEndTooltip();
     igText("選択ファイル名 = %s", sFnameSelected.cstring)
-    igText("描画フレームレート  %.3f ms/frame (%.1f FPS)" , 1000.0f / pio.Framerate.float, pio.Framerate)
+    igText("描画フレームレート  %.3f ms/frame (%.1f FPS)", 1000.0f / pio.Framerate.float, pio.Framerate)
     igText("経過時間 = %.1f [s]", counter.float32 / pio.Framerate)
     counter.inc
     const delay = 600 * 3
@@ -98,6 +94,17 @@ proc firstWindow(win:Window) =
       " " & ICON_FA_SCISSORS &
       " " & ICON_FA_SCREWDRIVER_WRENCH &
       " " & ICON_FA_BLOG)
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "JP window")
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

@@ -2,11 +2,11 @@
 # nim c -d:ImPlotEnable glfw_opengl3_implot
 
 import std/[random, sugar]
-import ../utils/[appImGui, infoWindow]
+import ../utils/appImGui
 import implotFuncs
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
 
 const MainWinWidth = 1024
@@ -15,34 +15,31 @@ const MainWinHeight = 800
 #--------------
 # imPlotWindow
 #--------------
-proc imPlotWindow(fshow:var bool) =
+proc imPlotWindow(fshow: var bool) =
   var
-    bar_data{.global.}:seq[Ims32]
-    x_data  {.global.}:seq[Ims32]
-    y_data  {.global.}:seq[Ims32]
+    bar_data{.global.}: seq[Ims32]
+    x_data {.global.}: seq[Ims32]
+    y_data {.global.}: seq[Ims32]
   once: # This needs when set up compilation option to --mm:arc,--mm:orc and use nim-2.0.0 later,
         # workaround {.global.} pragma issue.
-    bar_data= collect(for i in 0..10: rand(100).Ims32)
-    x_data  = collect(for i in 0..10: i.Ims32)
-    y_data  = collect(for i in 0..10: (i * i).Ims32)
+    bar_data = collect(for i in 0..10: rand(100).Ims32)
+    x_data = collect(for i in 0..10: i.Ims32)
+    y_data = collect(for i in 0..10: (i * i).Ims32)
 
   block:
     igBegin("Plot Window", addr fshow, 0)
     defer: igEnd()
     block:
-      ImPlotBeginPlot("My Plot",ImVec2_c(x: 0.0f, y: 0.0f), 0.ImplotFlags)
+      ImPlotBeginPlot("My Plot", ImVec2_c(x: 0.0f, y: 0.0f), 0.ImplotFlags)
       defer: ImPlotEndPlot()
       # See ./implotFuncs.nim
-      ImPlotPlotBars("My Bar Plot",bar_data.ptz ,bar_data.len.cint)
-      ImPlotPlotLine("My Line Plot", x_data.ptz ,y_data.ptz, xdata.len.cint)
+      ImPlotPlotBars("My Bar Plot", bar_data.ptz, bar_data.len.cint)
+      ImPlotPlotLine("My Line Plot", x_data.ptz, y_data.ptz, xdata.len.cint)
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight)
-  defer: destroyImGui(win)
-
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
   var
     showImPlotWindow = true
 
@@ -54,14 +51,14 @@ proc main() =
   #-----------
   # main loop
   #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
     newFrame()
 
-    infoWindow(win)
+    win.infoWindow()
 
     # ImPlot test
     if showImPlotWindow:
@@ -70,9 +67,20 @@ proc main() =
     #
     render(win)
     if not showImPlotWindow:
-      win.handle.setWindowShouldClose(true) # End program
+      win.shouldClose = true # End program
 
   #### end while
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight)
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

@@ -1,10 +1,10 @@
 # Compiling:
 # nim c -d:ImGuiTextSelect thisFileName
 
-import ../utils/[appImGui, infoWindow]
+import ../utils/appImGui
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
 
 const MainWinWidth = 1024
@@ -21,41 +21,34 @@ const table = [
     nil
 ]
 
-proc getNumLines(userdata: pointer) : csize_t {.cdecl.} =
+proc getNumLines(userdata: pointer): csize_t {.cdecl.} =
   var clines = cast[cstringArray](userdata)
-  var count:csize_t = 0;
+  var count: csize_t = 0;
   while not clines[count].isNil:
     inc count
   return count
 
-proc getLineAtIdx(idx:csize_t, userdata: pointer, out_len: ptr csize_t): cstring {.cdecl.} =
+proc getLineAtIdx(idx: csize_t, userdata: pointer, out_len: ptr csize_t): cstring {.cdecl.} =
   var clines = cast[cstringArray](userdata)
   if not out_len.isNil:
     out_len[] = clines[idx].len.csize_t
   return clines[idx]
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="Dear ImGui Window")
-  defer: destroyImGui(win)
-
-
-  var pTextselect = textselect_create(getLineAtIdx, getNumLines, addr table[0], 0 )
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
+  var pTextselect = textselect_create(getLineAtIdx, getNumLines, addr table[0], 0)
   let pio = igGetIO_Nil()
 
-  #-----------
-  # main loop
-  #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
     newFrame()
 
-    infoWindow(win)
+    win.infoWindow()
 
     #---------------------------
     # Show ImGuiTextSelect demo
@@ -75,7 +68,7 @@ proc main() =
       textselect_update(pTextselect)
       igPopFont();
       if igBeginPopupContextWindow(nil, 1):
-        igBeginDisabled(0 ==  textselect_has_selection(pTextselect))
+        igBeginDisabled(0 == textselect_has_selection(pTextselect))
         if igMenuItem_Bool("Copy", "Ctrl+C", false, true):
           textselect_copy(pTextselect)
         igEndDisabled()
@@ -93,6 +86,17 @@ proc main() =
     render(win)
 
   #### end while
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "Dear ImGui Window")
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

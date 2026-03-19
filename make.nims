@@ -18,12 +18,14 @@ var projDirs = @[
 "glfw_opengl3_imspinner",
 "glfw_opengl3_imgui_markdown",
 "glfw_opengl3_jp",
+"glfw_vulkan",
 "sdl2_opengl3",
 "sdl2_renderer",
-#"rlimgui_basic",
+"rlimgui_basic",
 #"sdl3_opengl3",
 #"sdl3_renderer",
 #"sdl3_sdlgpu3",
+#"sdl3_vulkan",
 "fontx2v",
 ]
 
@@ -31,6 +33,7 @@ when defined(windows):
   projDirs.add "sdl3_opengl3"
   projDirs.add "sdl3_renderer"
   projDirs.add "sdl3_sdlgpu3"
+  projDirs.add "sdl3_vulkan"
 
 #-------------
 # compileProj

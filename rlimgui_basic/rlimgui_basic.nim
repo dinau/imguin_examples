@@ -6,7 +6,7 @@ import imguin/[cimgui, simple]
 import ../utils/setupFonts
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
 
 # ----------------------------------------------------------------------------------------
@@ -27,9 +27,9 @@ proc testDrawRectangle() =
   drawRectangle(rec, raylib.Color(r: 64, g: 166, b: 217, a: 55))
 
 proc testDrawText() =
-  drawText("Nim-" & NimVersion,                                    70, 70,  20, DarkBlue)
+  drawText("Nim-" & NimVersion, 70, 70, 20, DarkBlue)
   drawText("Raylib v$#.$#" % [$RaylibVersion[0], $RaylibVersion[1]], 70, 100, 20, DarkBlue)
-  drawText("2025/10",                                                70, 130, 20, DarkBlue)
+  drawText("2025/10", 70, 130, 20, DarkBlue)
 
   let font = getFontDefault()
   let position = Vector2(x: 150, y: 160)
@@ -38,11 +38,11 @@ proc testDrawText() =
 # ----------------------------------------------------------------------------------------
 # Program main entry point
 # ----------------------------------------------------------------------------------------
-proc main =
+proc main() =
   # Initialization
   # --------------------------------------------------------------------------------------
   setConfigFlags(flags(MSAA_4X_HINT, VSYNC_HINT, WINDOW_RESIZABLE))
-  initWindow(screenWidth, screenHeight, "rlImGui Window 2025/10 in Nim" )
+  initWindow(screenWidth, screenHeight, "rlImGui Window 2025/10 in Nim")
 
   # Define our custom camera to look into our 3d world
   var camera = Camera(
@@ -53,16 +53,16 @@ proc main =
     projection: Perspective                 # Camera projection type
   )
 
-  var image = loadImage("istockphoto_com-1209065219-128.png")                # https://www.istockphoto.com  search "grayscale height map"
-  let texture = loadTextureFromImage(image)                                  # Convert image to texture (VRAM)
-  let mesh = genMeshHeightmap(image, Vector3(x: 16, y: 8, z: 16))            # Generate heightmap mesh (RAM and VRAM)
-  var model = loadModelFromMesh(mesh)                                        # Load model from generated mesh
+  var image = loadImage("istockphoto_com-1209065219-128.png") # https://www.istockphoto.com  search "grayscale height map"
+  let texture = loadTextureFromImage(image) # Convert image to texture (VRAM)
+  let mesh = genMeshHeightmap(image, Vector3(x: 16, y: 8, z: 16)) # Generate heightmap mesh (RAM and VRAM)
+  var model = loadModelFromMesh(mesh) # Load model from generated mesh
   Model(model).materials[0].maps[MaterialMapIndex.Diffuse].texture = texture # Set map diffuse texture
 
-  let mapPosition = Vector3(x: -8, y: 0, z: -8)                              # Define model position
-  reset(image)                                                               # Unload heightmap image from RAM, already uploaded to VRAM
+  let mapPosition = Vector3(x: -8, y: 0, z: -8) # Define model position
+  reset(image) # Unload heightmap image from RAM, already uploaded to VRAM
 
-  setTargetFPS(60)                                                           # Set our game to run at 60 frames-per-second
+  setTargetFPS(60) # Set our game to run at 60 frames-per-second
 
   #-----------------
   rlImGuiSetup(true)
@@ -72,7 +72,7 @@ proc main =
   let pio = igGetIO()
   pio.MouseDrawCursor = true
 
-  var mapColor = ccolor(elm:(x:(255 - 73)/255, y:(255 - 113)/255, z:(255 - 166)/255, w:1.0))
+  var mapColor = ccolor(elm: (x: (255 - 73)/255, y: (255 - 113)/255, z: (255 - 166)/255, w: 1.0))
 
   # --------------------------------------------------------------------------------------
   # Main game loop
@@ -97,9 +97,9 @@ proc main =
 
       igShowDemoWindow(nil)
 
-      igBegin("Test Window " & ICON_FA_DOG  , nil, 0)
+      igBegin("Test Window " & ICON_FA_DOG, nil, 0)
       igText("%s", ICON_FA_SUN & " Sun")
-      igText("%s", ICON_FA_CLOUD_RAIN & " Rain" )
+      igText("%s", ICON_FA_CLOUD_RAIN & " Rain")
       igText("Change Color")
       igColorEdit3("##Change color", mapColor.array3, 0)
       igEnd()

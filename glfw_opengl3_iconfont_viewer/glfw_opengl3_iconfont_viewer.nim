@@ -1,26 +1,23 @@
 # Compiling:
 # nim c glfw_opengl3_iconfont_viewer
-import std/[pegs,strformat]
+import std/[pegs, strformat]
 
-import ../utils/[appImGui, infoWindow]
+import ../utils/appImGui
 import ./iconFontsTblDef
 import ./iconFontsTbl2Def
 
 when defined(windows):
-  when not defined(vcc):   # imguinVcc.res TODO WIP
+  when not defined(vcc): # imguinVcc.res TODO WIP
     include ./res/resource
   import tinydialogs
 
 const MainWinWidth = 1024
 const MainWinHeight = 800
 
-#------
-# main
-#------
-proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="Icon font viewer demo")
-  defer: destroyImGui(win)
-  setTheme(Dark)
+#----------
+# gui_main
+#----------
+proc gui_main(win: var AppWindow) =
   var
     showIconFontViewWindow = true
     sBuf = newString(200)
@@ -30,30 +27,30 @@ proc main() =
 
   var pio = igGetIO()
   var item_current = 0.cint
-  var wsZoom:cfloat = 45
+  var wsZoom: cfloat = 45
 
   let green = vec4(0.0, 1.0, 0.0, 1.0)
 
   #-----------
   # main loop
   #-----------
-  while not win.handle.windowShouldClose:
-    pollEvents()
+  while not win.shouldClose:
+    win.pollEvents()
 
     if isIconifySleep(win):
       continue
     newFrame()
 
-    infoWindow(win)
+    win.infoWindow()
 
     if showIconFontViewWindow:
       igBegin("Icon Font Viewer", addr showIconFontViewWindow, 0)
       defer: igEnd()
       igSeparatorText(cstring(ICON_FA_FONT_AWESOME & " Icon font view: " & $iconFontsTbl.len & " icons"))
       #
-      const listBoxWidth = 320.int             # The value must be 2^n
+      const listBoxWidth = 320.int # The value must be 2^n
       block:
-        igText("No.[%4d]", item_current);     igSameLine()
+        igText("No.[%4d]", item_current); igSameLine()
         sBuf = $iconFontsTbl[item_current]
         if igButton(ICON_FA_COPY & " Copy to", vec2(0, 0)):
           if sBuf =~ peg"@' '{'ICON'.+}":
@@ -62,7 +59,7 @@ proc main() =
 
       # Show ListBox header
       igSetNextItemWidth(listBoxWidth.float)
-      igInputText("##".cstring, sBuf.cstring, sBuf.len.csize_t, ImGui_TextFlags_None.cint,nil,nil)
+      igInputText("##".cstring, sBuf.cstring, sBuf.len.csize_t, ImGui_TextFlags_None.cint, nil, nil)
 
       #-----------------------
       # Show icons in ListBox
@@ -72,15 +69,15 @@ proc main() =
         let listBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
         igSetNextItemWidth(listBoxWidth.float)
         igListBox_Str_arr("##".cstring
-                          , addr item_current
-                          , cast[ptr UncheckedArray[cstring]](addr iconFontsTbl[0])
-                          , iconFontsTbl.len.cint, 34)
-        let listBoxPosEnd =  igGetCursorScreenPos() # Get absolute pos.
+          , addr item_current
+          , cast[ptr UncheckedArray[cstring]](addr iconFontsTbl[0])
+          , iconFontsTbl.len.cint, 34)
+        let listBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
 
         # Show magnifying glass (Zoom in Toolchip)
         if igIsItemHovered(ImGui_HoveredFlags_DelayNone.cint):
-          if (pio.MousePos.x - listBoxPosTop.x ) < 50:
-            zoomGlass(listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, capture=true )
+          if (pio.MousePos.x - listBoxPosTop.x) < 50:
+            zoomGlass(listBoxTextureID, listBoxWidth, listBoxPosTop, listBoxPosEnd, capture = true)
 
     #---------------------
     # Show icons in Table
@@ -115,18 +112,18 @@ proc main() =
             #if igButton(iconFontsTbl2[ix][0], vec2(0,0)):
             #  discard
             if igIsItemHovered(0):
-               #item_highlighted_idx = ix
-               item_current = ix
+              #item_highlighted_idx = ix
+              item_current = ix
             igPopFont()
             let iconFontLabel = iconFontsTbl2[ix][1]
-            setTooltip(iconfontLabel, color=green)
+            setTooltip(iconfontLabel, color = green)
             #igSetWindowFontScale(wsNormal)
             block:
               igPushID_int(ix)
               defer: igPopID()
               if igBeginPopupContextItem("Contex Menu", 1):
                 defer: igEndPopup()
-                if igMenuItem_bool("Copy to clip board", shortcut=nil, selected=false, enabled=true):
+                if igMenuItem_bool("Copy to clip board", shortcut = nil, selected = false, enabled = true):
                   echo fmt"{iconFontsTbl2[ix][1]}"
                   item_current = ix
                   igSetClipboardText(iconFontsTbl2[ix][1].cstring)
@@ -136,14 +133,14 @@ proc main() =
     #----------------------
     block:
       igBegin("Icon Font filter", nil, 0)
-      defer:igEnd()
-      var seqFilter{.global.}:seq[string]
+      defer: igEnd()
+      var seqFilter{.global.}: seq[string]
       igText("(Copy)")
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.cint):
         if seqFilter[0] =~ peg("@{ICON.+}"):
           igSetClipboardText(matches[0].cstring)
       seqFilter = @[]
-      setTooltip("Copied first line to clipboard !", color=green) # Show tooltip help
+      setTooltip("Copied first line to clipboard !", color = green) # Show tooltip help
       igSameLine()
       var filter = ImGuiTextFilter_ImGuiTextFilter("")
       ImGuiTextFilter_Draw(filter, "Filter", 0)
@@ -155,9 +152,20 @@ proc main() =
     #------------
     render(win)
     if not showIconFontViewWindow:
-      win.handle.setWindowShouldClose(true) # End program
+      win.shouldClose = true # End program
 
     #### end while
+
+#------
+# main
+#------
+proc main() =
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "Icon font viewer demo")
+  defer: destroyImGui(win)
+
+  discard setupFonts()
+
+  gui_main(win)
 
 #------
 # main

@@ -74,3 +74,7 @@ dupx:
 
 gen:
 	nim c -r  ../utils/genImPlotFuncs.nim
+
+
+fmt:
+	nimpretty --maxLineLen:1000 $(TARGET).nim

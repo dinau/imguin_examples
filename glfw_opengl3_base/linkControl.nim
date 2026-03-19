@@ -4,7 +4,7 @@ switch "app","gui" # dismiss background Window
 # Select static link or shared/dll link
 #---------------------------------------
 when defined(windows):
-  const STATIC_LINK_GLFW = false   # true: unsupported at this moment
+  const STATIC_LINK_GLFW = false    # true: statically link glfw3.dll
   const STATIC_LINK_CC = true      # true: include libstd++ or libc
   if TC == "vcc":
     switch "passL","d3d9.lib kernel32.lib user32.lib gdi32.lib winspool.lib"

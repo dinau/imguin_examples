@@ -85,6 +85,7 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3 GPU renderer"): Win
   if isNil window:
     echo "Error!: SDL_CreateWindow(): " & $SDL_GetError()
     quit 1
+  result.handle = window
 
   # Create GPU Device
   const flags_gpu = SDL_GPU_SHADERFORMAT_SPIRV +  SDL_GPU_SHADERFORMAT_DXIL + SDL_GPU_SHADERFORMAT_METALLIB
@@ -137,7 +138,6 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3 GPU renderer"): Win
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
-  result.handle = window
 
   setTheme(Classic)
 

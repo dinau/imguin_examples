@@ -85,6 +85,7 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
   if isNil window:
     echo "Error!: SDL_CreateWindow()"
     quit 1
+  result.handle = window
 
   result.renderer = SDL_CreateRenderer(window, nil)
   SDL_SetRenderVSync(result.renderer, 1);
@@ -129,11 +130,10 @@ proc createImGui*(w,h: cint, imnodes:bool = false, implot:bool = false, title:st
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
-  result.handle = window
 
   setTheme(Classic)
 
-  discard setupFonts() # Add multibytes font
+  #discard setupFonts() # Add multibytes font
 
   result.showWindowDelay = 2 # TODO
 

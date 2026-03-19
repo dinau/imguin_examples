@@ -14,8 +14,10 @@ const MainWinHeight = 900
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui window: SDL3-renderer backend")
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImGui window: SDL3-renderer backend")
   defer: destroyImGui(win)
+
+  discard setupFonts()
 
   var
     showDemoWindow = true
@@ -32,8 +34,8 @@ proc main() =
     textureId: ptr SDL_Texture
     textureWidth = 0
     textureHeight = 0
-  var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
-  loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth,textureHeight)
+  var ImageName = os.joinPath(os.getAppDir(), "fuji-400.jpg")
+  loadTextureFromFile(ImageName, win.renderer, textureId, textureWidth, textureHeight)
 
   let pio = igGetIO()
 
@@ -69,7 +71,7 @@ proc main() =
       igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
       igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
 
-      igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
+      igInputTextWithHint("InputText", "Input text here", sBuf)
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Demo window", addr showDemoWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
@@ -111,7 +113,7 @@ proc main() =
     # render
     #--------
     render(win)
-    if not showFirstWindow and not showDemoWindow :
+    if not showFirstWindow and not showDemoWindow:
       xQuit = true
 
   ### end while

@@ -1,9 +1,8 @@
 # Compiling:
 # nim c -d:SDL sdl3_sdlgpu3
 
-import std/[os,strutils]
+import std/[os, strutils]
 import ../utils/appImGuiSdlgpu3
-
 
 when defined(windows):
   include ./res/resource
@@ -18,7 +17,7 @@ const fImageLoad = false # TODO
 # main
 #------
 proc main() =
-  var win = createImGui(MainWinWidth, MainWinHeight, title="ImGui window: SDL3GPU backend")
+  var win = createImGui(MainWinWidth, MainWinHeight, title = "ImGui window: SDL3GPU backend")
   defer: destroyImGui(win)
 
   var
@@ -39,9 +38,9 @@ proc main() =
   when fImageLoad:
     var
       textureId: ptr SDL_GPUTexture
-      textureWidth:cint = 0
-      textureHeight:cint = 0
-    var ImageName = os.joinPath(os.getAppDir(),"fuji-400.jpg")
+      textureWidth: cint = 0
+      textureHeight: cint = 0
+    var ImageName = os.joinPath(os.getAppDir(), "fuji-400.jpg")
     discard loadTextureFromFileSDLGPU3(ImageName, win.gpu_device, textureId, textureWidth, textureHeight)
 
   let pio = igGetIO()
@@ -70,7 +69,7 @@ proc main() =
     # showFirstWindow
     #-----------------
     if showFirstWindow:
-      igBegin("Nim: Dear ImGui in Nim lang.", showFirstWindow.addr, 0)
+      igBegin("Nim: Dear ImGui in Nim " & ICON_FA_DOG , showFirstWindow.addr, 0)
       defer: igEnd()
 
       igText((getFrontendVersionString().split(".")[0]).cstring)
@@ -78,7 +77,7 @@ proc main() =
       igText("%s %s", " Dear ImGui", igGetVersion())
       igText("%s%s", " Nim-", NimVersion)
 
-      igInputTextWithHint("InputText" ,"Input text here" ,sBuf)
+      igInputTextWithHint("InputText", "Input text here", sBuf)
       igText(("Input result:" & sBuf).cstring)
       igCheckbox("Demo window", addr showDemoWindow)
       igSliderFloat("Float", addr fval, 0.0f, 1.5f, "%.3f", 0)
@@ -102,7 +101,7 @@ proc main() =
       let imageBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
       let imageBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
-      # Magnifiying glass
+                                                  # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(cast[var int32](textureId), textureWidth, imageBoxPosTop, imageBoxPosEnd)
 
@@ -110,7 +109,7 @@ proc main() =
     # render
     #--------
     render(win)
-    if not showFirstWindow and not showDemoWindow :
+    if not showFirstWindow and not showDemoWindow:
       xQuit = true
 
   ### end while

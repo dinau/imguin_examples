@@ -4,6 +4,7 @@
 - [ImGuin examples project](#imguin-examples-project)
   - [Usage: Sample program and run](#usage-sample-program-and-run)
     - [Prerequisites](#prerequisites)
+    - [Frontends and Backends](#frontends-and-backends)
     - [Build examples](#build-examples)
     - [Available libraries](#available-libraries)
     - [Screenshot (examples)](#screenshot-examples)
@@ -16,7 +17,8 @@
         - [rlimgui_basic (Naylib / Raylib / rlImgui)](#rlimgui_basic-naylib--raylib--rlimgui)
         - [glfw_opengl3_iconfont_viewer](#glfw_opengl3_iconfont_viewer)
         - [glfw_opengl3_image_load / sdl2_opengl3](#glfw_opengl3_image_load--sdl2_opengl3)
-        - [sdl2_renderer  / sdl3_renderer  / sdl3_opengl3 / sdl3_sdlgpu3](#sdl2_renderer---sdl3_renderer---sdl3_opengl3--sdl3_sdlgpu3)
+        - [sdl2: opengl3 / renderer](#sdl2-opengl3--renderer)
+        - [sdl3: opengl3 / renderer  / sdlgpu3 /  vulkan](#sdl3-opengl3--renderer---sdlgpu3---vulkan)
         - [glfw_opengl3_image_save](#glfw_opengl3_image_save)
         - [glfw_opengl3_jp](#glfw_opengl3_jp)
         - [glfw_opengl3_implot](#glfw_opengl3_implot)
@@ -27,7 +29,6 @@
         - [glfw_opengl3_imgui_markdown](#glfw_opengl3_imgui_markdown)
         - [My test app movie using imguin](#my-test-app-movie-using-imguin)
   - [Cross compilation: Generating Windows application binary(\*.exe) on Linux OS](#cross-compilation-generating-windows-application-binary%5Cexe-on-linux-os)
-  - [Selection backend compiler](#selection-backend-compiler)
   - [TODO](#todo)
   - [Compressing binary file](#compressing-binary-file)
   - [My tools version](#my-tools-version)
@@ -42,8 +43,8 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.6.0** ([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) 
-version: 1.92.6) (2026/02)
+Confirmed **ImGuin** verion: **v1.92.6.1**  
+([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.6dock) (2026/02)
 
 This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -65,17 +66,30 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 [MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
 
    ```sh
-   pacman -S mingw-w64-x86_64-{gcc,glfw,SDL2,sdl3} make
+   pacman -S mingw-w64-ucrt-x86_64-{gcc,glfw,SDL2,sdl3,pkgconf} make
+   pacman -S mingw-w64-ucrt-x86_64-vulkan-{headers,loader}
    ```
 
-- Linux: Debian13 / Ubuntu families 
+- Linux: Debian / Ubuntu families 
 
    ```sh
-   $ sudo apt install gcc g++ make 
+   $ sudo apt install build-essential pkgconf
    $ sudo apt install lib{opengl-dev,gl1-mesa-dev,glfw3,glfw3-dev,xcursor-dev,xinerama-dev,xi-dev,sdl2-dev} git 
+   $ sudo apt install libvulkan-dev
    ```
 
    - See [Install SDL3](https://github.com/dinau/sdl3_nim#for-linux-os) 
+
+####  Frontends and Backends 
+
+---
+
+   | Frontends | Backends                               |
+   | ---       | -------------------                    |
+   | GLFW      | OpenGL3                                |
+   | SDL2      | OpenGL3, sdlrenderer2                  |
+   | SDL3      | OpenGL3, sdlrenderer3, sdlgpu3, Vulkan |
+
 
 #### Build examples
 
@@ -92,7 +106,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    ```sh
    cd imguin_examples
    nimble refresh
-   nimble dep
+   nimble install -d
    ```
 
 1. For instance [glfw_opengl3_base.nim](glfw_opengl3_base/glfw_opengl3_base.nim),
@@ -111,14 +125,12 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 If you'd like to build executables with static link (not using `*.dll`),  
 edit `./linkControl.nim` in respective example folder.  
    To not depend on any other `*.dll` files,  
-   change to [^glfwStatic]
+   change to 
 
       ```nim
       const STATIC_LINK_GLFW = true   # if true, it doesn't need glfw3.dll
       const STATIC_LINK_CC   = true   # if true, it doesn't need libstd++-6.dll
       ```
-
-[^glfwStatic]: Dear ImGui 1.92.0 or later must be set `STATIC_LINK_GLFW = false`.
 
 #### Available libraries 
 
@@ -290,43 +302,54 @@ make       # or    nim c iconFontViewer.nim
 
 
 
-###### sdl2_renderer  / sdl3_renderer  / sdl3_opengl3 / sdl3_sdlgpu3
+###### sdl2: opengl3 / renderer
 
 ---
 
-SDL renderer backend.
+- Build sdl2 + OpenGL3 backend
 
+   ```sh
+   cd sdl2_opengl3
+   make     # or    nim c -d:SDL sdl2_opengl3.nim  
+   ```
 - Build sdl2 renderer backend
 
    ```sh
-   pwd
-   sdl2_renderer
+   cd sdl2_renderer
    make     # or    nim c -d:SDL sdl2_renderer.nim  
    ```
 
-- Build sdl3 backend  
+###### sdl3: opengl3 / renderer  / sdlgpu3 /  vulkan
+
+---
+
+- Build SDL3 + OpenGL backend  
   See [SDL3 installation on Linux OS](https://github.com/dinau/sdl3_nim?tab=readme-ov-file#for-linux-os)
 
    ```sh
-   pwd
-   sdl3_opengl3
+   cd sdl3_opengl3
    make     # or    nim c -d:SDL sdl3_opengl3.nim  
    ```
 
-- Build sdl3 renderer backend
+- Build SDL3 + SDL3 renderer backend
 
    ```sh
-   pwd
-   sdl3_renderer
+   cd sdl3_renderer
    make     # or    nim c -d:SDL sdl3_renderer.nim  
    ```
 
-- Build sdl3 GPU backend
+- Build SDL3 + SDL3 GPU backend
 
    ```sh
-   pwd
-   sdl3_sdlgpu3
+   cd sdl3_sdlgpu3
    make     # or    nim c -d:SDL sdl3_sdlgpu3.nim  
+   ```
+
+- Build SDL3 + Vulkan backend
+
+   ```sh
+   cd sdl3_vulkan
+   make     # or    nim c -d:SDL sdl3_vulkan.nim  
    ```
 
 ###### glfw_opengl3_image_save
@@ -564,7 +587,7 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 ---
 
 Windows11 (main)
-- **Nim Compiler Version 2.2.6**
+- **Nim Compiler Version 2.2.8**
 - **GCC (Rev1, Built by MSYS2 project) 15.2.0**
 - Clang version 21.1.8
 - Visual Studio C++/C 2022
@@ -573,7 +596,7 @@ Windows11 (main)
 - MSys2/MinGW tools
 
 WSL2 Linux OS: Debain 13
-- **Nim Compiler Version 2.2.4**
+- **Nim Compiler Version 2.2.6**
 - gcc 14.2.0
 - make: GNU Make 4.4.1
 - git version 2.47.3

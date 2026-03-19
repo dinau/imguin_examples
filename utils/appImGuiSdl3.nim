@@ -108,6 +108,7 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3"): WindowSdl =
   if isNil window:
     echo "Error!: SDL_CreateWindow()"
     quit 1
+  result.handle = window
 
   const SDL_WINDOWPOS_CENTERED = cast[cuint](805240832'i64)
   SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED.cint, SDL_WINDOWPOS_CENTERED.cint)
@@ -158,11 +159,10 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3"): WindowSdl =
 
   if TransparentViewport:
     result.ini.clearColor = ccolor(elm:(x:0f, y:0f, z:0f, w:0.0f)) # Transparent
-  result.handle = window
 
   setTheme(Classic)
 
-  discard setupFonts() # Add multibytes font
+  #discard setupFonts() # Add multibytes font
 
   result.showWindowDelay = 4 # TODO
 

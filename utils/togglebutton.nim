@@ -8,14 +8,10 @@ import ../utils/[utils,vecs]
 #  https://github.com/ocornut/imgui/issues/1537
 #--------------------------------------------------------
 
-# If you'd like to use customizable toggle button, refer to
-# examples/glfw_opengl3_imgui_toggle
-
-
 #----------------
 # igToggleButton
 #----------------
-proc igToggleButton*(str_id:string, v: var bool): bool =
+proc igToggleButton*(str_id:string, val: var bool): bool =
   let pos = igGetCursorScreenPos()
   let draw_list = igGetWindowDrawList()
   let height = igGetFrameHeight() * 0.9
@@ -24,23 +20,23 @@ proc igToggleButton*(str_id:string, v: var bool): bool =
 
   var ret = false
   if igInvisibleButton(str_id.cstring, vec2(width, height), 0.ImGuiButtonFlags):
-    v = not v
+    val = not val
     ret = true
   var col_bg, col_base: ImU32
   if igIsItemHovered(0.ImGuiHoveredFlags):
     col_base = IM_COL32(218-20, 218-20, 218-20, 255)
     col_bg = col_base
-    if v:
+    if val:
       col_bg = col_base or igGetColorU32_U32(ImGuiCol_ButtonHovered.ImU32, 1)
   else:
     col_base = IM_COL32(218, 218, 218, 255)
     col_bg = col_base
-    if v:
+    if val:
       col_bg = col_base or igGetColorU32_U32(ImGuiCol_Button.ImU32, 1)
 
   draw_list.ImDrawList_AddRectFilled(pos, vec2(pos.x + width, pos.y + height), col_bg, height * 0.5, 0.ImDrawFlags)
   var m:cfloat
-  if v:
+  if val:
     m = pos.x + width - radius
   else:
     m = pos.x + radius
