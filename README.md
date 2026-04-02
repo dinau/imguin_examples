@@ -486,8 +486,18 @@ make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
 ### Wasm example: glfw_opengl3_wasm_base
 
 ---
+
 1. Install emcc compiler from [emsdk](https://github.com/emscripten-core/emsdk)  
-   Reference to [nim_emscripten_tutorial](https://github.com/treeform/nim_emscripten_tutorial)
+   - Reference to [nim_emscripten_tutorial](https://github.com/treeform/nim_emscripten_tutorial)
+   - If you use MSys console on Windows OS, set 
+     
+     ```sh
+     source /path/to/emsdk/emsdk_env.sh
+     ```
+
+     in your `~/.bashrc`  
+     and set python3 path so on ...
+
 1. Confirm emcc version
 
    ```sh
@@ -506,7 +516,7 @@ make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
    ```sh
    pwd
    glfw_opengl3_wasm_base
-   $ make        # or  nim c -d:strip -d:emscripten glfw_opengl3_wasm_base.nim
+   $ make        
    ```
 
 1. Run example in Web browser

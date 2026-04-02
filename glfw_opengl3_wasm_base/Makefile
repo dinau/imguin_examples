@@ -4,6 +4,9 @@ TARGET =  $(notdir $(CURDIR))
 
 ifeq ($(OS),Windows_NT)
 	EXE = .exe
+	PYTHON = python
+else
+	PYTHON = python3
 endif
 
 OPT += -d:strip
@@ -32,7 +35,7 @@ clean: # dummy
 run: all server
 
 server:
-	python3 -m http.server 8000
+	$(PYTHON) -m http.server 8000
 
 fmt:
 	nimpretty --maxLineLen:1000 $(TARGET).nim

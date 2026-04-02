@@ -5,13 +5,13 @@ import std/strutils
 # and set up the necessary flags.
 # Technique based on: https://github.com/treeform/nim_emscripten_tutorial
 #--------------------------------------------------------------------
-switch "app","gui" # dismiss background Window
-switch "define",   "release"
-switch "opt",      "size"
+switch "app", "gui" # dismiss background Window
+switch "define", "release"
+switch "opt", "size"
 
 switch "define", "glfwStaticLib"
 
-switch "warning","HoleEnumConv:off" # for ImKnobs
+switch "warning", "HoleEnumConv:off" # for ImKnobs
 
 # Libs
 switch "define", "ImSpinner"
@@ -21,11 +21,15 @@ switch "define", "ImPlot3D"
 
 when defined(emscripten):
   switch("nimcache", ".nimcache_wasm")
-  when true:
-    switch "define", "OPENGL_ES3"
+  when false: # WebGL 2.0 / ES3
+    switch("define", "OPENGL_ES3")
     switch("passC", "-DIMGUI_IMPL_OPENGL_ES3")
-  else:
+    switch("passL", " -s FULL_ES3=1")
+    switch("passL", " -s USE_WEBGL2=1")
+  else: # WebGL 1.0 / ES2
     switch("passC", "-DIMGUI_IMPL_OPENGL_ES2")
+    switch("passL", " -s USE_WEBGL2=0")
+    switch("passL", " -s FULL_ES2=1")
 
   switch("passC", "-DEMSCRIPTEN_USE_PORT_CONTRIB_GLFW3")
   {.passC: "--use-port=contrib.glfw3".}
@@ -39,16 +43,14 @@ when defined(emscripten):
     switch("clang.linkerexe", "emcc")
   # Common settings
   switch("threads", "off")
-  switch("os", "linux")         # Emscripten pretends to be Linux
+  switch("os", "linux") # Emscripten pretends to be Linux
   switch("cpu", "wasm32")
   switch("cc", "clang")
-  switch("gc", "arc")           # arc works well on exotic platforms
-  switch("exceptions", "goto")  # goto exceptions also work well
+  switch("gc", "arc") # arc works well on exotic platforms
+  switch("exceptions", "goto") # goto exceptions also work well
   switch("define", "noSignalHandler") # Emscripten doesn't support signal handlers
   switch("passL", "-o " & projectName() & ".html" &
     " --shell-file shell_minimal.html" &
-    " -s USE_WEBGL2=1" &
-    " -s FULL_ES3=1" &
     " -s WASM=1" &
     " -s NO_EXIT_RUNTIME=0" &
     " -s ASSERTIONS=1" &
@@ -59,4 +61,4 @@ when defined(emscripten):
     " -s ALLOW_MEMORY_GROWTH=1"
     )
 else:
-  switch "nimcache", ".nimcache_app"
+  switch("nimcache", ".nimcache_app")

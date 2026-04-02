@@ -1,4 +1,4 @@
-import std/[os, strformat]
+import std/[strformat]
 import imguin/[cimgui, impl_glfw, impl_opengl, simple]
 export cimgui, simple
 import ../utils/[utils, setupFonts, togglebutton, vecs]
@@ -26,10 +26,10 @@ type AppWindow* = object
 import opengl
 export opengl
 when not defined(emscripten):
-  import std/[strutils]
+  import std/[os, strutils]
+  proc loadTileBarIcon(win: AppWindow, iconName: string)
 
 proc setTheme*(win: var AppWindow, theme: Theme): string
-proc loadTileBarIcon(win: AppWindow, iconName: string)
 
 #----------------------------
 # Emscripten main loop helper
@@ -131,13 +131,13 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
   # enable vsync
   wglfw.swapInterval(1)
 
-  #---------------------
-  # Load title bar icon
-  #---------------------
-  var IconName = os.joinPath(os.getAppDir(), "res/img/n.png")
-  loadTileBarIcon(result, IconName)
-
   when not defined(emscripten):
+    #---------------------
+    # Load title bar icon
+    #---------------------
+    var IconName = os.joinPath(os.getAppDir(), "res/img/n.png")
+    loadTileBarIcon(result, IconName)
+
     # check opengl version (desktop only, no glGetString in ES2 context before init)
     opengl.loadExtensions()
 
@@ -286,23 +286,24 @@ proc setClearColor*(win: var AppWindow, col: ccolor) =
 #---------------------
 # Load title bar icon
 #---------------------
-proc loadTileBarIcon(win: AppWindow, iconName: string) =
-  if iconName.fileExists:
-    var
-      w, h: int
-      channels: int
-      pixels: seq[byte]
-    pixels = stbi.load(iconName, w, h, channels, stbi.RGBA)
-    var img = wglfw.GlfwImage(width: w.int32, height: h.int32
-      , pixels: cast[cstring](pixels[0].addr))
-    win.glfwWin.setWindowicon(1, addr img)
-  else:
-    echo "loadTitleBarIcon(): Not found: ", iconName
-    #win.glfwWin.icons = []
+when not defined(emscripten):
+  proc loadTileBarIcon(win: AppWindow, iconName: string) =
+    if iconName.fileExists:
+      var
+        w, h: int
+        channels: int
+        pixels: seq[byte]
+      pixels = stbi.load(iconName, w, h, channels, stbi.RGBA)
+      var img = wglfw.GlfwImage(width: w.int32, height: h.int32
+        , pixels: cast[cstring](pixels[0].addr))
+      win.glfwWin.setWindowicon(1, addr img)
+    else:
+      echo "loadTitleBarIcon(): Not found: ", iconName
+      #win.glfwWin.icons = []
 
-  #------------
-  # infoWindow
-  #------------
+#------------
+# infoWindow
+#------------
 proc infoWindow*(win: var AppWindow, pos: Vec2 = vec2(0, 0)) =
   var
     sw{.global.}: bool
