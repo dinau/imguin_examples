@@ -77,4 +77,4 @@ gen:
 
 
 fmt:
-	nimpretty --maxLineLen:1000 $(TARGET).nim
+	nimpretty --maxLineLen:1000 $(TARGET).nim $(FMT)

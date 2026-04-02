@@ -2,13 +2,14 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [ImGuin examples project](#imguin-examples-project)
+    - [Try Wasm demo in your browser](#try-wasm-demo-in-your-browser)
   - [Usage: Sample program and run](#usage-sample-program-and-run)
     - [Prerequisites](#prerequisites)
     - [Frontends and Backends](#frontends-and-backends)
     - [Build examples](#build-examples)
     - [Available libraries](#available-libraries)
     - [Screenshot (examples)](#screenshot-examples)
-        - [glfw_opengl3](#glfw_opengl3)
+        - [glfw_opengl3 / glfw_vulkan](#glfw_opengl3--glfw_vulkan)
         - [glfw_opengl3_imknobs](#glfw_opengl3_imknobs)
         - [glfw_opengl3_filedialog](#glfw_opengl3_filedialog)
         - [glfw_opengl3_imgui_toggle](#glfw_opengl3_imgui_toggle)
@@ -27,7 +28,8 @@
         - [glfw_opengl3_imguizmo](#glfw_opengl3_imguizmo)
         - [glfw_opengl3_imColorTextEdit](#glfw_opengl3_imcolortextedit)
         - [glfw_opengl3_imgui_markdown](#glfw_opengl3_imgui_markdown)
-        - [My test app movie using imguin](#my-test-app-movie-using-imguin)
+  - [Wasm example: glfw_opengl3_wasm_base](#wasm-example-glfw_opengl3_wasm_base)
+  - [My test app movie using imguin](#my-test-app-movie-using-imguin)
   - [Cross compilation: Generating Windows application binary(\*.exe) on Linux OS](#cross-compilation-generating-windows-application-binary%5Cexe-on-linux-os)
   - [TODO](#todo)
   - [Compressing binary file](#compressing-binary-file)
@@ -49,9 +51,15 @@ Confirmed **ImGuin** verion: **v1.92.6.1**
 This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
 
-[^notice]: It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
-,updated project [nimgl-imgui](https://github.com/dinau/nimgl-imgui) (ImGui v1.89.9) ,sub project [nim_implot](https://github.com/dinau/nim_implot) and test project [nimgl_test](https://github.com/dinau/nimgl_test),  
-or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-imgui)(ImGui v1.91.1)
+#### Try Wasm demo in your browser
+
+---
+
+Click link for live demo: [glfw_opengl3_wasm_base](https://dinau.github.io/imguin/wasm/demo/glfw_opengl3_wasm_base.html)  
+![alt](img/wasm_demo_small.gif)
+
+See [Wasm-example: glfw_opengl3_wasm_base](#wasm-example-glfw_opengl3_wasm_base)
+
 
 ### Usage: Sample program and run
 
@@ -61,9 +69,9 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
 ---
 
-- [Nim-2.2.6](https://nim-lang.org) or later
+- [Nim-2.2.8](https://nim-lang.org) or later
 - Windows11
-[MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, cp, rm, git, ...etc
+[MSys2/MinGW installed](https://www.msys2.org/): Command line tools: make, python, cp, rm, git, ...etc
 
    ```sh
    pacman -S mingw-w64-ucrt-x86_64-{gcc,glfw,SDL2,sdl3,pkgconf} make
@@ -86,9 +94,10 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
 
    | Frontends | Backends                               |
    | ---       | -------------------                    |
-   | GLFW      | OpenGL3                                |
+   | GLFW      | OpenGL3, Vulkan                        |
    | SDL2      | OpenGL3, sdlrenderer2                  |
    | SDL3      | OpenGL3, sdlrenderer3, sdlgpu3, Vulkan |
+   | Wasm      | WebGL 2.0                              | 
 
 
 #### Build examples
@@ -109,7 +118,7 @@ or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-i
    nimble install -d
    ```
 
-1. For instance [glfw_opengl3_base.nim](glfw_opengl3_base/glfw_opengl3_base.nim),
+1. For instance glfw_opengl3_base.nim
 
    ```sh
    pwd
@@ -159,7 +168,7 @@ Additional examples
 
 These screenshots are on Windows10.
 
-###### glfw_opengl3
+###### glfw_opengl3 / glfw_vulkan
 
 ---
 
@@ -173,6 +182,14 @@ Basic example with icon fonts
    pwd
    glfw_opengl3
    make        # or   nim c glfw_opengl3.nim
+   ```
+   
+   Vulkan
+
+   ```sh
+   pwd
+   glfw_vulkan
+   make        # or   nim c glfw_vulkan.nim
    ```
 
 ###### glfw_opengl3_imknobs
@@ -349,7 +366,7 @@ make       # or    nim c iconFontViewer.nim
 
    ```sh
    cd sdl3_vulkan
-   make     # or    nim c -d:SDL sdl3_vulkan.nim  
+   make     # or    nim c -d:SDL -d:volk sdl3_vulkan.nim  
    ```
 
 ###### glfw_opengl3_image_save
@@ -466,7 +483,57 @@ glfw_opengl3_imgui_markdown
 make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
 ```
 
-######  My test app movie using imguin
+### Wasm example: glfw_opengl3_wasm_base
+
+---
+1. Install emcc compiler from [emsdk](https://github.com/emscripten-core/emsdk)  
+   Reference to [nim_emscripten_tutorial](https://github.com/treeform/nim_emscripten_tutorial)
+1. Confirm emcc version
+
+   ```sh
+   $ emcc --version
+   emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 5.0.4 (62e22652509fbe7a00609ce48a653d0d66f27ba5)
+   --- snip ---
+   ```
+1. Build `contrib.glfw3`
+
+   ```sh
+   $ embuilder build contrib.glfw3
+   ```
+
+1. Build example
+
+   ```sh
+   pwd
+   glfw_opengl3_wasm_base
+   $ make        # or  nim c -d:strip -d:emscripten glfw_opengl3_wasm_base.nim
+   ```
+
+1. Run example in Web browser
+
+   ```sh
+   $ make run
+
+   python -m http.server 8000
+   Serving HTTP on :: port 8000 (http://[::]:8000/) ...
+   ::ffff:127.0.0.1 - - [28/Mar/2026 19:25:12] "GET / HTTP/1.1" 200 -
+   ::ffff:127.0.0.1 - - [28/Mar/2026 19:27:14] "GET /glfw_opengl3_wasm.html HTTP/1.1" 200 -
+   ::ffff:127.0.0.1 - - [28/Mar/2026 19:27:14] "GET /glfw_opengl3_wasm.js HTTP/1.1" 200 -
+   ::ffff:127.0.0.1 - - [28/Mar/2026 19:27:14] "GET /glfw_opengl3_wasm.wasm HTTP/1.1" 200 -
+   ```
+   
+   Click [http://\[::\]:8000/](http://[localhost]:8000/) or [http://[localhost]:8000/](http://[localhost]:8000/) or open it on your browser  
+   and click `glfw_opengl3_wasm_base.html`
+
+1. Genarete desktop application
+
+   ```sh
+   $ make app
+   ```
+
+   `./glfw_opengl3_wasm_base(.exe)` can be executed as desktop application.
+
+###  My test app movie using imguin
 
 ---
 
@@ -669,9 +736,6 @@ error: assignment to 'char **' from incompatible pointer type 'const char * cons
 type ConstCstring {.importc: const char *.} = cstring
 ```
 
-
-
-
 Notes:
 
 - Using ImPlot3D / ImPlot with Nim
@@ -681,3 +745,7 @@ Notes:
 - This project builds and runs Dear ImGui + ImPlot3D / ImPlotusing Nim.
 - ImPlot3D is compiled from source (implot3d.h / implot3d.cpp)
 - ImPlot is compiled from source (implot.h / implot.cpp)
+
+[^notice]: It may be better to use the **mainstream** project [nimgl/imgui](https://github.com/nimgl/imgui) (ImGui v1.85)  
+,updated project [nimgl-imgui](https://github.com/dinau/nimgl-imgui) (ImGui v1.89.9) ,sub project [nim_implot](https://github.com/dinau/nim_implot) and test project [nimgl_test](https://github.com/dinau/nimgl_test),  
+or [https://github.com/daniel-j/nimgl-imgui](https://github.com/daniel-j/nimgl-imgui)(ImGui v1.91.1)

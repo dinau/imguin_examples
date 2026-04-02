@@ -41,7 +41,7 @@ proc testDrawText() =
 proc main() =
   # Initialization
   # --------------------------------------------------------------------------------------
-  setConfigFlags(flags(MSAA_4X_HINT, VSYNC_HINT, WINDOW_RESIZABLE))
+  setConfigFlags(flags(MSAA_4X_HINT, VSYNC_HINT, WINDOW_RESIZABLE, WINDOW_Hidden))
   initWindow(screenWidth, screenHeight, "rlImGui Window 2025/10 in Nim")
 
   # Define our custom camera to look into our 3d world
@@ -73,6 +73,8 @@ proc main() =
   pio.MouseDrawCursor = true
 
   var mapColor = ccolor(elm: (x: (255 - 73)/255, y: (255 - 113)/255, z: (255 - 166)/255, w: 1.0))
+
+  var delayShowWindow: int32 = 1 # For eliminating flicker at startup
 
   # --------------------------------------------------------------------------------------
   # Main game loop
@@ -132,6 +134,11 @@ proc main() =
     #----------
     rlImGuiEnd()
     endDrawing()
+
+    if delayShowWindow == 0:
+      clearWindowState(flags(WindowHidden)) #-- Show window
+    if delayShowWindow >= 0:
+      dec delayShowWindow
 
   # end while
 

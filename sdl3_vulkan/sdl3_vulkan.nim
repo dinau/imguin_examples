@@ -1,5 +1,6 @@
 # Compiling:
 # nim c -d:SDL sdl3_vulkan
+# nim c -d:SDL -d:volk sdl3_vulkan
 
 # SDL3 settings
 when defined(windows):
@@ -9,6 +10,14 @@ when defined(windows):
   {.passL: "-L" & sdlPath & "/lib".}
 when defined(linux): # for linux Debian 11 Bullseye or later
   {.passC: "-I/usr/include/SDL3".}
+
+#----------
+# For Volk
+#----------
+when defined(volk):
+  {.passC: "-DIMGUI_IMPL_VULKAN_USE_VOLK".}
+  {.compile: "../libs/vulkan/volk.c".}
+  {.passC: "-I../libs/vulkan".}
 
 import std/[os, strutils, math, strformat]
 import sdl3_nim
@@ -30,6 +39,20 @@ const MainWinHeight = 900
 
 # Present mode selection: VK_PRESENT_MODE_FIFO_KHR (V-Sync enabled)
 const APP_USE_UNLIMITED_FRAME_RATE = false
+
+#---------------------
+# Forward definitions
+#---------------------
+
+#-------------------
+# Volk C API Bridge
+#-------------------
+when defined(volk):
+  {.push importc, cdecl.}
+  proc volkInitialize(): VkResult
+  proc volkLoadInstance(instance: vulkan.VkInstance)
+  proc volkLoadDevice(device: VkDevice)
+  {.pop.}
 
 # ============================================================
 # Global Variables
@@ -91,7 +114,7 @@ proc checkVkResult(err: VkResult) {.cdecl.} =
 # Extension Availability Check
 # ============================================================
 proc isExtensionAvailable(properties: seq[VkExtensionProperties], extension: cstring): bool =
-  ## Check if `extension` is included in the list of available extensions
+  ## Check whether `extension` is included in the list of available extensions
   for p in properties:
     if cast[cstring](addr p.extensionName[0]) == extension:
       return true
@@ -103,6 +126,11 @@ proc isExtensionAvailable(properties: seq[VkExtensionProperties], extension: cst
 proc setupVulkan(instance_extensions: var seq[string]) =
   debugEcho "[vulkan] Start setupVulkan()"
   ## Create Vulkan instance, physical device, logical device, and descriptor pool
+
+  when defined(volk):
+    # --- Volk initialize
+    checkVkResult(volkInitialize())
+    debugEcho "[vulkan] volkInitialize() done"
 
   # --- Create Vulkan Instance ---
   debugEcho "[vulkan] Creating Vulkan instance..."
@@ -134,6 +162,11 @@ proc setupVulkan(instance_extensions: var seq[string]) =
   checkVkResult(vkCreateInstance(createInfo.addr, g_Allocator, g_Instance.addr))
   deallocCStringArray(createInfo.ppEnabledExtensionNames)
 
+  # --- Volk: Load function pointer of instance
+  when defined(volk):
+    volkLoadInstance(g_Instance)
+    debugEcho "[vulkan] volkLoadInstance() done"
+
   # --- Select Physical Device (GPU) ---
   g_PhysicalDevice = ImGui_ImplVulkanH_SelectPhysicalDevice(g_Instance)
   assert cast[int64](g_PhysicalDevice) != 0
@@ -164,6 +197,11 @@ proc setupVulkan(instance_extensions: var seq[string]) =
   vkGetDeviceQueue(g_Device, g_QueueFamily, 0, addr g_Queue)
 
   debugEcho "[vulkan] Logical device created."
+
+  # --- Volk: Load function pointer of device
+  when defined(volk):
+    volkLoadDevice(g_Device)
+    debugEcho "[vulkan] volkLoadDevice() done"
 
   # --- Create Descriptor Pool ---
   # Adjust poolSizes and maxSets if you wish to load additional textures
@@ -351,10 +389,13 @@ proc main() =
 
   # ---- Create Window with Vulkan graphics context ----
   let mainScale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay())
+  var sVolk = ""
+  when defined(volk):
+    sVolk = "+ Volk"
   const windowflags = SDL_WINDOW_VULKAN or SDL_WINDOW_RESIZABLE or SDL_WINDOW_HIDDEN or SDL_WINDOW_HIGH_PIXEL_DENSITY
   let windowW = cint(1280.0f * mainScale)
   let windowH = cint(800.0f * mainScale)
-  window = SDL_CreateWindow("Dear ImGui SDL3+Vulkan example", windowW, windowH, windowFlags.SDL_WindowFlags)
+  window = SDL_CreateWindow((fmt"Dear ImGui SDL3 + Vulkan{sVolk} example").cstring, windowW, windowH, windowFlags.SDL_WindowFlags)
   if window == nil:
     echo fmt"Error: SDL_CreateWindow(): {SDL_GetError()}"
     quit(1)
@@ -520,7 +561,7 @@ proc main() =
     # Show main window
     #------------------
     block:
-      igBegin("Nim: Dear ImGui + SDL3 + Vulkan", nil, 0)
+      igBegin((fmt"Nim: Dear ImGui + SDL3 + Vulkan {sVolk}").cstring, nil, 0)
       defer: igEnd()
       if igToggleButton(strSw, sw):
         if sw:

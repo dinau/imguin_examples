@@ -22,10 +22,7 @@ var projDirs = @[
 "sdl2_opengl3",
 "sdl2_renderer",
 "rlimgui_basic",
-#"sdl3_opengl3",
-#"sdl3_renderer",
-#"sdl3_sdlgpu3",
-#"sdl3_vulkan",
+"glfw_opengl3_wasm_base",
 "fontx2v",
 ]
 
@@ -46,6 +43,9 @@ proc compileProj(cmd:string) =
       withDir(dir):
         if cmd == "clean":
           options = join([options,"--no-print-directory"]," ")
+        echo "################################"
+        echo  "  ", dir
+        echo "################################"
         exec("make $# $#" % [options,cmd])
 
 #------

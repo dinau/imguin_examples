@@ -15,8 +15,8 @@ when defined(linux): # for linux Debian 11 Bullseye or later
 import sdl3_nim
 export sdl3_nim
 
-import imguin/[glad/gl, sdl3_renderer, cimgui, simple]
-export              gl, sdl3_renderer, cimgui, simple
+import imguin/[sdl3_renderer, cimgui, simple]
+export         sdl3_renderer, cimgui, simple
 
 import ../utils/sdlrenderer/[zoomglass, sdl3/loadImage]
 export                       zoomglass,      loadImage

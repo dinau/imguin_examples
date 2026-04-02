@@ -1,9 +1,15 @@
+*.data
+*.js
+*.wasm
+*.html
 *.new
 *.org
 *.pdf
 *.stop
+*_org.png
 *.zip
 .ccache/
+.gitx/
 .githubx
 .hgignore
 GPATH
@@ -21,6 +27,7 @@ sdl3_vulkan_save/
 fontx2v/
 fontx2vx/
 glfw_dx11/
+glfw_opengl3_implot_full_demo/
 glfw_opengl3_bench/
 glfw_opengl3_staticx/
 glfw_opengl3_simple_skelton/

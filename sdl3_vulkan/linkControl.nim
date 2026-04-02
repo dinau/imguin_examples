@@ -1,4 +1,3 @@
-import strformat
 switch "app","gui" # dismiss background Window
 
 #---------------------------------------

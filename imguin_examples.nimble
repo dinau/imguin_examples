@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.92.6.1"
+version       = "1.92.6.2"
 author        = "dinau"
 description   = "The examples for ImGuin that wrapper for ImGui libraries with Nim language."
 license       = "MIT"
@@ -9,7 +9,7 @@ skipDirs      = @[""]
 
 # Dependencies
 
-requires "imguin >= 1.92.6.1"
+requires "imguin >= 1.92.6.2"
 requires "sdl3_nim >= 3.4.2.0"
 requires "sdl2_nim"
 requires "nimgl"
@@ -18,6 +18,7 @@ requires "tinydialogs"
 requires "glfw"
 requires "opengl"
 requires "https://github.com/DanielBelmes/VulkanNim#head"
+requires "https://github.com/Anuken/staticglfw"
 requires "naylib"
 
 task all,"Build all examples":

@@ -63,7 +63,7 @@ proc firstWindow(win: AppWindow) =
     igText("これは日本語表示テスト")
     igInputTextWithHint("テキスト入力", "ここに日本語を入力", sBuf)
     igText(("入力結果:" & sBuf).cstring)
-    igCheckbox("他Window表示", showAnotherWindow.addr)
+    igCheckbox("Window表示", showAnotherWindow.addr)
     igSliderFloat("浮動小数", somefloat.addr, 0.0f, 1.0f, "%3f", 0)
     igColorEdit3("背景色変更", win.ini.clearColor.array3, ImGuiColorEditFlags_None.ImGuiColorEditFlags)
     when defined(windows):

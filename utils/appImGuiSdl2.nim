@@ -12,8 +12,16 @@ else: # for linux Debian 11 Bullseye or later
 import sdl2_nim/sdl
 export sdl
 
-import imguin/[glad/gl, cimgui, sdl2_opengl, simple]
-export gl, cimgui, sdl2_opengl, simple
+const USE_GLAD_GL = false # Select OpenGL loader
+when USE_GLAD_GL:
+  import imguin/[glad/gl]
+  export gl
+else:
+  import opengl
+  export opengl
+
+import imguin/[cimgui, sdl2_opengl, simple]
+export cimgui, sdl2_opengl, simple
 
 import ../utils/opengl/[zoomglass, loadImage]
 export                  zoomglass, loadImage
@@ -113,9 +121,13 @@ proc createImGui*(w,h: cint, title:string="ImGui window"): WindowSdl =
   discard glMakeCurrent(window, result.glContext);
   discard glSetSwapInterval(1)
 
-  if not gladLoadGL(glGetProcAddress):
-    sdl.log("opengl version: ", glGetString(GL_VERSION))
-    quit "Error initialising OpenGL"
+  # OpenGL loader
+  when USE_GLAD_GL:
+    if not gladLoadGL(glGetProcAddress):
+      sdl.log("opengl version: ", glGetString(GL_VERSION))
+      quit "Error initialising OpenGL"
+  else:
+    loadextensions()
 
   # Setup ImGui
   result.context = igCreateContext(nil)
@@ -146,7 +158,7 @@ proc createImGui*(w,h: cint, title:string="ImGui window"): WindowSdl =
 proc render*(win: var WindowSdl) =
     var pio = igGetIO()
     igRender()
-    glViewport(0, 0, (pio.DisplaySize.x).GLsizei, (pio.DisplaySize.y).GLsizei)
+    glViewport(0, 0, (pio.DisplaySize.x).cint, (pio.DisplaySize.y).cint)
     glClearColor(win.ini.clearColor.elm.x, win.ini.clearColor.elm.y, win.ini.clearColor.elm.z, win.ini.clearColor.elm.w)
     glClear(GL_COLOR_BUFFER_BIT)
     ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData())

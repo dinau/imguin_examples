@@ -1,4 +1,4 @@
-#switch "app","gui" # dismiss background Window
+switch "app","gui" # dismiss background Window
 
 #---------------------------------------
 # Select static link or shared/dll link
@@ -13,6 +13,13 @@ when defined(windows):
     switch "passL","imm32.lib"
   else:
     switch "passL","-lgdi32 -limm32 -lcomdlg32 -luser32 -lshell32"
+elif defined(macosx):
+  const STATIC_LINK_GLFW = false
+  const STATIC_LINK_CC = false
+  switch "passL", "-framework Cocoa"
+  switch "passL", "-framework IOKit"
+  switch "passL", "-framework CoreVideo"
+  switch "passL", "-framework OpenGL"
 else: # for Linux
   const STATIC_LINK_GLFW = false
   const STATIC_LINK_CC= false
@@ -28,6 +35,8 @@ else: # shared/dll
       switch "passL","-lglfw3.dll"
       switch "define", "glfwDLL"
       #switch "define","cimguiDLL"
+  elif defined(macosx):
+    switch "passL","-lglfw"  # brew install glfw
   else:
     switch "passL","-lglfw"
     switch "passL","-lX11"

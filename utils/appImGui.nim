@@ -3,7 +3,7 @@ import std/[os, strutils, parsecfg, parseutils, strformat]
 import glfw
 export glfw
 
-const USE_GLAD_GL = true # Select OpenGL loader
+const USE_GLAD_GL = false # Select OpenGL loader
 when USE_GLAD_GL:
   import imguin/[glad/gl]
   export gl
@@ -14,6 +14,8 @@ else:
 import imguin/[cimgui, impl_glfw, impl_opengl, simple]
 export cimgui, impl_glfw, impl_opengl, simple
 
+import ./appType
+export appType
 import ../utils/opengl/loadImage
 export                 loadImage
 import ../utils/saveImage
@@ -24,21 +26,6 @@ import ../utils/[setupFonts, utils, vecs, togglebutton]
 export setupFonts, utils, vecs, togglebutton
 
 import stb_image/read as stbi
-
-type IniData = object
-  clearColor*: ccolor
-  startupPosX*, startupPosY*: cint
-  viewportWidth*, viewportHeight*: cint
-  imageSaveFormatIndex*: int
-  theme: Theme
-
-type AppWindow* = object
-  glfwWin*: glfw.Window
-  context*: ptr ImGuiContext
-  implotContext: ptr ImPlotContext
-  implot3dContext: ptr ImPlot3dContext
-  showWindowDelay: int
-  ini*: IniData
 
 #--- Forward definitions
 proc loadIni*(win: var AppWindow)

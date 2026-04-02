@@ -1,12 +1,17 @@
-# Install packages  $ nimble stb_image nimgl
+# Install packages  $ nimble stb_image
 
 import std/[os, strutils, strformat]
-import imguin/[glad/gl]
+
+import opengl
+#import imguin/[glad/gl]
+#when defined(emscripten):
+#  import opengl
+#else:
+#  import imguin/[glad/gl]
 
 import stb_image/read as stbi
 
 # Refer to:
-#   OpenGLでの描画内容の画像化と保存(2012-11-07)
 #     https://npal-shared.hatenablog.com/entry/20121107/1352284053
 
 type

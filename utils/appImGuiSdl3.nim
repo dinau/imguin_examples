@@ -15,8 +15,16 @@ when defined(linux): # for linux Debian 11 Bullseye or later
 import sdl3_nim
 export sdl3_nim
 
-import imguin/[glad/gl, cimgui, sdl3_opengl, simple]
-export              gl, cimgui, sdl3_opengl, simple
+const USE_GLAD_GL = false # Select OpenGL loader
+when USE_GLAD_GL:
+  import imguin/[glad/gl]
+  export gl
+else:
+  import opengl
+  export opengl
+
+import imguin/[cimgui, sdl3_opengl, simple]
+export         cimgui, sdl3_opengl, simple
 
 import ../utils/opengl/[zoomglass, loadImage]
 export                  zoomglass, loadImage
@@ -121,12 +129,13 @@ proc createImGui*(w,h: cint, title:string="ImGui window SDL3"): WindowSdl =
   if not SDL_GL_MakeCurrent(window, result.glContext):
     echo "Error!: SDL_GL_MakeCurrent()"
 
-  ###-----------------------------------------------------------
-  if not gladLoadGL(SDL_GL_GetProcAddress):
-    echo "Error! initialising gladLoadGL(): " ,$SDL_GetError()
-    quit 1
-  echo "OK gladLoadGL()"
-  ###-----------------------------------------------------------
+  # OpenGL loader
+  when USE_GLAD_GL:
+    if not gladLoadGL(SDL_GL_GetProcAddress):
+      echo "Error! initialising gladLoadGL(): " ,$SDL_GetError()
+      quit 1
+  else:
+    loadextensions()
 
   discard SDL_GL_SetSwapInterval(1)
 

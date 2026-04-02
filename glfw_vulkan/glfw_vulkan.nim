@@ -1,5 +1,14 @@
 # Compiling:
 # nim c glfw_vulkan
+# nim c -d:volk glfw_vulkan
+
+#----------
+# For Volk
+#----------
+when defined(volk):
+  {.compile: "../libs/vulkan/volk.c".}
+  {.passC: "-I../libs/vulkan".}
+  {.passC: "-DIMGUI_IMPL_VULKAN_USE_VOLK".}
 
 import std/[os, osproc, strutils, math, strformat]
 import glfw/wrapper as wglfw  # Using row functions
@@ -32,6 +41,16 @@ const APP_USE_UNLIMITED_FRAME_RATE = false
 #---------------------
 proc loadTileBarIcon*(win: wglfw.Window, iconName: string)
 proc glfwCreateWindowSurface*(instance: VkInstance; window: wglfw.Window; allocator: ptr VkAllocationCallbacks; surface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
+
+#-------------------
+# Volk C API Bridge
+#-------------------
+when defined(volk):
+  {.push importc, cdecl.}
+  proc volkInitialize(): VkResult
+  proc volkLoadInstance(instance: VkInstance)
+  proc volkLoadDevice(device: VkDevice)
+  {.pop.}
 
 # ============================================================
 # Global Variables
@@ -100,12 +119,16 @@ proc isExtensionAvailable(properties: seq[VkExtensionProperties], extension: cst
       return true
   return false
 
-# ============================================================
-# Vulkan Setup
-# ============================================================
+# ============
+# setupVulkan
+# ============
 proc setupVulkan(instance_extensions: var seq[string]) =
   debugEcho "[vulkan] Start setupVulkan()"
-  ## Create Vulkan instance, physical device, logical device, and descriptor pool
+
+  when defined(volk):
+    # --- Volk initialize
+    checkVkResult(volkInitialize())
+    debugEcho "[vulkan] volkInitialize() done"
 
   # --- Create Vulkan Instance ---
   debugEcho "[vulkan] Creating Vulkan instance..."
@@ -137,6 +160,11 @@ proc setupVulkan(instance_extensions: var seq[string]) =
   checkVkResult(vkCreateInstance(createInfo.addr, g_Allocator, g_Instance.addr))
   deallocCStringArray(createInfo.ppEnabledExtensionNames)
 
+  # --- Volk: Load function pointer of instance
+  when defined(volk):
+    volkLoadInstance(g_Instance)
+    debugEcho "[vulkan] volkLoadInstance() done"
+
   # --- Select Physical Device (GPU) ---
   g_PhysicalDevice = ImGui_ImplVulkanH_SelectPhysicalDevice(g_Instance)
   assert cast[int64](g_PhysicalDevice) != 0
@@ -165,8 +193,12 @@ proc setupVulkan(instance_extensions: var seq[string]) =
   checkVkResult(vkCreateDevice(g_PhysicalDevice, addr deviceCreateInfo, g_Allocator, addr g_Device))
   deallocCStringArray(deviceCreateInfo.ppEnabledExtensionNames)
   vkGetDeviceQueue(g_Device, g_QueueFamily, 0, addr g_Queue)
-
   debugEcho "[vulkan] Logical device created."
+
+  # --- Volk: Load function pointer of device
+  when defined(volk):
+    volkLoadDevice(g_Device)
+    debugEcho "[vulkan] volkLoadDevice() done"
 
   # --- Create Descriptor Pool ---
   # Adjust poolSizes and maxSets if you wish to load additional textures
@@ -350,7 +382,10 @@ proc main() =
     else:
       wglfw.windowHint(hVisible.int32, false.int32)
   let main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(cast[ptr GlfwMonitor](wglfw.getPrimaryMonitor())) # // Valid on GLFW 3.3+ only
-  var window = wglfw.createWindow((1280 * main_scale).int32, (800 * main_scale).int32, "Dear ImGui GLFW+Vulkan example", nil, nil)
+  var sVolk = ""
+  when defined(volk):
+    sVolk = "+ Volk"
+  var window = wglfw.createWindow((1280 * main_scale).int32, (800 * main_scale).int32, (fmt"Dear ImGui GLFW + Vulkan{sVolk} example").cstring, nil, nil)
   if 0 == wglfw.vulkanSupported():
     echo "GLFW: Vulkan Not Supported"
     quit 1
@@ -508,7 +543,7 @@ proc main() =
     # Show main window
     #------------------
     block:
-      igBegin("Nim: Dear ImGui + GLFW + Vulkan", nil, 0)
+      igBegin((fmt"Nim: Dear ImGui + GLFW + Vulkan {sVolk}").cstring, nil, 0)
       defer: igEnd()
       if igToggleButton(strSw, sw):
         if sw:

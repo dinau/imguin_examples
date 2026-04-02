@@ -2,6 +2,7 @@
 # nim c -d:ImSpinner glfw_opengl3_imspinner.nim
 
 import ../utils/appImGui
+import ./demoCImSpinners
 
 when defined(windows):
   when not defined(vcc): # imguinVcc.res TODO WIP
@@ -59,26 +60,7 @@ proc gui_main(win: var AppWindow) =
     #-----------------
     # CImSpinner demo
     #-----------------
-    block:
-      igBegin("Nim: CImSpinner / ImSpinner demo 2025/02", nil, 0)
-      defer: igEnd()
-      const red = ImColor(Value: ImVec4(x: 1.0, y: 0.0, z: 0.0, w: 1.0))
-      const gold = ImColor(Value: ImVec4(x: 1.0, y: 215/255.0, z: 0.0, w: 1.0))
-      const blue1 = ImColor(Value: ImVec4(x: 51/255.0, y: 153/255.0, z: 1.0, w: 1.0))
-
-      SpinnerDnaDotsEx("DnaDots", 16, 2, blue1, 1.2, 8, 0.25, true); igSameLine() # Defined by "SPINNER_DNADOTS"
-      SpinnerRainbowMix("Rmix", 16, 2, gold, 4); igSameLine() # Defined by "SPINNER_RAINBOWMIX"
-      SpinnerAng8("Ang", 16, 2); igSameLine() # ...
-      SpinnerPulsar("Pulsar", 16, 2); igSameLine()
-      SpinnerClock("Clock", 16, 2); igSameLine()
-      SpinnerAtom("atom", 16, 2); igSameLine()
-      SpinnerSwingDots("wheel", 16, 6); igSameLine()
-      SpinnerDotsToBar("tobar", 16, 2, 0.5); igSameLine()
-      SpinnerBarChartRainbow("rainbow", 16, 4, red, 4); igSameLine()
-
-      proc genColor(i: cint): ImColor_c {.cdecl.} =
-        return ImColor_HSV(i.float32 * 0.25, 0.8, 0.8, 1.0)
-      SpinnerCamera("Camera", 16, 8, genColor) # Defined by "SPINNER_CAMERA"
+    demoCImSpinners()
 
     #--------
     # render

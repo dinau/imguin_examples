@@ -179,13 +179,13 @@ type
     markerSize* {.importc: "MarkerSize".}: float32
     markerWeight* {.importc: "MarkerWeight".}: float32
     fillAlpha* {.importc: "FillAlpha".}: float32
-    plotDefaultSize* {.importc: "PlotDefaultSize".}: ImVec2
-    plotMinSize* {.importc: "PlotMinSize".}: ImVec2
-    plotPadding* {.importc: "PlotPadding".}: ImVec2
-    labelPadding* {.importc: "LabelPadding".}: ImVec2
-    legendPadding* {.importc: "LegendPadding".}: ImVec2
-    legendInnerPadding* {.importc: "LegendInnerPadding".}: ImVec2
-    legendSpacing* {.importc: "LegendSpacing".}: ImVec2
+    plotDefaultSize* {.importc: "PlotDefaultSize".}: ImVec2_c
+    plotMinSize* {.importc: "PlotMinSize".}: ImVec2_c
+    plotPadding* {.importc: "PlotPadding".}: ImVec2_c
+    labelPadding* {.importc: "LabelPadding".}: ImVec2_c
+    legendPadding* {.importc: "LegendPadding".}: ImVec2_c
+    legendInnerPadding* {.importc: "LegendInnerPadding".}: ImVec2_c
+    legendSpacing* {.importc: "LegendSpacing".}: ImVec2_c
     colors* {.importc: "Colors".}: array[15, ImVec4]
     colormap* {.importc: "Colormap".}: ImPlot3DColormap
 
@@ -232,7 +232,7 @@ proc newImPlot3DStyle*(): void {.importc: "ImPlot3DStyle_ImPlot3DStyle".}
 proc destroy*(self: ptr ImPlot3DStyle): void {.importc: "ImPlot3DStyle_destroy".}
 proc imPlot3D_AddColormap*(name: cstring, cols: ptr ImVec4, size: int, qual: bool = true): ImPlot3DColormap {.importc: "ImPlot3D_AddColormap_Vec4Ptr".}
 proc imPlot3D_AddColormap*(name: cstring, cols: ptr uint32, size: int, qual: bool = true): ImPlot3DColormap {.importc: "ImPlot3D_AddColormap_U32Ptr".}
-proc imPlot3D_BeginPlot*(title_id: cstring, size: ImVec2 = ImVec2(x: -1, y: 0), flags: ImPlot3DFlags = 0.ImPlot3DFlags): bool {.importc: "ImPlot3D_BeginPlot".}
+proc imPlot3D_BeginPlot*(title_id: cstring, size: ImVec2_c = ImVec2_c(x: -1, y: 0), flags: ImPlot3DFlags = 0.ImPlot3DFlags): bool {.importc: "ImPlot3D_BeginPlot".}
 proc imPlot3D_CreateContext*(): ptr ImPlot3DContext {.importc: "ImPlot3D_CreateContext".}
 proc imPlot3D_DestroyContext*(ctx: ptr ImPlot3DContext = nullptr): void {.importc: "ImPlot3D_DestroyContext".}
 proc imPlot3D_EndPlot*(): void {.importc: "ImPlot3D_EndPlot".}
@@ -243,15 +243,15 @@ proc imPlot3D_GetColormapName*(cmap: ImPlot3DColormap): cstring {.importc: "ImPl
 proc imPlot3D_GetColormapSize*(cmap: ImPlot3DColormap = cast[ImPlot3DColormap](-1)): int {.importc: "ImPlot3D_GetColormapSize".}
 proc imPlot3D_GetCurrentContext*(): ptr ImPlot3DContext {.importc: "ImPlot3D_GetCurrentContext".}
 proc imPlot3D_GetPlotDrawList*(): ptr ImDrawList {.importc: "ImPlot3D_GetPlotDrawList".}
-proc imPlot3D_GetPlotPosNonUDT*(pOut: ptr ImVec2): void {.importc: "ImPlot3D_GetPlotPos".}
-proc imPlot3D_GetPlotSizeNonUDT*(pOut: ptr ImVec2): void {.importc: "ImPlot3D_GetPlotSize".}
+proc imPlot3D_GetPlotPosNonUDT*(pOut: ptr ImVec2_c): void {.importc: "ImPlot3D_GetPlotPos".}
+proc imPlot3D_GetPlotSizeNonUDT*(pOut: ptr ImVec2_c): void {.importc: "ImPlot3D_GetPlotSize".}
 proc imPlot3D_GetStyle*(): ptr ImPlot3DStyle {.importc: "ImPlot3D_GetStyle".}
 proc imPlot3D_GetStyleColorU32*(idx: ImPlot3DCol): uint32 {.importc: "ImPlot3D_GetStyleColorU32".}
 proc imPlot3D_GetStyleColorVec4NonUDT*(pOut: ptr ImVec4, idx: ImPlot3DCol): void {.importc: "ImPlot3D_GetStyleColorVec4".}
 proc imPlot3D_NextColormapColorNonUDT*(pOut: ptr ImVec4): void {.importc: "ImPlot3D_NextColormapColor".}
-proc imPlot3D_PixelsToPlotPlaneNonUDT*(pOut: ptr ImPlot3DPoint, pix: ImVec2, plane: ImPlane3D, mask: bool = true): void {.importc: "ImPlot3D_PixelsToPlotPlane_Vec2".}
+proc imPlot3D_PixelsToPlotPlaneNonUDT*(pOut: ptr ImPlot3DPoint, pix: ImVec2_c, plane: ImPlane3D, mask: bool = true): void {.importc: "ImPlot3D_PixelsToPlotPlane_Vec2".}
 proc imPlot3D_PixelsToPlotPlaneNonUDT2*(pOut: ptr ImPlot3DPoint, x: cdouble, y: cdouble, plane: ImPlane3D, mask: bool = true): void {.importc: "ImPlot3D_PixelsToPlotPlane_double".}
-proc imPlot3D_PixelsToPlotRay*(pix: ImVec2): ImPlot3DRay {.importc: "ImPlot3D_PixelsToPlotRay_Vec2".}
+proc imPlot3D_PixelsToPlotRay*(pix: ImVec2_c): ImPlot3DRay {.importc: "ImPlot3D_PixelsToPlotRay_Vec2".}
 proc imPlot3D_PixelsToPlotRay*(x: cdouble, y: cdouble): ImPlot3DRay {.importc: "ImPlot3D_PixelsToPlotRay_double".}
 proc imPlot3D_PlotLine*(label_id: cstring, xs: ptr float32, ys: ptr float32, zs: ptr float32, count: int, flags: ImPlot3DLineFlags = 0.ImPlot3DLineFlags, offset: int = 0, stride: int = sizeof(float32).int32): void {.importc: "ImPlot3D_PlotLine_FloatPtr".}
 proc imPlot3D_PlotLine*(label_id: cstring, xs: ptr cdouble, ys: ptr cdouble, zs: ptr cdouble, count: int, flags: ImPlot3DLineFlags = 0.ImPlot3DLineFlags, offset: int = 0, stride: int = sizeof(cdouble).int32): void {.importc: "ImPlot3D_PlotLine_doublePtr".}
@@ -294,9 +294,9 @@ proc imPlot3D_PlotSurface*(label_id: cstring, xs: ptr int32, ys: ptr int32, zs: 
 proc imPlot3D_PlotSurface*(label_id: cstring, xs: ptr uint32, ys: ptr uint32, zs: ptr uint32, x_count: int, y_count: int, scale_min: cdouble = 0.0, scale_max: cdouble = 0.0, flags: ImPlot3DSurfaceFlags = 0.ImPlot3DSurfaceFlags, offset: int = 0, stride: int = sizeof(uint32).int32): void {.importc: "ImPlot3D_PlotSurface_U32Ptr".}
 proc imPlot3D_PlotSurface*(label_id: cstring, xs: ptr int64, ys: ptr int64, zs: ptr int64, x_count: int, y_count: int, scale_min: cdouble = 0.0, scale_max: cdouble = 0.0, flags: ImPlot3DSurfaceFlags = 0.ImPlot3DSurfaceFlags, offset: int = 0, stride: int = sizeof(int64).int32): void {.importc: "ImPlot3D_PlotSurface_S64Ptr".}
 proc imPlot3D_PlotSurface*(label_id: cstring, xs: ptr uint64, ys: ptr uint64, zs: ptr uint64, x_count: int, y_count: int, scale_min: cdouble = 0.0, scale_max: cdouble = 0.0, flags: ImPlot3DSurfaceFlags = 0.ImPlot3DSurfaceFlags, offset: int = 0, stride: int = sizeof(uint64).int32): void {.importc: "ImPlot3D_PlotSurface_U64Ptr".}
-proc imPlot3D_PlotText*(text: cstring, x: float32, y: float32, z: float32, angle: float32 = 0.0f, pix_offset: ImVec2 = ImVec2(x: 0, y: 0)): void {.importc: "ImPlot3D_PlotText".}
-proc imPlot3D_PlotToPixelsNonUDT*(pOut: ptr ImVec2, point: ImPlot3DPoint): void {.importc: "ImPlot3D_PlotToPixels_Plot3DPoInt".}
-proc imPlot3D_PlotToPixelsNonUDT2*(pOut: ptr ImVec2, x: cdouble, y: cdouble, z: cdouble): void {.importc: "ImPlot3D_PlotToPixels_double".}
+proc imPlot3D_PlotText*(text: cstring, x: float32, y: float32, z: float32, angle: float32 = 0.0f, pix_offset: ImVec2_c = ImVec2_c(x: 0, y: 0)): void {.importc: "ImPlot3D_PlotText".}
+proc imPlot3D_PlotToPixelsNonUDT*(pOut: ptr ImVec2_c, point: ImPlot3DPoint): void {.importc: "ImPlot3D_PlotToPixels_Plot3DPoInt".}
+proc imPlot3D_PlotToPixelsNonUDT2*(pOut: ptr ImVec2_c, x: cdouble, y: cdouble, z: cdouble): void {.importc: "ImPlot3D_PlotToPixels_double".}
 proc imPlot3D_PlotTriangle*(label_id: cstring, xs: ptr float32, ys: ptr float32, zs: ptr float32, count: int, flags: ImPlot3DTriangleFlags = 0.ImPlot3DTriangleFlags, offset: int = 0, stride: int = sizeof(float32).int32): void {.importc: "ImPlot3D_PlotTriangle_FloatPtr".}
 proc imPlot3D_PlotTriangle*(label_id: cstring, xs: ptr cdouble, ys: ptr cdouble, zs: ptr cdouble, count: int, flags: ImPlot3DTriangleFlags = 0.ImPlot3DTriangleFlags, offset: int = 0, stride: int = sizeof(cdouble).int32): void {.importc: "ImPlot3D_PlotTriangle_doublePtr".}
 proc imPlot3D_PlotTriangle*(label_id: cstring, xs: ptr int8, ys: ptr int8, zs: ptr int8, count: int, flags: ImPlot3DTriangleFlags = 0.ImPlot3DTriangleFlags, offset: int = 0, stride: int = sizeof(int8).int32): void {.importc: "ImPlot3D_PlotTriangle_S8Ptr".}
@@ -316,17 +316,17 @@ proc imPlot3D_PushStyleColor*(idx: ImPlot3DCol, col: uint32): void {.importc: "I
 proc imPlot3D_PushStyleColor*(idx: ImPlot3DCol, col: ImVec4): void {.importc: "ImPlot3D_PushStyleColor_Vec4".}
 proc imPlot3D_PushStyleVar*(idx: ImPlot3DStyleVar, val: float32): void {.importc: "ImPlot3D_PushStyleVar_Float".}
 proc imPlot3D_PushStyleVar*(idx: ImPlot3DStyleVar, val: int): void {.importc: "ImPlot3D_PushStyleVar_Int".}
-proc imPlot3D_PushStyleVar*(idx: ImPlot3DStyleVar, val: ImVec2): void {.importc: "ImPlot3D_PushStyleVar_Vec2".}
+proc imPlot3D_PushStyleVar*(idx: ImPlot3DStyleVar, val: ImVec2_c): void {.importc: "ImPlot3D_PushStyleVar_Vec2".}
 proc imPlot3D_SampleColormapNonUDT*(pOut: ptr ImVec4, t: float32, cmap: ImPlot3DColormap = cast[ImPlot3DColormap](-1)): void {.importc: "ImPlot3D_SampleColormap".}
 proc imPlot3D_SetCurrentContext*(ctx: ptr ImPlot3DContext): void {.importc: "ImPlot3D_SetCurrentContext".}
 proc imPlot3D_SetNextFillStyle*(col: ImVec4 = ImVec4(x: 0, y: 0, z: 0, w: -1), alpha_mod: float32 = -1): void {.importc: "ImPlot3D_SetNextFillStyle".}
 proc imPlot3D_SetNextLineStyle*(col: ImVec4 = ImVec4(x: 0, y: 0, z: 0, w: -1), weight: float32 = -1): void {.importc: "ImPlot3D_SetNextLineStyle".}
 proc imPlot3D_SetNextMarkerStyle*(marker: ImPlot3DMarker = -1.ImPlot3DMarker, size: float32 = -1, fill: ImVec4 = ImVec4(x: 0, y: 0, z: 0, w: -1), weight: float32 = -1, outline: ImVec4 = ImVec4(x: 0, y: 0, z: 0, w: -1)): void {.importc: "ImPlot3D_SetNextMarkerStyle".}
 proc imPlot3D_SetupAxes*(x_label: cstring, y_label: cstring, z_label: cstring, x_flags: ImPlot3DAxisFlags = 0.ImPlot3DAxisFlags, y_flags: ImPlot3DAxisFlags = 0.ImPlot3DAxisFlags, z_flags: ImPlot3DAxisFlags = 0.ImPlot3DAxisFlags): void {.importc: "ImPlot3D_SetupAxes".}
-proc imPlot3D_SetupAxesLimits*(x_min: cdouble, x_max: cdouble, y_min: cdouble, y_max: cdouble, z_min: cdouble, z_max: cdouble, cond: ImPlot3DCond = ImPlot3DCond_Once.ImPlot3DCond): void {.importc: "ImPlot3D_SetupAxesLimits".}
+proc imPlot3D_SetupAxesLimits*(x_min: cdouble, x_max: cdouble, y_min: cdouble, y_max: cdouble, z_min: cdouble, z_max: cdouble, cond: ImPlot3DCond = Once): void {.importc: "ImPlot3D_SetupAxesLimits".}
 proc imPlot3D_SetupAxis*(axis: ImAxis3D, label: cstring = nullptr, flags: ImPlot3DAxisFlags = 0.ImPlot3DAxisFlags): void {.importc: "ImPlot3D_SetupAxis".}
 proc imPlot3D_SetupAxisFormat*(idx: ImAxis3D, formatter: ImPlot3DFormatter, data: pointer = nullptr): void {.importc: "ImPlot3D_SetupAxisFormat".}
-proc imPlot3D_SetupAxisLimits*(axis: ImAxis3D, v_min: cdouble, v_max: cdouble, cond: ImPlot3DCond = ImPlot3DCond_Once.ImPlot3DCond): void {.importc: "ImPlot3D_SetupAxisLimits".}
+proc imPlot3D_SetupAxisLimits*(axis: ImAxis3D, v_min: cdouble, v_max: cdouble, cond: ImPlot3DCond = Once): void {.importc: "ImPlot3D_SetupAxisLimits".}
 proc imPlot3D_SetupBoxScale*(x: float32, y: float32, z: float32): void {.importc: "ImPlot3D_SetupBoxScale".}
 proc imPlot3D_SetupLegend*(location: ImPlot3DLocation, flags: ImPlot3DLegendFlags = 0.ImPlot3DLegendFlags): void {.importc: "ImPlot3D_SetupLegend".}
 proc imPlot3D_ShowDemoWindow*(p_open: ptr bool = nullptr): void {.importc: "ImPlot3D_ShowDemoWindow".}

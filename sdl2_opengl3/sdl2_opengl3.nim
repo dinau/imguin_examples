@@ -31,7 +31,7 @@ proc main() =
   # Load image
   #-------------
   var
-    textureId: GLuint
+    textureId: cuint
     textureWidth = 0
     textureHeight = 0
   var ImageName = os.joinPath(os.getAppDir(), "fuji-400.jpg")

@@ -14,8 +14,8 @@ else: # for linux Debian 11 Bullseye or later
 import sdl2_nim/sdl
 export sdl
 
-import imguin/[glad/gl, cimgui, sdl2_renderer, simple]
-export              gl, cimgui, sdl2_renderer, simple
+import imguin/[cimgui, sdl2_renderer, simple]
+export         cimgui, sdl2_renderer, simple
 
 import ../utils/sdlrenderer/[zoomglass, sdl2/loadImage]
 export zoomglass, loadImage

@@ -37,7 +37,7 @@ case TC
     switch "cc.exe","clang"
     switch "cc.linkerexe","clang"
     switch "cc",TC
-  of "zigcc":
+  of "zigcpp":
     # First do: nimble install zigcc
     switch "cc","clang"
     var ext = ""
@@ -45,7 +45,7 @@ case TC
       ext = ".cmd"
       switch "passL","-Wl,--subsystem,windows"
       switch "passL","-Lc:/drvdx/msys64/mingw64/lib" # Specify MinGW libraries folder
-    switch "clang.exe","zigcc" & ext
+    switch "clang.exe","zigcpp" & ext
     switch "clang.linkerexe","zigcpp" & ext
     switch "passL","-lgcc_s"
   of "vcc":

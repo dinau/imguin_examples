@@ -3,7 +3,7 @@
 
 import std/[math, random, sugar]
 import ../utils/appImGui
-import implot3dFuncs
+import ./[implot3dFuncs, demoImPlot3d]
 
 when defined(windows):
   when not defined(vcc): # imguinVcc.res TODO WIP
@@ -75,9 +75,9 @@ proc imPlot3dWindow() =
 # gui_main
 #----------
 proc gui_main(win: var AppWindow) =
-  var imPlotContext = ImPlot_CreateContext()
+  let imPlotContext = ImPlot_CreateContext()
   defer: imPlotContext.ImPlotDestroyContext()
-  var imPlot3dContext = ImPlot3d_CreateContext()
+  let imPlot3dContext = ImPlot3d_CreateContext()
   defer: imPlot3dContext.ImPlot3dDestroyContext()
 
   # for ImPlot
@@ -101,6 +101,7 @@ proc gui_main(win: var AppWindow) =
     # ImPlot test
     imPlotWindow()
     imPlot3dWindow()
+    demoImPlot3D()
     #
     render(win)
 

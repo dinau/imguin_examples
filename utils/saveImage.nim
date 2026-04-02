@@ -3,7 +3,7 @@
 #     https://npal-shared.hatenablog.com/entry/20121107/1352284053
 
 import std/[os,strutils]
-import imguin/[glad/gl]
+import opengl
 import stb_image/write as stbiw
 
 #-------------
