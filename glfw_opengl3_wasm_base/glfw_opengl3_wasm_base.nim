@@ -1,15 +1,23 @@
 # Compiling for desktop application:
-#   nim c -d:strip  glfw_opengl3_wasm_base.nim
+#   $ make app
+#   or
+#   $ nim c -d:strip  glfw_opengl3_wasm_base.nim
 # Compiling for Emscripten (WebAssembly):
 #   $ make
+#   or
+#   $ make run
+#
 # See ./Makefile, ./config.nims
 
 import std/[os, random]
 import ../utils/[appImGuiWasm, utils, setupFonts, vecs]
 import ../utils/opengl/[loadImage, zoomglass]
+
+# Import demos
 import ../glfw_opengl3_imspinner/demoCImSpinners
 import ../glfw_opengl3_implot3d/demoImPlot3d
 import ../glfw_opengl3_imknobs/demoKnobs
+import ../licenses_window/licenseNotices
 
 when defined(windows):
   when not defined(vcc): # imguinVcc.res TODO WIP
@@ -48,13 +56,35 @@ proc gui_main() =
   var val5 {.global.}: cint = 1
   var val6 {.global.}: cfloat = 1
 
+  var showLicenseNotices  {.global.} = false
   #-----------
   # Main loop
   #-----------
-  emscriptenMainloopBegin(win.glfwWin):
+  emscriptenMainloopBegin(win):
     win.pollEvents()
 
     newFrame()
+
+    #--------------------
+    # Show Licenses menu
+    #--------------------
+    let mh = igGetFrameHeight()
+    if igBeginMainMenuBar():
+      defer: igEndMainMenuBar()
+      if igBeginMenu("Licenses", true):
+        defer: igEndMenu()
+        if igMenuItem("Show", nil):
+          if not showLicenseNotices:
+            showLicenseNotices = true
+
+    #-----------------------
+    # Show Licenses window
+    #-----------------------
+    if showLicenseNotices:
+      win.setTheme(Light)
+      igSetNextWindowSize(vec2(600, 800), ImGui_Cond_FirstUseEver.cint)
+      licenseNotices(addr showLicenseNotices)
+      win.setTheme(Classic)
 
     #-------------------
     # ImImPlot/3D demo
@@ -65,25 +95,25 @@ proc gui_main() =
     #-----------------
     # CImSpinner demo
     #-----------------
-    igSetNextWindowPos(vec2(10, 10), ImGui_Cond_FirstUseEver.cint, vec2(0, 0)) # For WASM
+    igSetNextWindowPos(vec2(10, 10 + mh), ImGui_Cond_FirstUseEver.cint, vec2(0, 0)) # For WASM
     demoCImSpinners()
 
     #------------
     # infoWindow
     #------------
-    win.infoWindow(vec2(10, 100))
+    win.infoWindow(vec2(10, 100 + mh))
 
     #---------------
     # ImKnobs demo
     #---------------
-    igSetNextWindowPos(vec2(10, 300), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
+    igSetNextWindowPos(vec2(10, 300 + mh), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
     demoKnobs(win.ini.clearColor.elm.x, win.ini.clearColor.elm.y  ,win.ini.clearColor.elm.z  , val4, val5, val6)
 
     #---------------------
     # ImSpinner full demo
     #---------------------
     block:
-      igSetNextWindowPos(vec2(10, 450), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
+      igSetNextWindowPos(vec2(10, 450 + mh), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
       igSetNextWindowSize(vec2(900, 300), ImGui_Cond_FirstUseEver.cint)
       igBegin("ImSpinner full demo", nil, 0)
       defer: igEnd()
@@ -92,7 +122,7 @@ proc gui_main() =
     #----------------------
     # ImPlot3D demo window
     #----------------------
-    igSetNextWindowPos(vec2(880, 260), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
+    igSetNextWindowPos(vec2(880, 260 + mh), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
     igSetNextWindowSize(vec2(460, 750), ImGui_Cond_FirstUseEver.cint)
     demoImPlot3D()
 
@@ -100,7 +130,7 @@ proc gui_main() =
     # Show image load window
     #------------------------
     block:
-      igSetNextWindowPos(vec2(600, 300), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
+      igSetNextWindowPos(vec2(600, 300 + mh), ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
       igBegin("Image load test " & ICON_FA_IMAGE, nil, 0)
       defer: igEnd()
       # Load image

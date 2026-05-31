@@ -27,13 +27,14 @@ const fileName = "main.cpp"
 proc gui_main(win: var AppWindow) =
   var strText = readFile(fileName)
   let editor = TextEditor_TextEditor()
-  TextEditor_SetLanguageDefinition(editor, LanguageDefinitionId.Cpp)
+  TextEditor_SetLanguage(editor, Language_Cpp())
   TextEditor_SetText(editor, strText.cstring)
 
-  TextEditor_SetPalette(editor, Light)
+  TextEditor_SetPalette(editor, TextEditor_GetLightPalette())
 
-  var mLine: cint
-  var mColumn: cint
+  #var mLine: cint
+  #var mColumn: cint
+  var curPos: CursorPosition_c
   var fQuit = false
 
   let pio = igGetIO()
@@ -54,7 +55,7 @@ proc gui_main(win: var AppWindow) =
 
     win.infoWindow()
 
-    TextEditor_GetCursorPosition(editor, addr mLine, addr mColumn)
+    curPos = TextEditor_GetCurrentCursorPosition(editor)
     block:
       let (_, fontName) = fontFullPath.Path.splitPath
       igBegin(("Text Editor Demo: Font: " & $fontName).cstring, nil, (ImGuiWindowFlags_HorizontalScrollbar.cuint or ImGuiWindowFlags_MenuBar.cuint).ImGuiWindowFlags)
@@ -81,9 +82,9 @@ proc gui_main(win: var AppWindow) =
           igSeparator()
           #
           if igMenuItem("Undo", "ALT-Backspace", nil, not ro and TextEditor_CanUndo(editor)):
-            TextEditor_Undo(editor, 1)
+            TextEditor_Undo(editor)
           if igMenuItem("Redo", "Ctrl-Y", nil, not ro and TextEditor_CanRedo(editor)):
-            TextEditor_Redo(editor, 1)
+            TextEditor_Redo(editor)
           igSeparator()
           #
           if igMenuItem("Copy", "Ctrl-C", nil, TextEditor_AnyCursorHasSelection(editor)):
@@ -100,21 +101,21 @@ proc gui_main(win: var AppWindow) =
         if igBeginMenu("Theme", true):
           defer: igEndMenu()
           if igMenuItem("Dark palette"):
-            TextEditor_SetPalette(editor, Dark)
+            TextEditor_SetPalette(editor, TextEditor_GetDarkPalette())
           if igMenuItem("Light palette"):
-            TextEditor_SetPalette(editor, Light)
-          if igMenuItem("Mariana palette"):
-            TextEditor_SetPalette(editor, Mariana)
-          if igMenuItem("Retro blue palette", "Ctrl-B", nil, true):
-            TextEditor_SetPalette(editor, RetroBlue)
+            TextEditor_SetPalette(editor, TextEditor_GetLightPalette())
+          #if igMenuItem("Mariana palette"):
+          #  TextEditor_SetPalette(editor, TextEditor_GetMarianaP)
+          #if igMenuItem("Retro blue palette", "Ctrl-B", nil, true):
+          #  TextEditor_SetPalette(editor, TextEditor_GetRetroBlue)
 
-      let langNames = ["None".cstring, "Cpp", "C", "Cs", "Python", "Lua", "Json", "Sql", "AngelScript", "Glsl", "Hlsl"]
-      igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", mLine + 1, mColumn + 1, TextEditor_GetLineCount(editor),
+      #let langNames = ["None".cstring, "Cpp", "C", "Cs", "Python", "Lua", "Json", "Sql", "AngelScript", "Glsl", "Hlsl"]
+      igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.column + 1, TextEditor_GetLineCount(editor),
         if TextEditor_IsOverwriteEnabled(editor): "Ovr".cstring else: "Ins".cstring,
-        if TextEditor_CanUndo(editor): "*".cstring else: " ".cstring, langNames[TextEditor_GetLanguageDefinition(editor).cuint], fileName.cstring)
+        if TextEditor_CanUndo(editor): "*".cstring else: " ".cstring, TextEditor_GetLanguageName(editor), fileName.cstring)
 
       igPushFont(textFont, 0.0)
-      TextEditor_Render(editor, "texteditor", false, ImVec2_c(x: 0, y: 0), false)
+      TextEditor_Render(editor, "texteditor", border = false, size = ImVec2_c(x: 0, y: 0))
       igPopFont()
 
     #--------

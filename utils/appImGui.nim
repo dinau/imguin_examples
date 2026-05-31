@@ -30,7 +30,7 @@ import stb_image/read as stbi
 #--- Forward definitions
 proc loadIni*(win: var AppWindow)
 proc saveIni*(win: var AppWindow)
-proc setTheme*(win: var AppWindow, theme: Theme): string
+proc setTheme*(win: var AppWindow, theme: Theme): string {.discardable.}
 proc loadTileBarIcon*(win: AppWindow, iconName: string)
 
 #--------------
@@ -58,7 +58,7 @@ proc glfwErrorCallback(err: cint, mesg: cstring): void {.cdecl.} =
 #-------------
 # createImGui
 #-------------
-proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window", docking: bool = true): AppWindow =
+proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window in Nim", docking: bool = true): AppWindow =
   #discard setErrorCallback(glfwErrorCallback)
   glfw.initialize()
 
@@ -97,7 +97,7 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
 
     cfg.visible = false # See show()
     cfg.size = (w: result.ini.viewportWidth, h: result.ini.viewportHeight)
-    cfg.title = "Dear ImGui + GLFW + OpenGL"
+    cfg.title = title
     glfwWin = newWindow(cfg)
     var fres: float
     discard ($ver).split(" ")[1].parseFloat(fres)

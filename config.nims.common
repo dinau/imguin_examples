@@ -1,4 +1,4 @@
-#switch "path","../../imguin/src"
+switch "path","../../imguin/src"
 switch "hint","User:off"
 switch "hint","Name:off"
 switch "hint","XDeclaredButNotUsed:off"
@@ -13,6 +13,6 @@ const LTO = false
 var TC = "gcc"         # ok
 #var TC = "clang"       # ok
 #var TC = "vcc"         # Error some examples
-#var TC = "zigcpp"       # zig  0.15.0: OK except  glfw_opengl3_{filedialog,imColorTextEdit,imguiTextSelect}, *_vulkan
+#var TC = "zigcpp"       # zig  0.15.0: OK except glfw_opengl3_{filedialog,imColorTextEdit,imguiTextSelect}, *_vulkan
                         # Install zigcc: $ nimble install zigcc
                         # Refer to https://github.com/enthus1ast/zigcc

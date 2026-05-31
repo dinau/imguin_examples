@@ -29,7 +29,7 @@ cleanall:
 	@-rm $(TARGET).html $(TARGET).js  $(TARGET).wasm $(TARGET)$(EXE)
 	@-rm -fr .nimcache_app .nimcache_wasm
 
-clean: # dummy
+clean: cleanall
 	@echo Error!: Do [make cleanall]
 
 run: all server

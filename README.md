@@ -45,10 +45,10 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.6.1**  
-([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.6dock) (2026/02)
+Confirmed **ImGuin** verion: **v1.92.8.0**  
+([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.8dock) (2026/06)
 
-This is example project to use Dear ImGui, ImPlot and so on in Nim language.  
+This is example project to use Dear ImGui, ImPlot and so on in Nim.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
 
 #### Try Wasm demo in your browser

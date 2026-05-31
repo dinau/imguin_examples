@@ -58,7 +58,20 @@ when defined(emscripten):
     " --preload-file ../utils/fonticon/fa6/fa-solid-900.ttf@../utils/fonticon/fa6/fa-solid-900.ttf" &
     " --preload-file img/animal_paradise-480.gif" &
     " --preload-file res/img/n.png" &
-    " -s ALLOW_MEMORY_GROWTH=1"
+    " -s ALLOW_MEMORY_GROWTH=1" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui/LICENSE@../licenses_window/resources/licenses/cimgui/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui/imgui/LICENSE.txt@../licenses_window/resources/licenses/cimgui/imgui/LICENSE.txt" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui_toggle/LICENSE@../licenses_window/resources/licenses/cimgui_toggle/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui_toggle/libs/imgui_toggle/LICENSE@../licenses_window/resources/licenses/cimgui_toggle/libs/imgui_toggle/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/CImGuiFileDialog/libs/ImGuiFileDialog/stb/LICENSE@../licenses_window/resources/licenses/CImGuiFileDialog/libs/ImGuiFileDialog/stb/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui-knobs/LICENSE@../licenses_window/resources/licenses/imgui-knobs/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimgui-knobs/imgui-knobs/LICENSE@../licenses_window/resources/licenses/cimgui-knobs/imgui-knobs/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimplot/LICENSE@../licenses_window/resources/licenses/cimplot/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimplot/implot/LICENSE@../licenses_window/resources/licenses/cimplot/implot/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/cimplot3d/dummy.txt@../licenses_window/resources/licenses/cimplot3d/dummy.txt" &
+    " --preload-file ../licenses_window/resources/licenses/cimplot3d/implot3d/LICENSE@../licenses_window/resources/licenses/cimplot3d/implot3d/LICENSE" &
+    " --preload-file ../licenses_window/resources/licenses/fonticon/fa6//LICENSE.txt@../licenses_window/resources/licenses/fonticon/fa6/LICENSE.txt" &
+    " --preload-file ../licenses_window/resources/licenses/imspinner/LICENSE.txt@../licenses_window/resources/licenses/imspinner/LICENSE.txt"
     )
 else:
   switch("nimcache", ".nimcache_app")

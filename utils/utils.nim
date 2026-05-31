@@ -21,7 +21,7 @@ type
 #----------
 # setTheme
 #----------
-proc setTheme*(themeName: Theme) =
+proc setTheme*(themeName: Theme) {.discardable.} =
   case themeName
   of Light:
     igStyleColorsLight(nil)

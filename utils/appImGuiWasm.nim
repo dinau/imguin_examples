@@ -29,7 +29,16 @@ when not defined(emscripten):
   import std/[os, strutils]
   proc loadTileBarIcon(win: AppWindow, iconName: string)
 
-proc setTheme*(win: var AppWindow, theme: Theme): string
+proc setTheme*(win: var AppWindow, theme: Theme): string{.discardable.}
+
+#-------------
+# shouldClose
+#-------------
+proc shouldClose*(win: AppWindow): bool =
+  return 1 == wglfw.windowshouldClose(win.glfwWin).cint
+
+proc `shouldClose=`*(win: AppWindow, state: bool) =
+  wglfw.setWindowshouldClose(win.glfwWin, state.cint)
 
 #----------------------------
 # Emscripten main loop helper
@@ -55,7 +64,7 @@ when defined(emscripten):
 else:
   # Desktop: just a regular while loop
   template emscriptenMainloopBegin*(window: untyped, body: untyped) =
-    while wglfw.windowShouldClose(window) == 0:
+    while not shouldClose(window):
       body
 
 #------------------------------------
@@ -308,14 +317,12 @@ proc infoWindow*(win: var AppWindow, pos: Vec2 = vec2(0, 0)) =
   var
     sw{.global.}: bool
     strSw{.global.}: string
-    showDemoWindow{.global.} = true
   once:
     let theme = win.getTheme()
     sw = if theme == Theme.Classic: false else: true
     strSw = $theme
 
-  if showDemoWindow:
-    igShowDemoWindow(addr showDemoWindow)
+  igShowDemoWindow(nil)
 
   block:
     igSetNextWindowPos(pos, ImGui_Cond_FirstUseEver.cint, vec2(0, 0))
@@ -331,6 +338,5 @@ proc infoWindow*(win: var AppWindow, pos: Vec2 = vec2(0, 0)) =
     igText((ICON_FA_COMMENT_SMS & " " & getBackendVersionString()).cstring)
     igText("%s %s", ICON_FA_COMMENT_DOTS & " Dear ImGui", igGetVersion())
     igText("%s%s", ICON_FA_COMMENT_MEDICAL & " Nim-", NimVersion)
-    igCheckbox("ImGui Demo", addr showDemoWindow)
     igColorEdit3("Background color", win.ini.clearColor.array3, 0.ImGuiColorEditFlags)
     igText("Application average %.3f ms/frame (%.1f FPS)".cstring, (1000.0f / igGetIO().Framerate).cfloat, igGetIO().Framerate.cfloat)

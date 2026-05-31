@@ -14,7 +14,7 @@ const MainWinHeight = 600
 # gui_main
 #----------
 proc gui_main(win: var AppWindow) =
-  win.setClearColor(ccolor(elm: (x: 0.07f, y: 0.26f, z: 0.75f, w: 1.0f)))
+  win.setClearColor(ccolor(elm: (x: 0.16f, y: 0.26f, z: 0.15f, w: 1.0f)))
 
   let pio = igGetIO()
 
