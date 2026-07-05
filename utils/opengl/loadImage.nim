@@ -136,7 +136,7 @@ proc loadTextureFromFile*(filename: string, outTexture: var GLuint, outWidth: va
 #  #---------------------
 #  # Load title bar icon
 #  #---------------------
-#  proc LoadTileBarIcon*(window:GLFWwindow, iconName:string) =
+#  proc LoadTitleBarIcon*(window:GLFWwindow, iconName:string) =
 #    if iconName.fileExists:
 #      var
 #        w, h: int

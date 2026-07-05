@@ -27,7 +27,7 @@ import opengl
 export opengl
 when not defined(emscripten):
   import std/[os, strutils]
-  proc loadTileBarIcon(win: AppWindow, iconName: string)
+  proc loadTitleBarIcon(win: AppWindow, iconName: string)
 
 proc setTheme*(win: var AppWindow, theme: Theme): string{.discardable.}
 
@@ -145,7 +145,7 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
     # Load title bar icon
     #---------------------
     var IconName = os.joinPath(os.getAppDir(), "res/img/n.png")
-    loadTileBarIcon(result, IconName)
+    loadTitleBarIcon(result, IconName)
 
     # check opengl version (desktop only, no glGetString in ES2 context before init)
     opengl.loadExtensions()
@@ -296,7 +296,7 @@ proc setClearColor*(win: var AppWindow, col: ccolor) =
 # Load title bar icon
 #---------------------
 when not defined(emscripten):
-  proc loadTileBarIcon(win: AppWindow, iconName: string) =
+  proc loadTitleBarIcon(win: AppWindow, iconName: string) =
     if iconName.fileExists:
       var
         w, h: int
