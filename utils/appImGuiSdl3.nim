@@ -231,7 +231,7 @@ proc newFrame*() =
   igNewFrame()
 
 proc getFrontendVersionString*(): string =
-  let ver =  SDL_getVersion() # == cint
+  let ver =  SDL_GetVersion() # == cint
   return "SDL3 v$#.$#" % [$ver, $SDL_GetRevision()]
 
 proc getBackendVersionString*(): string = fmt"OpenGL v{($cast[cstring](glGetString(GL_VERSION))).split[0]} (Backend)"

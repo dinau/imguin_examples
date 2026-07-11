@@ -109,7 +109,7 @@ proc main() =
       let imageBoxPosTop = igGetCursorScreenPos() # Get absolute pos.
       igImage(ImTextureRef(internal_TexData: nil, internal_TexID: cast[ImTextureID](textureId)), size, uv0, uv1)
       let imageBoxPosEnd = igGetCursorScreenPos() # Get absolute pos.
-                                                  # Magnifiying glass
+      # Magnifiying glass
       if igIsItemHovered(ImGui_HoveredFlags_DelayNone.ImGuiHoveredFlags):
         zoomGlass(textureId, textureWidth, imageBoxPosTop, imageBoxPosEnd)
 

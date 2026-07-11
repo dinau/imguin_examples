@@ -65,17 +65,25 @@ proc setupFonts*(): (bool,string,string, ptr ImFont) =
   result =  (false,"Default","ProggyClean.ttf", nil) #
   var seqFontNames: seq[(string,string)]
   var font: ptr ImFont
-  for (fontName, fontTitle, point) in fontInfo.fontTable:
-    let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
-    if os.fileExists(fontFullPath):
-      seqFontNames.add (fontName, fontTitle)
-      font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, config,  nil);
-      echo "Added: ",fontFullPath
-      break
-  if seqFontNames.len > 0:
-    result = (true, seqFontNames[0][0].extractFilename ,seqFontNames[0][1], font)
+
+  when defined(emscripten):
+    if os.fileExists(IconfontFullPath):
+      font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF("./fonts/ProggyClean.ttf", 11.0.point2px, config, nil)
+      result = (true, "ProggyClean.ttf", "Default Font", font)
+    else:
+      font = pio.Fonts.ImFontAtlas_AddFontDefaultVector(nil)
   else:
-    font = pio.Fonts.ImFontAtlas_AddFontDefaultVector(nil)
+    for (fontName, fontTitle, point) in fontInfo.fontTable:
+      let fontFullPath = os.joinPath(fontInfo.osRootDir, fontInfo.fontDir, fontName)
+      if os.fileExists(fontFullPath):
+        seqFontNames.add (fontName, fontTitle)
+        font = pio.Fonts.ImFontAtlas_AddFontFromFileTTF(fontFullPath.cstring, point.point2px, config,  nil);
+        echo "Added: ",fontFullPath
+        break
+    if seqFontNames.len > 0:
+      result = (true, seqFontNames[0][0].extractFilename ,seqFontNames[0][1], font)
+    else:
+      font = pio.Fonts.ImFontAtlas_AddFontDefaultVector(nil)
 
   #-----------------
   # Merge Icon font

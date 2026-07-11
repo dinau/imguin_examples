@@ -23,26 +23,22 @@ switch "define", "ImGuiZoomableImage"
 
 when defined(emscripten):
   switch("nimcache", ".nimcache_wasm")
-  when false: # WebGL 2.0 / ES3
+  when true: # WebGL 2.0 / ES3
     switch("define", "OPENGL_ES3")
     switch("passC", "-DIMGUI_IMPL_OPENGL_ES3")
-    switch("passL", " -s FULL_ES3=1")
-    switch("passL", " -s USE_WEBGL2=1")
+    switch("passL", " -sMAX_WEBGL_VERSION=2")
+    switch("passL", " -sMIN_WEBGL_VERSION=2")
   else: # WebGL 1.0 / ES2
     switch("passC", "-DIMGUI_IMPL_OPENGL_ES2")
     switch("passL", " -s USE_WEBGL2=0")
     switch("passL", " -s FULL_ES2=1")
 
-  switch("passC", "-DEMSCRIPTEN_USE_PORT_CONTRIB_GLFW3")
-  {.passC: "--use-port=contrib.glfw3".}
+  #switch("passC", "-DEMSCRIPTEN_USE_PORT_CONTRIB_GLFW3")
+  switch("passC","-sUSE_GLFW=3")
+  switch("passL","-sUSE_GLFW=3")
   # emcc acts as both compiler and linker
-  when defined(windows):
-    switch("clang.exe", "emcc.bat")
-    switch("clang.linkerexe", "emcc.bat")
-    #
-  else:
-    switch("clang.exe", "emcc")
-    switch("clang.linkerexe", "emcc")
+  switch("clang.exe", "emcc")
+  switch("clang.linkerexe", "emcc")
   # Common settings
   switch("threads", "off")
   switch("os", "linux") # Emscripten pretends to be Linux
@@ -56,12 +52,13 @@ when defined(emscripten):
     " -s WASM=1" &
     " -s NO_EXIT_RUNTIME=0" &
     " -s ASSERTIONS=1" &
-    " --use-port=contrib.glfw3" &
+    " -sUSE_GLFW=3" &
+    " -o wasm/index.html" &
+    " -s ALLOW_MEMORY_GROWTH=0 -s INITIAL_MEMORY=67108864" &
     " --preload-file ../utils/fonticon/fa6/fa-solid-900.ttf@../utils/fonticon/fa6/fa-solid-900.ttf" &
     " --preload-file img/dinosaurs_paradise.jpg" &
     " --preload-file res/img/n.png" &
-    " -s ALLOW_MEMORY_GROWTH=1" &
-    " -o wasm/index.html"
+    " --preload-file ./fonts/ProggyClean.ttf@./fonts/ProggyClean.ttf"
     )
 else:
   switch("nimcache", ".nimcache_app")

@@ -502,8 +502,10 @@ make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
 
    ```sh
    $ emcc --version
-   emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 5.0.4 (62e22652509fbe7a00609ce48a653d0d66f27ba5)
-   --- snip ---
+   emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 6.0.2 (7a2d97d627ff4945eae28847ce0387ac52b92c09)
+   Copyright (C) 2026 the Emscripten authors (see AUTHORS.txt)
+   This is free and open source software under the MIT license.
+   There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
    ```
 1. Build `contrib.glfw3`
 
