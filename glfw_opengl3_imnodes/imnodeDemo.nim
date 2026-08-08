@@ -1,5 +1,6 @@
-# This demo has been converted from,
-# imnodes/example/save_load.cpp
+# This demo has been converted from
+#     https://github.com/Nelarius/imnodes/blob/master/example/save_load.cpp
+#        See ./imnodes-LICENSE.md
 # by audin 2023/10
 
 import std/streams

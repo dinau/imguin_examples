@@ -37,7 +37,7 @@ proc main() =
 
     igShowDemoWindow(nil)
 
-    # ImNodes demo
+    # ImNodes demo: See ./imnodeDemo.nim
     NodeEditorShow()
     #
     render(win)

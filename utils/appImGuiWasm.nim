@@ -1,9 +1,11 @@
+import std/[os, strutils, parsecfg, parseutils, strformat]
 import std/[strformat]
 import imguin/[cimgui, impl_glfw, impl_opengl, simple]
 export cimgui, simple
 import ../utils/[utils, setupFonts, togglebutton, vecs]
 import staticglfw as wglfw
 import stb_image/read as stbi
+
 
 type IniData = object
   clearColor*: ccolor
@@ -19,6 +21,10 @@ type AppWindow* = object
   implot3dContext: ptr ImPlot3dContext
   showWindowDelay: int # Avoid flickering screen at startup.
   ini*: IniData
+
+#--- Forward definitions
+proc loadIni*(win: var AppWindow)
+proc saveIni*(win: var AppWindow)
 
 # OpenGL header selection:
 # Emscripten uses WebGL which is based on OpenGL ES2/ES3.
@@ -88,6 +94,7 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
   if wglfw.init() == 0:
     quit(-1)
 
+
   # Decide GL+GLSL versions
   when defined(emscripten):
     when defined(OPENGL_ES3):
@@ -102,20 +109,22 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
       wglfw.windowHint(wglfw.ContextVersionMajor.int32, 2)
       wglfw.windowHint(wglfw.ContextVersionMinor.int32, 0)
       wglfw.windowHint(wglfw.ClientApi.int32, wglfw.OpenglEsApi.int32)
-  elif defined(macosx):
-    # GL 3.2 Core + GLSL 150
-    let glsl_version = "#version 150"
-    wglfw.windowHint(wglfw.OpenglForwardCompat.int32, 1)
-    wglfw.windowHint(wglfw.OpenglProfile.int32, wglfw.OpenglCoreProfile.int32)
-    wglfw.windowHint(wglfw.ContextVersionMajor.int32, 3)
-    wglfw.windowHint(wglfw.ContextVersionMinor.int32, 2)
   else:
-    # GL 3.2 + GLSL 130
-    let glsl_version = "#version 130"
-    wglfw.windowHint(wglfw.OpenglForwardCompat.int32, 1)
-    wglfw.windowHint(wglfw.OpenglProfile.int32, wglfw.OpenglCoreProfile.int32)
-    wglfw.windowHint(wglfw.ContextVersionMajor.int32, 3)
-    wglfw.windowHint(wglfw.ContextVersionMinor.int32, 2)
+    result.loadIni()
+    when defined(macosx):
+      # GL 3.2 Core + GLSL 150
+      let glsl_version = "#version 150"
+      wglfw.windowHint(wglfw.OpenglForwardCompat.int32, 1)
+      wglfw.windowHint(wglfw.OpenglProfile.int32, wglfw.OpenglCoreProfile.int32)
+      wglfw.windowHint(wglfw.ContextVersionMajor.int32, 3)
+      wglfw.windowHint(wglfw.ContextVersionMinor.int32, 2)
+    else:
+      # GL 3.2 + GLSL 130
+      let glsl_version = "#version 130"
+      wglfw.windowHint(wglfw.OpenglForwardCompat.int32, 1)
+      wglfw.windowHint(wglfw.OpenglProfile.int32, wglfw.OpenglCoreProfile.int32)
+      wglfw.windowHint(wglfw.ContextVersionMajor.int32, 3)
+      wglfw.windowHint(wglfw.ContextVersionMinor.int32, 2)
 
   # just an extra window hint for resize
   wglfw.windowHint(wglfw.Resizable.int32, wglfw.True)
@@ -126,16 +135,25 @@ proc createImGui*(w: cint = 1024, h: cint = 900, title: string = "ImGui window",
   #---------------
   # Create Window
   #---------------
-  result.glfwwin = wglfw.createWindow(
-    (w.cfloat * main_scale).int32,
-    (h.cfloat * main_scale).int32,
-    title, nil, nil)
+  when defined(emscripten):
+    result.glfwwin = wglfw.createWindow(
+      (w.cfloat * main_scale).int32,
+      (h.cfloat * main_scale).int32,
+      title, nil, nil)
+  else:
+    result.glfwwin = wglfw.createWindow(
+      (result.ini.viewPortWidth.cfloat * main_scale).int32,
+      (result.ini.viewPortHeight.cfloat * main_scale).int32,
+      title, nil, nil)
+
   if result.glfwwin == nil:
     echo "Error!: Failed to create window! Terminating!"
     wglfw.terminate()
     quit(-1)
 
   wglfw.makeContextCurrent(result.glfwwin)
+
+  wglfw.setWindowPos(result.glfwwin, result.ini.startupPosX, result.ini.startupPosY)
 
   # enable vsync
   wglfw.swapInterval(1)
@@ -202,6 +220,106 @@ proc newFrame*() =
   ImGui_ImplGlfw_NewFrame()
   igNewFrame()
 
+# Sections
+const scWindow = "Window"
+# [Window]
+const startupPosX = "startupPosX"
+const startupPosY = "startupPosY"
+const viewportWidth = "viewportWidth"
+const viewportHeight = "viewportHeigth"
+const colBGx = "colBGx"
+const colBGy = "colBGy"
+const colBGz = "colBGz"
+const colBGw = "colBGw"
+const theme = "theme"
+# [Image]
+const scImage = "Image"
+const imageSaveFormatIndex = "imageSaveFormatIndex"
+
+#---------
+# loadIni    --- Load ini
+#---------
+proc loadIni*(win: var AppWindow) =
+  let iniName = getAppFilename().changeFileExt("ini")
+  #----------
+  # Load ini
+  #----------
+  if fileExists(iniName):
+    let cfg = loadConfig(iniName)
+    # Window pos
+    win.ini.startupPosX = cfg.getSectionValue(scWindow, startupPosX).parseInt.cint
+    if 10 > win.ini.startupPosX: win.ini.startupPosX = 10
+    win.ini.startupPosY = cfg.getSectionValue(scWindow, startupPosY).parseInt.cint
+    if 10 > win.ini.startupPosY: win.ini.startupPosY = 10
+
+    # Window size
+    win.ini.viewportWidth = cfg.getSectionValue(scWindow, viewportWidth).parseInt.cint
+    if win.ini.viewportWidth < 100: win.ini.viewportWidth = 900
+    win.ini.viewportHeight = cfg.getSectionValue(scWindow, viewportHeight).parseInt.cint
+    if win.ini.viewportHeight < 100: win.ini.viewportHeight = 900
+
+    # Background color
+    var fval: float
+    discard parsefloat(cfg.getSectionValue(scWindow, colBGx, "0.25"), fval)
+    win.ini.clearColor.elm.x = fval.cfloat
+    discard parsefloat(cfg.getSectionValue(scWindow, colBGy, "0.65"), fval)
+    win.ini.clearColor.elm.y = fval.cfloat
+    discard parsefloat(cfg.getSectionValue(scWindow, colBGz, "0.85"), fval)
+    win.ini.clearColor.elm.z = fval.cfloat
+    discard parsefloat(cfg.getSectionValue(scWindow, colBGw, "1.00"), fval)
+    win.ini.clearColor.elm.w = fval.cfloat
+
+    # Image format index
+    win.ini.imageSaveFormatIndex = cfg.getSectionValue(scImage, imageSaveFormatIndex).parseInt.cint
+
+    # Theme
+    win.ini.theme = cast[Theme](cfg.getSectionValue(scWindow, theme).parseInt)
+
+  #----------------
+  # Set first defaults
+  #----------------
+  else:
+    win.ini.startupPosX = 100
+    win.ini.startupPosY = 200
+    win.ini.clearColor = ccolor(elm: (x: 0.25f, y: 0.65f, z: 0.85f, w: 1.0f))
+    win.ini.imageSaveFormatIndex = 0
+    win.ini.theme = Classic
+
+#---------
+# saveIni   --- save iniFile
+#---------
+proc saveIni*(win: var AppWindow) =
+  let iniName = getAppFilename().changeFileExt("ini")
+  echo iniName
+  var ini = newConfig()
+  # Window pos
+  wglfw.getWindowPos(win.glfwwin, addr win.ini.startupPosX,addr win.ini.startupPosY)
+  #win.ini.startupPosX = win.glfwWin.pos[0].int32
+  #win.ini.startupPosY = win.glfwWin.pos[1].int32
+
+  ini.setSectionKey(scWindow, startupPosX, $win.ini.startupPosX)
+  ini.setSectionKey(scWindow, startupPosY, $win.ini.startupPosY)
+
+  # Window size
+  let ws = igGetMainViewPort().WorkSize
+  ini.setSectionKey(scWindow, viewportWidth, $ws.x.cint)
+  ini.setSectionKey(scWindow, viewportHeight, $ws.y.cint)
+
+  # Background color
+  ini.setSectionKey(scWindow, colBGx, $win.ini.clearColor.elm.x)
+  ini.setSectionKey(scWindow, colBGy, $win.ini.clearColor.elm.y)
+  ini.setSectionKey(scWindow, colBGz, $win.ini.clearColor.elm.z)
+  ini.setSectionKey(scWindow, colBGw, $win.ini.clearColor.elm.w)
+
+  # Image format index
+  ini.setSectionKey(scImage, imageSaveFormatIndex, $win.ini.imageSaveFormatIndex)
+
+  # Theme
+  ini.setSectionKey(scWindow, theme, $win.ini.theme.int)
+
+  # save ini file
+  writeFile(iniName, $ini)
+
 #----------------
 # pollEvents
 #----------------
@@ -259,7 +377,7 @@ proc render*(win: var AppWindow) =
 # destroyImGui
 #--------------
 proc destroyImGui*(win: var AppWindow) =
-  #win.saveIni()
+  win.saveIni()
   ImGui_ImplOpenGL3_Shutdown()
   ImGui_ImplGlfw_Shutdown()
   igDestroyContext(nil)

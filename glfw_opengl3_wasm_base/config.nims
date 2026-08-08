@@ -1,4 +1,6 @@
 import std/strutils
+include ../config.nims.common
+
 #--------------------------------------------------------------------
 # Emscripten support
 # When targeting Emscripten, redirect the compiler/linker to emcc
@@ -51,6 +53,7 @@ when defined(emscripten):
     " -s NO_EXIT_RUNTIME=0" &
     " -s ASSERTIONS=1" &
     " -sUSE_GLFW=3" &
+    " -o wasm/index.html" &
     " --preload-file ../utils/fonticon/fa6/fa-solid-900.ttf@../utils/fonticon/fa6/fa-solid-900.ttf" &
     " --preload-file img/animal_paradise-480.gif" &
     " --preload-file res/img/n.png" &

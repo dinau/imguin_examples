@@ -45,8 +45,8 @@
 
 ## ImGuin examples project
 
-Confirmed **ImGuin** verion: **v1.92.8.0**  
-([Dear ImGui](https://github.com/ocornut/imgui)/[CImGui](https://github.com/cimgui/cimgui) version: 1.92.8dock) (2026/06)
+Confirmed **ImGuin** version: **v1.92.9.0**  
+([Dear ImGui](https://github.com/ocornut/imgui) / [CImGui](https://github.com/cimgui/cimgui) version: 1.92.9b dock) (2026/08)
 
 This is example project to use Dear ImGui, ImPlot and so on in Nim.  
 Wrapper libraies used are here [ImGuin](https://github.com/dinau/imguin) [^notice]
@@ -535,7 +535,7 @@ make        # or     nim c -d:ImGuiMarkdown glfw_opengl3_imgui_markdown.nim
    ```
    
    Click [http://\[::\]:8000/](http://[localhost]:8000/) or [http://[localhost]:8000/](http://[localhost]:8000/) or open it on your browser  
-   and click `glfw_opengl3_wasm_base.html`
+   and click `wasm` folder.
 
 1. Genarete desktop application
 
@@ -666,16 +666,15 @@ GCC: v14.2.0, Clang: v18.1.8, MSVC: 2022
 ---
 
 Windows11 (main)
-- **Nim Compiler Version 2.2.8**
-- **GCC (Rev1, Built by MSYS2 project) 15.2.0**
-- Clang version 21.1.8
-- Visual Studio C++/C 2022
+- Nim Compiler Version 2.2.10
+- GCC (Rev1, Built by MSYS2 project) 16.1.0
+- Clang version 22.1.8
 - git version 2.46.0.windows.1
 - Make: GNU Make 4.4.1
-- MSys2/MinGW tools
+- MSys2 / MinGW-UCRT tools
 
 WSL2 Linux OS: Debain 13
-- **Nim Compiler Version 2.2.6**
+- **Nim Compiler Version 2.2.10**
 - gcc 14.2.0
 - make: GNU Make 4.4.1
 - git version 2.47.3

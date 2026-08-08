@@ -5,26 +5,22 @@
 *   rlImGui * basic ImGui integration
 *
 *   LICENSE: ZLIB
+*   Copyright (c) 2020-2021 Jeffery Myers
 *
-*   Copyright (c) 2024 Jeffery Myers
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
 *
-*   Permission is hereby granted, free of charge, to any person obtaining a copy
-*   of this software and associated documentation files (the "Software"), to deal
-*   in the Software without restriction, including without limitation the rights
-*   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*   copies of the Software, and to permit persons to whom the Software is
-*   furnished to do so, subject to the following conditions:
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
 *
-*   The above copyright notice and this permission notice shall be included in all
-*   copies or substantial portions of the Software.
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
 *
-*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-*   SOFTWARE.
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
 #include "rlImGui.h"
@@ -37,7 +33,6 @@
 #include "imgui.h"
 
 #include <math.h>
-#include <map>
 #include <limits>
 #include <cstdint>
 
@@ -50,7 +45,9 @@ static MouseCursor MouseCursorMap[ImGuiMouseCursor_COUNT];
 
 ImGuiContext* GlobalContext = nullptr;
 
-static std::map<KeyboardKey, ImGuiKey> RaylibKeyMap;
+static constexpr size_t MAX_RAYLIB_KEY = 349;
+static ImGuiKey RaylibKeyMap[MAX_RAYLIB_KEY];
+static bool KeyMapInitialized = false;
 
 static bool LastFrameFocused = false;
 
@@ -327,8 +324,12 @@ void rlImGuiEndInitImGui(void)
 
 static void SetupKeymap(void)
 {
-    if (!RaylibKeyMap.empty())
+    if (KeyMapInitialized)
         return;
+
+    KeyMapInitialized = true;
+
+    memset(RaylibKeyMap, 0, MAX_RAYLIB_KEY * sizeof(ImGuiKey));
 
     // build up a map of raylib keys to ImGuiKeys
     RaylibKeyMap[KEY_APOSTROPHE] = ImGuiKey_Apostrophe;
@@ -765,7 +766,7 @@ void ImGui_ImplRaylib_RenderDrawData(ImDrawData* draw_data)
     rlDrawRenderBatchActive();
     rlDisableBackfaceCulling();
 
-    for (int l = 0; l < draw_data->CmdListsCount; ++l)
+    for (int l = 0; l < draw_data->CmdLists.Size; ++l)
     {
         const ImDrawList* commandList = draw_data->CmdLists[l];
 
@@ -773,13 +774,14 @@ void ImGui_ImplRaylib_RenderDrawData(ImDrawData* draw_data)
         {
             EnableScissor(cmd.ClipRect.x - draw_data->DisplayPos.x, cmd.ClipRect.y - draw_data->DisplayPos.y, cmd.ClipRect.z - (cmd.ClipRect.x - draw_data->DisplayPos.x), cmd.ClipRect.w - (cmd.ClipRect.y - draw_data->DisplayPos.y));
             if (cmd.UserCallback != nullptr)
-            {
+			{
+				rlSetTexture(0); // force the texture state to the default since we don't know what the user callback will do with it
                 cmd.UserCallback(commandList, &cmd);
-
-                continue;
             }
-
-            ImGuiRenderTriangles(cmd.ElemCount, cmd.IdxOffset, commandList->IdxBuffer, commandList->VtxBuffer, cmd.GetTexID());
+            else
+            {
+                ImGuiRenderTriangles(cmd.ElemCount, cmd.IdxOffset, commandList->IdxBuffer, commandList->VtxBuffer, cmd.GetTexID());
+            }
             rlDrawRenderBatchActive();
         }
     }
@@ -838,12 +840,17 @@ bool ImGui_ImplRaylib_ProcessEvents(void)
     LastSuperPressed = superDown;
 
     // walk the keymap and check for up and down events
-    for (const auto keyItr : RaylibKeyMap)
+	for (int keyItr = 0; keyItr < MAX_RAYLIB_KEY; keyItr++)
     {
-        if (IsKeyReleased(keyItr.first))
-            io.AddKeyEvent(keyItr.second, false);
-        else if(IsKeyPressed(keyItr.first))
-            io.AddKeyEvent(keyItr.second, true);
+        const auto key = RaylibKeyMap[keyItr];
+
+        if (key == 0)
+            continue;
+
+        if (IsKeyReleased(keyItr))
+            io.AddKeyEvent(key, false);
+        else if(IsKeyPressed(keyItr))
+            io.AddKeyEvent(key, true);
     }
 
     if (io.WantCaptureKeyboard)

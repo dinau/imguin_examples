@@ -6,6 +6,10 @@
 #            https://github.com/sonoro1234/LuaJIT-ImGui
 #            https://github.com/BalazsJako/ColorTextEditorDemo/blob/master/main.cpp
 #            https://github.com/BalazsJako/ColorTextEditorDemo
+
+# See License: ./LuaJIT-ImGUI_LICENSE.txt
+#              ./ColorTextEditorDemo_LICENSE.txt
+
 import std/[paths]
 import ../utils/appImGui
 
@@ -34,7 +38,7 @@ proc gui_main(win: var AppWindow) =
 
   #var mLine: cint
   #var mColumn: cint
-  var curPos: CursorPosition_c
+  var curPos: DocPos_c
   var fQuit = false
 
   let pio = igGetIO()
@@ -110,12 +114,13 @@ proc gui_main(win: var AppWindow) =
           #  TextEditor_SetPalette(editor, TextEditor_GetRetroBlue)
 
       #let langNames = ["None".cstring, "Cpp", "C", "Cs", "Python", "Lua", "Json", "Sql", "AngelScript", "Glsl", "Hlsl"]
-      igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.column + 1, TextEditor_GetLineCount(editor),
+      igText("%6d/%-6d %6d lines  | %s | %s | %s | %s", curPos.line + 1, curPos.index + 1, TextEditor_GetLineCount(editor),
         if TextEditor_IsOverwriteEnabled(editor): "Ovr".cstring else: "Ins".cstring,
         if TextEditor_CanUndo(editor): "*".cstring else: " ".cstring, TextEditor_GetLanguageName(editor), fileName.cstring)
 
       igPushFont(textFont, 0.0)
-      TextEditor_Render(editor, "texteditor", border = false, size = ImVec2_c(x: 0, y: 0))
+      TextEditor_Render(editor, "texteditor".cstring, ImVec2_c(x: 0, y: 0), 0.ImGuiChildFlags, (ImGuiWindowFlags_NoMove.uint or ImGuiWindowFlags_HorizontalScrollbar.uint).ImGuiWindowFlags
+      )
       igPopFont()
 
     #--------

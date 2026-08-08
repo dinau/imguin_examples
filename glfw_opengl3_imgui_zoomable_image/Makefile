@@ -26,10 +26,10 @@ app:
 	nim c -r $(OPT) $(TARGET).nim
 
 cleanall:
-	@-rm wasm/{*.data,*.js,*.html} $(TARGET)$(EXE)
+	@-rm wasm/{*.data,*.js,*.html,*.wasm} $(TARGET)$(EXE)
 	@-rm -fr .nimcache_app .nimcache_wasm
 
-clean: # dummy
+clean: cleanall
 	@echo Error!: Do [make cleanall]
 
 run: all server
